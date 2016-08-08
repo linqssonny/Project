@@ -2,6 +2,7 @@ package com.library.image.photo.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * Created by admin on 2016/6/29.
@@ -15,7 +16,7 @@ public class Image implements Parcelable {
     //原图地址
     public String imagePath;
     //最后修改时间
-    public Long lastModifiedTime;
+    public long lastModifiedTime;
     //所在文件夹的id
     public String folderId;
 
@@ -46,11 +47,11 @@ public class Image implements Parcelable {
         this.imagePath = imagePath;
     }
 
-    public Long getLastModifiedTime() {
+    public long getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Long lastModifiedTime) {
+    public void setLastModifiedTime(long lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 
@@ -100,6 +101,12 @@ public class Image implements Parcelable {
     public boolean equals(Object o) {
         if (o != null && o instanceof Image) {
             Image image = (Image) o;
+            if (TextUtils.isEmpty(imageId)) {
+                if (TextUtils.equals(imagePath, image.getImagePath())) {
+                    return true;
+                }
+                return false;
+            }
             if (imageId.equals(image.getImageId())) {
                 return true;
             }
