@@ -1,0 +1,1 @@
+include ':app', ':utilslibs', ':baselibs', ':network', ':image', ':share', ':qrcode', ':recycleview'

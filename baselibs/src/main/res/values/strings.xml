@@ -1,0 +1,5 @@
+<resources>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="common_loading_message">请稍后...</string>
+</resources>

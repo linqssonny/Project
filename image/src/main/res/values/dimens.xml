@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_choose_photo_folder_item_height">110dp</dimen>
+</resources>

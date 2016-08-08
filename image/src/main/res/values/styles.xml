@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--图片文件夹pop动画-->
+    <style name="image_folder_anim">
+        <item name="android:windowEnterAnimation">@anim/image_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/image_slide_out</item>
+    </style>
+</resources>
