@@ -16,65 +16,105 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 public class ImageUtils {
 
     public static void displayImage(Context context, String imgUrl, ImageView imageView) {
-        Glide.with(context).load(imgUrl).asBitmap().centerCrop().into(imageView);
+        try {
+            Glide.with(context).load(imgUrl).asBitmap().centerCrop().into(imageView);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void displayImage(Context context, int resource, ImageView imageView) {
-        Glide.with(context).load(resource).asBitmap().centerCrop().into(imageView);
+        try {
+            Glide.with(context).load(resource).asBitmap().centerCrop().into(imageView);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void displayCircleImage(final Context context, String imgUrl, final ImageView imageView) {
-        Glide.with(context).load(imgUrl).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                imageView.setImageDrawable(roundedBitmapDrawable);
-            }
-        });
+        try {
+            Glide.with(context).load(imgUrl).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    roundedBitmapDrawable.setCircular(true);
+                    imageView.setImageDrawable(roundedBitmapDrawable);
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public static void displayCircleImage(final Context context, int resource, final ImageView imageView) {
-        Glide.with(context).load(resource).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
-            @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                roundedBitmapDrawable.setCircular(true);
-                imageView.setImageDrawable(roundedBitmapDrawable);
-            }
-        });
+        try {
+            Glide.with(context).load(resource).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    roundedBitmapDrawable.setCircular(true);
+                    imageView.setImageDrawable(roundedBitmapDrawable);
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void displayRadiusImage(final Context context, int resource, final ImageView imageView, final float radius) {
+        try {
+            Glide.with(context).load(resource).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                    roundedBitmapDrawable.setCornerRadius(radius);
+                    roundedBitmapDrawable.setAntiAlias(true);
+                    imageView.setImageDrawable(roundedBitmapDrawable);
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public static void displayLayerCircleImage(final Context context, String imgUrl, int layerID, final ImageView imageView) {
-        Glide.with(context)
-                .load(imgUrl)
-                .asBitmap()
-                .centerCrop()
-                .transform(new LayerBitmapTransform(context, layerID))
-                .into(new BitmapImageViewTarget(imageView) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        imageView.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+        try {
+            Glide.with(context)
+                    .load(imgUrl)
+                    .asBitmap()
+                    .centerCrop()
+                    .transform(new LayerBitmapTransform(context, layerID))
+                    .into(new BitmapImageViewTarget(imageView) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                            roundedBitmapDrawable.setCircular(true);
+                            imageView.setImageDrawable(roundedBitmapDrawable);
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
     }
 
     public static void displayLayerCircleImage(final Context context, int resource, int layerID, final ImageView imageView) {
-        Glide.with(context)
-                .load(resource)
-                .asBitmap()
-                .centerCrop()
-                .transform(new LayerBitmapTransform(context, layerID))
-                .into(new BitmapImageViewTarget(imageView) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                        roundedBitmapDrawable.setCircular(true);
-                        imageView.setImageDrawable(roundedBitmapDrawable);
-                    }
-                });
+        try {
+            Glide.with(context)
+                    .load(resource)
+                    .asBitmap()
+                    .centerCrop()
+                    .transform(new LayerBitmapTransform(context, layerID))
+                    .into(new BitmapImageViewTarget(imageView) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                            roundedBitmapDrawable.setCircular(true);
+                            imageView.setImageDrawable(roundedBitmapDrawable);
+                        }
+                    });
+        } catch (Exception e) {
+
+        }
     }
 
     /**

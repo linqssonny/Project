@@ -172,7 +172,7 @@ public class LogUtils {
      */
     private static String[] wrapperContent(String tagStr, Object objectMsg) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        int index = 7;
+        int index = 6;
         String className = stackTrace[index].getFileName();
         String methodName = stackTrace[index].getMethodName();
         int lineNumber = stackTrace[index].getLineNumber();

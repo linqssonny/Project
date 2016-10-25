@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alonebums.project">
 
-    <!--网络访问-->
+    <!-- 网络访问 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--读写SD卡-->
+    <!-- 读写SD卡 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -23,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".image.ImageActivity"></activity>
+        <activity android:name=".image.ImageActivity" />
+        <activity android:name=".network.HttpActivity" />
+        <activity android:name=".recycler.RecyclerActivity"></activity>
     </application>
 
 </manifest>

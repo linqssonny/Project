@@ -13,12 +13,12 @@ public class SPUtils {
     private SharedPreferences mSharedPreferences;
     private String mName;
 
-    private Context mContext;
 
+    private Context mContext;
     private SPUtils() {
     }
 
-    private static class  SPUtilsHolder{
+    private static class SPUtilsHolder {
         private static SPUtils sInstance = new SPUtils();
     }
 
@@ -171,5 +171,31 @@ public class SPUtils {
     public long getLong(String name, String key) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
         return sharedPreferences.getLong(key, 0L);
+    }
+
+    public void remove(String key) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
+    public void remove(String name, String key) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
+    public void clear() {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    public void clear(String name) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
     }
 }

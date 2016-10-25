@@ -1,5 +1,6 @@
 package com.library.base.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,7 +28,7 @@ public class LoadingDialog extends BaseDialog {
         return false;
     }
 
-    public LoadingDialog(Context context) {
+    public LoadingDialog(Activity context) {
         super(context);
     }
 
@@ -43,6 +44,7 @@ public class LoadingDialog extends BaseDialog {
         mOperatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.dialog_loading_rotate);
         LinearInterpolator lin = new LinearInterpolator();
         mOperatingAnim.setInterpolator(lin);
+        setMessage(mContext.getString(R.string.common_loading_message), true);
     }
 
     public void setMessage(String message, boolean showMessage) {

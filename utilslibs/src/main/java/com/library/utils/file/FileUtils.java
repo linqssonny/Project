@@ -8,8 +8,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by linqs on 2016/7/12.
@@ -95,6 +99,33 @@ public class FileUtils {
     }
 
     /***
+     * 保存文件
+     *
+     * @param inputStream 数据流
+     * @param filePath    文件路径
+     * @param fileName    文件名称
+     * @return
+     * @throws IOException
+     */
+    public static String saveFile(InputStream inputStream, String filePath, String fileName) throws IOException {
+        File fileDir = new File(filePath);
+        if (!fileDir.exists()) {
+            fileDir.mkdirs();
+        }
+        File file = new File(fileDir, fileName);
+        byte[] buf = new byte[2048];
+        int len = 0;
+        FileOutputStream fos = new FileOutputStream(file);
+        while ((len = inputStream.read(buf)) != -1) {
+            fos.write(buf, 0, len);
+        }
+        fos.flush();
+        fos.close();
+        inputStream.close();
+        return file.getAbsolutePath();
+    }
+
+    /***
      * 读取文件到String
      *
      * @param filePath
@@ -160,5 +191,16 @@ public class FileUtils {
         } else {
             return Environment.getRootDirectory().getAbsolutePath();
         }
+    }
+
+    /**
+     * 根据当前时期时间生成文件名
+     * 年月日时分秒毫秒
+     *
+     * @return
+     */
+    public static String createFileNameByDateTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault());
+        return simpleDateFormat.format(new Date());
     }
 }

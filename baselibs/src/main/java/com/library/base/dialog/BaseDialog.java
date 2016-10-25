@@ -1,5 +1,6 @@
 package com.library.base.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,13 +16,13 @@ import com.library.base.R;
 public abstract class BaseDialog implements DialogInterface.OnDismissListener
         , DialogInterface.OnShowListener, DialogInterface.OnCancelListener, View.OnClickListener {
 
-    protected Context mContext;
+    protected Activity mContext;
     protected Dialog mDialog;
 
     //监听
     protected DialogListener mDialogListener;
 
-    public BaseDialog(Context context) {
+    public BaseDialog(Activity context) {
         this.mContext = context;
         init();
     }

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.library.network.interfaces.IHttpCallBack;
 import com.library.network.interfaces.IHttpParams;
 import com.library.network.utils.HttpFileUtils;
+import com.library.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,21 +121,6 @@ public class HttpUtils {
     }
 
     /***
-     * 请求前检查参数
-     *
-     * @param httpParams
-     */
-    public void checkParams(IHttpParams httpParams) {
-        if (null == httpParams) {
-            throw new NullPointerException("httpParams is not null");
-        }
-        if (TextUtils.isEmpty(httpParams.getHttpUrl())) {
-            throw new NullPointerException("httpUrl is not null");
-        }
-        httpParams.setHandler(mHandler);
-    }
-
-    /***
      * 创建post参数
      *
      * @param httpParams
@@ -155,6 +141,115 @@ public class HttpUtils {
         }
         b.post(formBody);
         return b.build();
+    }
+
+    /***
+     * get  同步请求
+     *
+     * @param httpParams
+     * @param httpCallBack
+     * @return
+     */
+    public String get(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+        checkParams(httpParams);
+        sendOnBeforeCallBack(httpParams, httpCallBack);
+        Request request = createGetRequest(httpParams);
+        Response response = null;
+        String body = null;
+        String error = null;
+        try {
+            response = mOkHttpClient.newCall(request).execute();
+            body = response.body().string();
+        } catch (IOException e) {
+            error = e.getMessage();
+        }
+        if (null == response || TextUtils.isEmpty(body) || !response.isSuccessful()) {
+            sendFailCallBack(httpParams, httpCallBack, error);
+        } else {
+            sendSuccessCallBack(httpParams, httpCallBack, body);
+        }
+        sendOnAfterCallBack(httpParams, httpCallBack);
+        return body;
+    }
+
+    /***
+     * get  异步请求
+     *
+     * @param httpParams
+     * @param httpCallBack
+     */
+    public void getAsync(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+        checkParams(httpParams);
+        sendOnBeforeCallBack(httpParams, httpCallBack);
+        Request request = createGetRequest(httpParams);
+        mOkHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (call.isCanceled()) {
+                    sendFailCallBack(httpParams, httpCallBack, "request is cancel");
+                } else {
+                    sendFailCallBack(httpParams, httpCallBack, e.getMessage());
+                }
+                sendOnAfterCallBack(httpParams, httpCallBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String body = response.body().string();
+                        sendSuccessCallBack(httpParams, httpCallBack, body);
+                    } catch (IOException e) {
+                        sendFailCallBack(httpParams, httpCallBack, e.getMessage());
+                    }
+                } else {
+                    sendFailCallBack(httpParams, httpCallBack, "");
+                }
+                sendOnAfterCallBack(httpParams, httpCallBack);
+            }
+        });
+    }
+
+    /***
+     * get
+     *
+     * @param httpParams
+     * @return
+     */
+    private Request createGetRequest(IHttpParams httpParams) {
+        StringBuffer stringBuffer = new StringBuffer(httpParams.getHttpUrl());
+        if (null != httpParams.getParam() && httpParams.getParam().size() > 0) {
+            for (Map.Entry<String, Object> map : httpParams.getParam().entrySet()) {
+                int index = stringBuffer.indexOf("?");
+                if (index > -1) {
+                    stringBuffer.append("&");
+                } else {
+                    stringBuffer.append("?");
+                }
+                stringBuffer.append(map.getKey()).append("=").append(map.getValue().toString());
+            }
+        }
+        Request.Builder b = new Request.Builder();
+        b.url(stringBuffer.toString());
+        if (null != httpParams.getTag()) {
+            b.tag(httpParams.getTag());
+        }
+        return b.build();
+    }
+
+    /***
+     * 请求前检查参数
+     *
+     * @param httpParams
+     */
+    public void checkParams(IHttpParams httpParams) {
+        if (null == httpParams) {
+            throw new NullPointerException("httpParams is not null");
+        }
+        if (TextUtils.isEmpty(httpParams.getHttpUrl())) {
+            throw new NullPointerException("httpUrl is not null");
+        }
+        httpParams.setHandler(mHandler);
     }
 
     /***
@@ -248,8 +343,11 @@ public class HttpUtils {
             builder.tag(httpParams.getTag());
         }
         Request request = builder.build();
-        OkHttpClient okHttpClient = mOkHttpClient.newBuilder().readTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS).build();
-        okHttpClient.networkInterceptors().add(new ResponseInterceptor(httpParams, httpCallBack));
+        OkHttpClient okHttpClient = mOkHttpClient.newBuilder()
+                .readTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS)
+                .writeTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS)
+                .addInterceptor(new ResponseInterceptor(httpParams, httpCallBack)).build();
+        sendOnBeforeCallBack(httpParams, httpCallBack);
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -268,7 +366,7 @@ public class HttpUtils {
                     try {
                         //获取返回体（流的形式）
                         is = response.body().byteStream();
-                        String filePath = HttpFileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
+                        String filePath = FileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
                         sendSuccessCallBack(httpParams, httpCallBack, filePath);
                     } catch (Exception e) {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());
@@ -285,10 +383,10 @@ public class HttpUtils {
 
     public void checkSaveFile(IHttpParams httpParams) {
         if (TextUtils.isEmpty(httpParams.getSaveFilePath())) {
-            httpParams.setSaveFilePath(HttpFileUtils.getRootFilePath());
+            httpParams.setSaveFilePath(FileUtils.getRootFilePath());
         }
         if (TextUtils.isEmpty(httpParams.getSaveFileName())) {
-            httpParams.setSaveFileName(HttpFileUtils.createFileName());
+            httpParams.setSaveFileName(FileUtils.createFileNameByDateTime());
         }
     }
 
@@ -304,7 +402,11 @@ public class HttpUtils {
     public void upload(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         Request request = createUploadRequest(httpParams, httpCallBack);
-        OkHttpClient okHttpClient = mOkHttpClient.newBuilder().writeTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS).build();
+        OkHttpClient okHttpClient = mOkHttpClient.newBuilder()
+                .writeTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_DOWNLOAD_TIME, TimeUnit.SECONDS)
+                .build();
+        sendOnBeforeCallBack(httpParams, httpCallBack);
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

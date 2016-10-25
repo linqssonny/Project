@@ -1,2 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <string name="qr_code_camera_bug_message">打开相机出错,请重新打开</string>
 </resources>

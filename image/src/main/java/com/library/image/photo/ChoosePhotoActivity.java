@@ -13,18 +13,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.library.image.R;
-import com.library.utils.file.FileUtils;
 import com.library.image.photo.bean.Image;
 import com.library.image.photo.bean.ImageFolder;
 import com.library.image.photoview.PreviewPhotoActivity;
+import com.library.utils.file.FileUtils;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by admin on 2016/6/29.
@@ -83,6 +81,9 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
 
         mCameraPath = intent.getStringExtra(CAMERA_PATH);
 
+        findViewById(R.id.iv_choose_photo_back).setOnClickListener(this);
+        findViewById(R.id.tv_choose_photo_back).setOnClickListener(this);
+
         mBtnConfirm.setOnClickListener(this);
         mTvImageFolder.setOnClickListener(this);
         findViewById(R.id.tv_choose_photo_preview).setOnClickListener(this);
@@ -108,6 +109,16 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
 
         mCurrentImageFolder = imageFolder;
         setImageData();
+    }
+
+    private void addSelectImage(Image image) {
+        if (null == image) {
+            return;
+        }
+        if (null == mSelectImage) {
+            mSelectImage = new ArrayList<>();
+        }
+        mSelectImage.add(image);
     }
 
     @Override
@@ -168,6 +179,11 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
                 public void onItemClick(Image image) {
                     if ("-1".equals(image.getImageId())) {
                         //拍照
+                        int size = null == mSelectImage ? 0 : mSelectImage.size();
+                        if (size >= mMaxNum) {
+                            Toast.makeText(ChoosePhotoActivity.this, getString(R.string.image_choose_photo_max, String.valueOf(mMaxNum)), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         takeCamera();
                     } else {
                         //预览
@@ -176,16 +192,12 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
 
                 @Override
                 public void onSelectChanged(ArrayList<Image> selectImages) {
-                    int num = null == selectImages ? 0 : selectImages.size();
-                    if (num <= 0) {
-                        mBtnConfirm.setText(R.string.image_choose_photo_confirm);
-                    } else {
-                        mBtnConfirm.setText(getString(R.string.image_choose_photo_confirm_num, "(" + num + "/" + mMaxNum + ")"));
-                    }
                     mSelectImage = selectImages;
+                    setSelectNum();
                 }
             });
             mGridView.setAdapter(mImageAdapter);
+            setSelectNum();
         }
         if (null == mCurrentImageFolder || "-1".equals(mCurrentImageFolder.getFolderId())) {
             mImageAdapter.refreshData(mImageList);
@@ -204,19 +216,27 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
         mTvImageFolder.setText(mCurrentImageFolder.getFolderName());
     }
 
+    //设置选中数
+    private void setSelectNum() {
+        int num = null == mSelectImage ? 0 : mSelectImage.size();
+        if (num <= 0) {
+            mBtnConfirm.setText(R.string.image_choose_photo_confirm);
+        } else {
+            mBtnConfirm.setText(getString(R.string.image_choose_photo_confirm_num, "(" + num + "/" + mMaxNum + ")"));
+        }
+    }
+
     private void takeCamera() {
         File file;
         if (TextUtils.isEmpty(mCameraPath)) {
             mCameraPath = FileUtils.getRootFilePath();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault());
-            String fileName = simpleDateFormat.format(new Date()) + ".png";
+            String fileName = FileUtils.createFileNameByDateTime() + ".png";
             file = new File(mCameraPath, fileName);
             mCameraPath = file.getAbsolutePath();
         } else {
             file = new File(mCameraPath);
         }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
     }
@@ -240,7 +260,11 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
                     intent.setData(Uri.fromFile(new File(mCameraPath)));
                     sendBroadcast(intent);//通知图库刷新
                     intent = new Intent();
-                    intent.putExtra(CAMERA_PATH, mCameraPath);
+                    Image image = new Image();
+                    image.setImagePath(mCameraPath);
+                    image.setThumbnailPath(mCameraPath);
+                    addSelectImage(image);
+                    intent.putParcelableArrayListExtra(IMAGE_SELECT, mSelectImage);
                     setResult(RESULT_OK, intent);
                     finish();
                     break;

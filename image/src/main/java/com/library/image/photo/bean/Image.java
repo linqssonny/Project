@@ -101,7 +101,7 @@ public class Image implements Parcelable {
     public boolean equals(Object o) {
         if (o != null && o instanceof Image) {
             Image image = (Image) o;
-            if (TextUtils.isEmpty(imageId)) {
+            if (TextUtils.isEmpty(imageId) || TextUtils.isEmpty(image.getImageId())) {
                 if (TextUtils.equals(imagePath, image.getImagePath())) {
                     return true;
                 }

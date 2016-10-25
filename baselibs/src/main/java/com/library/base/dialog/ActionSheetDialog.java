@@ -1,5 +1,6 @@
 package com.library.base.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ public class ActionSheetDialog extends BaseDialog {
 
     private TextView mTvMessage, mTvLeft, mTvRight;
 
-    public ActionSheetDialog(Context context) {
+    public ActionSheetDialog(Activity context) {
         super(context);
     }
 

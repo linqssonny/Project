@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public abstract int getContentViewId();
 
-    public void beforeContentView(Bundle savedInstanceState) {
+    public void beforeSetContentView(Bundle savedInstanceState) {
 
     }
 
@@ -70,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (mRootLayout == null) {
             mRootLayout = getLayoutInflater().inflate(getContentViewId(), null);
         }
-        beforeContentView(savedInstanceState);
+        beforeSetContentView(savedInstanceState);
         setContentView(mRootLayout);
         initUI();
         initLogic();
