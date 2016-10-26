@@ -17,6 +17,7 @@ public class BaseApplication extends Application {
 
     private void initSP() {
         SPUtils.getInstance().init(getApplicationContext());
+        //可以自定义文件名字
         //SPUtils.getInstance().init(getApplicationContext(),"sp_file_name");
     }
 }

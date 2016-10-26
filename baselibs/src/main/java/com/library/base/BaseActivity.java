@@ -3,14 +3,18 @@ package com.library.base;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.library.utils.AppUtils;
-import com.library.utils.permission.PermissionUtils;
 import com.library.utils.log.LogUtils;
+import com.library.utils.permission.PermissionUtils;
+import com.library.utils.toast.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.List;
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     public View mRootLayout;
+    public Handler mMainHandler;
 
     public Activity getActivity() {
         return this;
@@ -58,6 +63,23 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         addOnClick(view);
     }
 
+    public void showMessage(int value) {
+        showMessage(getString(value));
+    }
+
+    public void showMessage(final String value) {
+        toastMessage(Toast.LENGTH_SHORT, value);
+    }
+
+    public void toastMessage(final int duration, final String value) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.show(getActivity(), value, duration);
+            }
+        });
+    }
+
     /*************************************************************************
      * 生命周期方法
      *************************************************************************/
@@ -67,6 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         log(getClass().getSimpleName() + " is onCreate");
         AppUtils.getInstance().addActivityToStack(this);
+        mMainHandler = new Handler(Looper.getMainLooper());
         if (mRootLayout == null) {
             mRootLayout = getLayoutInflater().inflate(getContentViewId(), null);
         }

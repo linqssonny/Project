@@ -1,6 +1,7 @@
 package com.library.utils.toast;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 /**
@@ -40,7 +41,10 @@ public class ToastUtils {
     }
 
     //执行Toast的方法
-    private static void show(Context context, String s, int duration) {
+    public static void show(Context context, String s, int duration) {
+        if (TextUtils.isEmpty(s)) {
+            return;
+        }
         Toast.makeText(context, s, duration).show();
     }
 }
