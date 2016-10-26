@@ -20,7 +20,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile 'com.malinskiy:superrecyclerview:1.1.4'
     compile project(':utilslibs')
     compile 'com.android.support:recyclerview-v7:24.2.1'
+    //https://github.com/jianghejie/XRecyclerView
+    compile 'com.jcodecraeer:xrecyclerview:1.2.7'
 }

@@ -1,8 +1,9 @@
 package com.library.utils.log;
 
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.library.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,7 +25,20 @@ public class LogUtils {
     public static final int E = 0x5;
     public static final int A = 0x6;
 
-    public static final String NULL_TIPS = "Log with null object";
+    public static final String NULL_TIPS = "log message is null or empty";
+
+    public static int sDepth = 6;
+
+    public static String sFilePath;
+
+    public static void init(String filePath) {
+        init(filePath, sDepth);
+    }
+
+    public static void init(String filePath, int depth) {
+        sFilePath = filePath;
+        sDepth += depth;
+    }
 
     public static void v(Object objMsg) {
         v(null, objMsg);
@@ -109,7 +123,7 @@ public class LogUtils {
      * @param msg 日志内容
      */
     public static void printFile(String msg, String fileName) {
-        printFile(msg, null, fileName);
+        printFile(msg, sFilePath, fileName);
     }
 
     /***
@@ -119,10 +133,10 @@ public class LogUtils {
      */
     public static void printFile(String msg, String filePath, String fileName) {
         if (TextUtils.isEmpty(filePath)) {
-            filePath = getRootFilePath();
+            filePath = FileUtils.getRootFilePath();
         }
         if (TextUtils.isEmpty(fileName)) {
-            fileName = getFileName();
+            fileName = createLogFile();
         }
         File file = new File(filePath, fileName);
         if (file.exists()) {
@@ -149,15 +163,7 @@ public class LogUtils {
         }
     }
 
-    public static String getRootFilePath() {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath();
-        } else {
-            return Environment.getRootDirectory().getAbsolutePath();
-        }
-    }
-
-    private static String getFileName() {
+    private static String createLogFile() {
         StringBuilder stringBuilder = new StringBuilder("log_");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         stringBuilder.append(simpleDateFormat.format(new Date()));
@@ -172,10 +178,9 @@ public class LogUtils {
      */
     private static String[] wrapperContent(String tagStr, Object objectMsg) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        int index = 6;
-        String className = stackTrace[index].getFileName();
-        String methodName = stackTrace[index].getMethodName();
-        int lineNumber = stackTrace[index].getLineNumber();
+        String className = stackTrace[sDepth].getFileName();
+        String methodName = stackTrace[sDepth].getMethodName();
+        int lineNumber = stackTrace[sDepth].getLineNumber();
         String methodNameShort = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[ (").append(className).append(":").append(lineNumber).append(")#").append(methodNameShort).append(" ] ");

@@ -26,6 +26,7 @@
         <activity android:name=".image.ImageActivity" />
         <activity android:name=".network.HttpActivity" />
         <activity android:name=".recycler.RecyclerActivity"></activity>
+        <activity android:name=".recycler.XRecyclerActivity"></activity>
         <activity android:name=".sp.SpActivity"></activity>
     </application>
 

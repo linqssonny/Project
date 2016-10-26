@@ -2,6 +2,7 @@ package com.alonebums.project.base;
 
 import android.app.Application;
 
+import com.alonebums.project.utils.LUtils;
 import com.library.utils.sp.SPUtils;
 
 /**
@@ -13,6 +14,12 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initSP();
+        initLog();
+    }
+
+    private void initLog() {
+        //初始化Log工具类
+        LUtils.init();
     }
 
     private void initSP() {
