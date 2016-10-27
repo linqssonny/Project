@@ -7,7 +7,6 @@ import android.view.View;
 import com.alonebums.project.image.ImageActivity;
 import com.alonebums.project.network.HttpActivity;
 import com.alonebums.project.recycler.RecyclerActivity;
-import com.alonebums.project.recycler.XRecyclerActivity;
 import com.alonebums.project.sp.SpActivity;
 import com.alonebums.project.utils.LUtils;
 import com.library.base.BaseActivity;
@@ -62,7 +61,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_recycle:
                 //上拉下拉
-                intent = new Intent(this, XRecyclerActivity.class);
+                intent = new Intent(this, RecyclerActivity.class);
                 break;
             case R.id.btn_main_qr_code:
                 //intent = new Intent(this, CaptureActivity.class);
