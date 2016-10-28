@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (C) 2008 ZXing authors
+ Copyright (C) 2012 ZXing authors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,7 +14,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  -->
-<resources>
-  <dimen name="standard_padding">8dip</dimen>
-  <dimen name="half_padding">4dip</dimen>
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/menu_share"
+        android:title="@string/menu_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:orderInCategory="1"
+        android:showAsAction="withText|ifRoom"/>
+  <item android:id="@+id/menu_encode"
+        android:title="@string/menu_encode_vcard"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:orderInCategory="2"
+        android:showAsAction="withText|ifRoom"/>
+</menu>

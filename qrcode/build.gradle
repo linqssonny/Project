@@ -20,8 +20,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //https://github.com/zxing/zxing
-    compile project(':utilslibs')
-    compile 'com.google.zxing:core:3.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile project(':utilslibs')
+    //https://github.com/zxing/zxing
+    compile 'com.google.zxing:core:3.3.0'
 }

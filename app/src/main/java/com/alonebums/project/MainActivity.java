@@ -9,6 +9,7 @@ import com.alonebums.project.network.HttpActivity;
 import com.alonebums.project.recycler.RecyclerActivity;
 import com.alonebums.project.sp.SpActivity;
 import com.alonebums.project.utils.LUtils;
+import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
@@ -64,7 +65,8 @@ public class MainActivity extends BaseActivity {
                 intent = new Intent(this, RecyclerActivity.class);
                 break;
             case R.id.btn_main_qr_code:
-                //intent = new Intent(this, CaptureActivity.class);
+                //二维码
+                intent = new Intent(this, CaptureActivity.class);
                 break;
         }
         if (null != intent) {

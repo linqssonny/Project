@@ -24,4 +24,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     //https://github.com/jianghejie/XRecyclerView
     compile 'com.jcodecraeer:xrecyclerview:1.2.7'
+    //https://github.com/timehop/sticky-headers-recyclerview(分组头部)
+    //compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
 }
