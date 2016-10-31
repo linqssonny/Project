@@ -65,8 +65,7 @@ public final class CaptureActivityHandler extends Handler {
                          String characterSet,
                          CameraManager cameraManager) {
     this.activity = activity;
-    decodeThread = new DecodeThread(activity, decodeFormats, baseHints, characterSet,
-        new ViewfinderResultPointCallback(activity.getViewfinderView()));
+    decodeThread = new DecodeThread(activity, decodeFormats, baseHints, characterSet);
     decodeThread.start();
     state = State.SUCCESS;
 
@@ -157,7 +156,7 @@ public final class CaptureActivityHandler extends Handler {
     if (state == State.SUCCESS) {
       state = State.PREVIEW;
       cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
-      activity.drawViewfinder();
+      //activity.drawViewfinder();
     }
   }
 

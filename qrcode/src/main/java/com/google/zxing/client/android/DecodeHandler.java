@@ -87,7 +87,7 @@ final class DecodeHandler extends Handler {
       }
     }
 
-    Handler handler = activity.getHandler();
+    Handler handler = activity.getCaptureActivityHandler();
     if (rawResult != null) {
       // Don't log the barcode contents for security.
       long end = System.currentTimeMillis();

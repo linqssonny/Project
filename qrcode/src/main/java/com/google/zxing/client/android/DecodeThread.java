@@ -18,7 +18,6 @@ package com.google.zxing.client.android;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
-import com.google.zxing.ResultPointCallback;
 
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -50,8 +49,7 @@ final class DecodeThread extends Thread {
   DecodeThread(CaptureActivity activity,
                Collection<BarcodeFormat> decodeFormats,
                Map<DecodeHintType,?> baseHints,
-               String characterSet,
-               ResultPointCallback resultPointCallback) {
+               String characterSet) {
 
     this.activity = activity;
     handlerInitLatch = new CountDownLatch(1);
@@ -65,22 +63,22 @@ final class DecodeThread extends Thread {
     if (decodeFormats == null || decodeFormats.isEmpty()) {
       SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
       decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-      if (true) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
         decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
       }
-      if (true) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_INDUSTRIAL, true)) {
         decodeFormats.addAll(DecodeFormatManager.INDUSTRIAL_FORMATS);
       }
-      if (true) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_QR, true)) {
         decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
       }
-      if (true) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, true)) {
         decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
       }
-      if (false) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)) {
         decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
       }
-      if (false) {
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)) {
         decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
       }
     }
@@ -89,7 +87,6 @@ final class DecodeThread extends Thread {
     if (characterSet != null) {
       hints.put(DecodeHintType.CHARACTER_SET, characterSet);
     }
-    hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
     Log.i("DecodeThread", "Hints: " + hints);
   }
 
