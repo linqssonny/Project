@@ -39,69 +39,75 @@ import java.util.concurrent.CountDownLatch;
  */
 final class DecodeThread extends Thread {
 
-    private final CaptureActivity activity;
-    private final Map<DecodeHintType, Object> hints;
-    private Handler handler;
-    private final CountDownLatch handlerInitLatch;
+  public static final String BARCODE_BITMAP = "barcode_bitmap";
+  public static final String BARCODE_SCALED_FACTOR = "barcode_scaled_factor";
 
-    DecodeThread(CaptureActivity activity, Collection<BarcodeFormat> decodeFormats, Map<DecodeHintType, ?> baseHints,
-            String characterSet, ResultPointCallback resultPointCallback) {
+  private final CaptureActivity activity;
+  private final Map<DecodeHintType,Object> hints;
+  private Handler handler;
+  private final CountDownLatch handlerInitLatch;
 
-        this.activity = activity;
-        handlerInitLatch = new CountDownLatch(1);
+  DecodeThread(CaptureActivity activity,
+               Collection<BarcodeFormat> decodeFormats,
+               Map<DecodeHintType,?> baseHints,
+               String characterSet,
+               ResultPointCallback resultPointCallback) {
 
-        hints = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
-        if (baseHints != null) {
-            hints.putAll(baseHints);
-        }
+    this.activity = activity;
+    handlerInitLatch = new CountDownLatch(1);
 
-        // The prefs can't change while the thread is running, so pick them up once here.
-        if (decodeFormats == null || decodeFormats.isEmpty()) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-            decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
-                decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
-            }
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_INDUSTRIAL, true)) {
-                decodeFormats.addAll(DecodeFormatManager.INDUSTRIAL_FORMATS);
-            }
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_QR, true)) {
-                decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
-            }
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, true)) {
-                decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
-            }
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)) {
-                decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
-            }
-            if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)) {
-                decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
-            }
-        }
-        hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
-
-        if (characterSet != null) {
-            hints.put(DecodeHintType.CHARACTER_SET, characterSet);
-        }
-        hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
-        Log.i("DecodeThread", "Hints: " + hints);
+    hints = new EnumMap<>(DecodeHintType.class);
+    if (baseHints != null) {
+      hints.putAll(baseHints);
     }
 
-    Handler getHandler() {
-        try {
-            handlerInitLatch.await();
-        } catch (InterruptedException ie) {
-            // continue?
-        }
-        return handler;
+    // The prefs can't change while the thread is running, so pick them up once here.
+    if (decodeFormats == null || decodeFormats.isEmpty()) {
+      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+      decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
+        decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
+      }
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_INDUSTRIAL, true)) {
+        decodeFormats.addAll(DecodeFormatManager.INDUSTRIAL_FORMATS);
+      }
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_QR, true)) {
+        decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
+      }
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, true)) {
+        decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
+      }
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)) {
+        decodeFormats.addAll(DecodeFormatManager.AZTEC_FORMATS);
+      }
+      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)) {
+        decodeFormats.addAll(DecodeFormatManager.PDF417_FORMATS);
+      }
     }
+    hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
 
-    @Override
-    public void run() {
-        Looper.prepare();
-        handler = new DecodeHandler(activity, hints);
-        handlerInitLatch.countDown();
-        Looper.loop();
+    if (characterSet != null) {
+      hints.put(DecodeHintType.CHARACTER_SET, characterSet);
     }
+    hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
+    Log.i("DecodeThread", "Hints: " + hints);
+  }
+
+  Handler getHandler() {
+    try {
+      handlerInitLatch.await();
+    } catch (InterruptedException ie) {
+      // continue?
+    }
+    return handler;
+  }
+
+  @Override
+  public void run() {
+    Looper.prepare();
+    handler = new DecodeHandler(activity, hints);
+    handlerInitLatch.countDown();
+    Looper.loop();
+  }
 
 }

@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_qr_code:
                 //二维码
-                request = CaptureActivity.REQUESTCODE;
+                //request = CaptureActivity.REQUESTCODE;
                 intent = new Intent(this, CaptureActivity.class);
                 break;
         }
@@ -86,12 +86,12 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
+            /*switch (requestCode) {
                 case CaptureActivity.REQUESTCODE:
                     String value = data == null ? null : (data.getStringExtra(CaptureActivity.QRCODE));
                     ToastUtils.showShortMsg(this, value);
                     break;
-            }
+            }*/
         }
     }
 }
