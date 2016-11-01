@@ -11,6 +11,7 @@ import com.alonebums.project.sp.SpActivity;
 import com.alonebums.project.utils.LUtils;
 import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
+import com.library.utils.toast.ToastUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         Intent intent = null;
+        Integer request = null;
         switch (v.getId()) {
             case R.id.btn_main_img:
                 //图片
@@ -66,11 +68,30 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_qr_code:
                 //二维码
+                request = CaptureActivity.REQUESTCODE;
                 intent = new Intent(this, CaptureActivity.class);
                 break;
         }
         if (null != intent) {
-            startActivity(intent);
+            if (null != request) {
+                startActivityForResult(intent, request);
+            } else {
+                startActivity(intent);
+            }
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CaptureActivity.REQUESTCODE:
+                    String value = data == null ? null : (data.getStringExtra(CaptureActivity.QRCODE));
+                    ToastUtils.showShortMsg(this, value);
+                    break;
+            }
         }
     }
 }
