@@ -55,7 +55,7 @@ public final class PreferencesActivity extends Activity {
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
+    //getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
   }
 
   // Apparently this will be necessary when targeting API 19+:

@@ -184,6 +184,8 @@ final class CameraConfigurationManager {
 
     theCamera.setParameters(parameters);
 
+    //竖屏
+    cwRotationFromDisplayToCamera = 90;
     theCamera.setDisplayOrientation(cwRotationFromDisplayToCamera);
 
     Camera.Parameters afterParameters = theCamera.getParameters();

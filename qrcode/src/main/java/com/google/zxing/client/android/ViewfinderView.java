@@ -16,19 +16,20 @@
 
 package com.google.zxing.client.android;
 
-import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.camera.CameraManager;
-import com.library.qrcode.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.camera.CameraManager;
+import com.library.qrcode.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,12 @@ public final class ViewfinderView extends View {
   private List<ResultPoint> possibleResultPoints;
   private List<ResultPoint> lastPossibleResultPoints;
 
+  private Bitmap mBgBitmap;
+  private Bitmap mLineBitmap;
+  private Rect mLineRect = null;
+  private final int DEFAULT_LINE_SPEED = 5;
+  private int mLineSpeed = DEFAULT_LINE_SPEED;
+
   // This constructor is used when the class is built from an XML resource.
   public ViewfinderView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -72,6 +79,9 @@ public final class ViewfinderView extends View {
     scannerAlpha = 0;
     possibleResultPoints = new ArrayList<>(5);
     lastPossibleResultPoints = null;
+
+    mBgBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode_window);
+    mLineBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.qrcode_line_hor);
   }
 
   public void setCameraManager(CameraManager cameraManager) {
@@ -105,12 +115,27 @@ public final class ViewfinderView extends View {
       canvas.drawBitmap(resultBitmap, null, frame, paint);
     } else {
 
+      //Draw frame
+      canvas.drawBitmap(mBgBitmap, null, frame, paint);
+      if (null == mLineRect) {
+        mLineRect = new Rect(frame.left + 1, frame.top, frame.right - 1, frame.top + mLineBitmap.getHeight());
+      } else {
+        int top = mLineRect.top + mLineSpeed;
+        if (top + mLineBitmap.getHeight() > frame.bottom) {
+          top = frame.top;
+        }
+        mLineRect.top = top;
+        mLineRect.bottom = top + mLineBitmap.getHeight();
+      }
+      canvas.drawBitmap(mLineBitmap, null, mLineRect, paint);
+
       // Draw a red "laser scanner" line through the middle to show decoding is active
       paint.setColor(laserColor);
       paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
       scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
-      int middle = frame.height() / 2 + frame.top;
-      canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+      //int middle = frame.height() / 2 + frame.top;
+      //canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+
       
       float scaleX = frame.width() / (float) previewFrame.width();
       float scaleY = frame.height() / (float) previewFrame.height();
@@ -163,7 +188,7 @@ public final class ViewfinderView extends View {
     if (resultBitmap != null) {
       resultBitmap.recycle();
     }
-    invalidate();
+    //invalidate();
   }
 
   /**

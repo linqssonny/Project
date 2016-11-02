@@ -15,6 +15,9 @@
  limitations under the License.
  -->
 <resources>
+
+  <dimen name="qr_title_height">45dp</dimen>
+
   <dimen name="standard_padding">8dip</dimen>
   <dimen name="half_padding">4dip</dimen>
 </resources>
