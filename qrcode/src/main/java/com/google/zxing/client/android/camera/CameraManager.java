@@ -230,10 +230,9 @@ public final class CameraManager {
 
       //取正方形
       width = height = Math.min(width, height);
-      int h = context.getResources().getDimensionPixelSize(R.dimen.qr_title_height) + 10;
 
       int leftOffset = (screenResolution.x - width) / 2;
-      int topOffset = (screenResolution.y - h - height) / 2;
+      int topOffset = (screenResolution.y - height) / 2;
       framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
       Log.d(TAG, "Calculated framing rect: " + framingRect);
     }

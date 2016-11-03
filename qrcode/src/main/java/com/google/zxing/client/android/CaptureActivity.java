@@ -30,6 +30,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -53,6 +54,8 @@ import java.util.Map;
 public final class CaptureActivity extends Activity implements SurfaceHolder.Callback,View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
+
+    public static final String QR_CODE_RESULT = "qr_code_result";
 
     private CameraManager cameraManager;
     private CaptureActivityHandler handler;
@@ -90,7 +93,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         beepManager = new BeepManager(this);
         ambientLightManager = new AmbientLightManager(this);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     @Override
@@ -212,10 +214,14 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
         inactivityTimer.onActivity();
         // Then not from history, so beep/vibrate and we have an image to draw on
         beepManager.playBeepSoundAndVibrate();
-        ToastUtils.showShortMsg(this, rawResult.toString());
+
+        Intent intent = new Intent();
+        intent.putExtra(QR_CODE_RESULT, rawResult.toString());
+        setResult(RESULT_OK, intent);
+        finish();
 
         //1秒后重新扫描
-        restartPreviewAfterDelay(1000L);
+        //restartPreviewAfterDelay(1000L);
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
@@ -244,12 +250,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     }
 
     private void displayFrameworkBugMessageAndExit() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.app_name));
-        builder.setMessage(getString(R.string.msg_camera_framework_bug));
-        builder.setPositiveButton(R.string.button_ok, new FinishListener(this));
-        builder.setOnCancelListener(new FinishListener(this));
-        builder.show();
+        ToastUtils.showShortMsg(this, R.string.msg_camera_framework_bug);
     }
 
     public void restartPreviewAfterDelay(long delayMS) {
