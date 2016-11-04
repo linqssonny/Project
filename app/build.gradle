@@ -26,5 +26,5 @@ dependencies {
     compile project(':share')
     compile project(':qrcode')
     compile project(':baselibs')
-    compile project(':recyclerview')
+    compile project(':refresh')
 }
