@@ -2,6 +2,7 @@ package com.alonebums.project.image;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,7 +12,9 @@ import com.library.image.photo.ChoosePhotoActivity;
 import com.library.image.photo.bean.Image;
 import com.library.image.photoview.PreviewPhotoActivity;
 import com.library.image.utils.ImageUtils;
+import com.library.utils.BaseUtils;
 import com.library.utils.file.FileUtils;
+import com.library.utils.permission.PermissionUtils;
 import com.library.utils.toast.ToastUtils;
 
 import java.io.File;
@@ -87,21 +90,7 @@ public class ImageActivity extends BaseActivity {
                 break;
             case R.id.btn_image_select:
                 //选择图片
-                intent = new Intent(this, ChoosePhotoActivity.class);
-                //每行显示图片张数
-                intent.putExtra(ChoosePhotoActivity.COLUMNS_NUM, 3);
-                //最多选择的图片数
-                intent.putExtra(ChoosePhotoActivity.IMAGE_MAX_NUM, 2);
-
-                //选中的图片
-                intent.putParcelableArrayListExtra(ChoosePhotoActivity.IMAGE_SELECT, mSelect);
-
-                File file = new File(FileUtils.getRootFilePath() + File.separator + "Project");
-                file.mkdirs();
-                file = new File(file.getAbsolutePath(), FileUtils.createFileNameByDateTime() + ".png");
-                //拍照  自定义存储地址
-                intent.putExtra(ChoosePhotoActivity.CAMERA_PATH, file.getAbsolutePath());
-                startActivityForResult(intent, 101);
+                requestPermissions(3000, PermissionUtils.PERMISSION_GROUP_CAMERA, PermissionUtils.PERMISSION_GROUP_STORAGE);
                 break;
         }
     }
@@ -124,6 +113,40 @@ public class ImageActivity extends BaseActivity {
                 }
                 mSelect = arrayList;
             }
+        }
+    }
+
+    @Override
+    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.requestPermissionsSuccess(requestCode, permissions, grantResults);
+        if(3000 == requestCode){
+            //选择图片
+            Intent intent = new Intent(this, ChoosePhotoActivity.class);
+            //每行显示图片张数
+            intent.putExtra(ChoosePhotoActivity.COLUMNS_NUM, 3);
+            //最多选择的图片数
+            intent.putExtra(ChoosePhotoActivity.IMAGE_MAX_NUM, 2);
+
+            //选中的图片
+            intent.putParcelableArrayListExtra(ChoosePhotoActivity.IMAGE_SELECT, mSelect);
+
+            File file = new File(FileUtils.getRootFilePath() + File.separator + "Project");
+            file.mkdirs();
+            file = new File(file.getAbsolutePath(), FileUtils.createFileNameByDateTime() + ".png");
+            //拍照  自定义存储地址
+            intent.putExtra(ChoosePhotoActivity.CAMERA_PATH, file.getAbsolutePath());
+            startActivityForResult(intent, 101);
+        }
+    }
+
+    @Override
+    public void requestPermissionsFail(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.requestPermissionsFail(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 3000:
+                //
+                showMessage("请在应用管理中打开拍照权限");
+                break;
         }
     }
 }

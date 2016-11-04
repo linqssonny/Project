@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.library.utils.AppUtils;
+import com.library.utils.BaseUtils;
 import com.library.utils.log.LogUtils;
 import com.library.utils.permission.PermissionUtils;
 import com.library.utils.toast.ToastUtils;
@@ -29,6 +31,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public Activity getActivity() {
         return this;
+    }
+
+    public void handleMessage(Message msg) {
+
     }
 
     public abstract int getContentViewId();
@@ -89,7 +95,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         log(getClass().getSimpleName() + " is onCreate");
         AppUtils.getInstance().addActivityToStack(this);
-        mMainHandler = new Handler(Looper.getMainLooper());
+        mMainHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                BaseActivity.this.handleMessage(msg);
+            }
+        };
         if (mRootLayout == null) {
             mRootLayout = getLayoutInflater().inflate(getContentViewId(), null);
         }
@@ -157,14 +169,21 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * start 6.0权限问题
      ***********************************************************************/
 
-    public boolean requestPermissions(String permission, int requestCode) {
-        List<String> permissions = new ArrayList<>();
-        permissions.add(permission);
-        return requestPermissions(permissions, requestCode);
-    }
-
-    public boolean requestPermissions(List<String> permissions, int requestCode) {
-        return PermissionUtils.requestPermissions(this, permissions, requestCode);
+    public void requestPermissions(int requestCode, int... actions) {
+        List<String> permissionsList = new ArrayList<>();
+        if (BaseUtils.isEmptyForArray(actions)) {
+            throw new IllegalStateException("the actions value is valid");
+        }
+        for (int i = 0; i < actions.length; i++) {
+            int action = actions[i];
+            List<String> p = PermissionUtils.createRequestPermission(action);
+            permissionsList.addAll(p);
+        }
+        boolean result = PermissionUtils.requestPermissions(this, permissionsList, requestCode);
+        if (result) {
+            int size = permissionsList.size();
+            requestPermissionsSuccess(requestCode, permissionsList.toArray(new String[size]), PermissionUtils.createGrantedArray(size));
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.alonebums.project.qrcode;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 import com.library.qrcode.QrCodeUtils;
 import com.library.utils.DensityUtils;
+import com.library.utils.permission.PermissionUtils;
 
 /**
  * 扫描二维码
@@ -45,8 +47,7 @@ public class QrCodeActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_qr_code_scan:
                 //扫描二维码/条形码
-                request = REQUESTCODE;
-                intent = new Intent(this, CaptureActivity.class);
+                requestPermissions(3000, PermissionUtils.PERMISSION_GROUP_CAMERA);
                 break;
             case R.id.btn_qr_code_decode:
                 //生成二维码
@@ -118,6 +119,28 @@ public class QrCodeActivity extends BaseActivity {
                     mTvValue.setText(data.getStringExtra(CaptureActivity.QR_CODE_RESULT));
                     break;
             }
+        }
+    }
+
+    @Override
+    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.requestPermissionsSuccess(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 3000:
+                //扫描二维码/条形码
+                startActivityForResult(new Intent(this, CaptureActivity.class), REQUESTCODE);
+                break;
+        }
+    }
+
+    @Override
+    public void requestPermissionsFail(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.requestPermissionsFail(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 3000:
+                //
+                showMessage("请在应用管理中打开拍照权限");
+                break;
         }
     }
 }
