@@ -11,6 +11,8 @@ import com.alonebums.project.recycler.RecyclerActivity;
 import com.alonebums.project.sp.SpActivity;
 import com.alonebums.project.utils.LUtils;
 import com.library.base.BaseActivity;
+import com.library.crop.Crop;
+import com.library.crop.CropUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -33,6 +35,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initLogic() {
         addOnClick(R.id.btn_main_img);
+        addOnClick(R.id.btn_main_crop);
         addOnClick(R.id.btn_main_net);
         addOnClick(R.id.btn_main_sp);
         addOnClick(R.id.btn_main_recycle);
@@ -52,6 +55,12 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_img:
                 //图片
                 intent = new Intent(this, ImageActivity.class);
+                break;
+            case R.id.btn_main_crop:
+                //裁剪
+                Crop crop = new Crop(this);
+                crop.setRequestCode(1000);
+                CropUtils.crop(crop);
                 break;
             case R.id.btn_main_net:
                 //网络
@@ -84,12 +93,11 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            /*switch (requestCode) {
-                case CaptureActivity.REQUESTCODE:
-                    String value = data == null ? null : (data.getStringExtra(CaptureActivity.QRCODE));
-                    ToastUtils.showShortMsg(this, value);
+            switch (requestCode) {
+                case 1000:
+                    //图片裁剪
                     break;
-            }*/
+            }
         }
     }
 }

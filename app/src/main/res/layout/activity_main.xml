@@ -19,6 +19,13 @@
             android:text="图片" />
 
         <Button
+            android:id="@+id/btn_main_crop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="裁剪" />
+
+        <Button
             android:id="@+id/btn_main_net"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

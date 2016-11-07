@@ -27,4 +27,5 @@ dependencies {
     compile project(':qrcode')
     compile project(':baselibs')
     compile project(':refresh')
+    compile project(path: ':crop')
 }
