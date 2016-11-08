@@ -14,6 +14,7 @@ import com.library.utils.log.LogUtils;
  * Created by admin on 2016/5/10.
  */
 public abstract class BaseFragment extends Fragment implements View.OnClickListener {
+
     public View mRootLayout;
 
     public abstract int getContentViewId();

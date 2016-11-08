@@ -2,7 +2,10 @@
     package="com.library.crop">
 
     <application>
-        <activity android:name="com.yalantis.ucrop.UCropActivity" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

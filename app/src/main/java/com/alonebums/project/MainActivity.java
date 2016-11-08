@@ -2,10 +2,10 @@ package com.alonebums.project;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.alonebums.project.db.DBActivity;
 import com.alonebums.project.image.ImageActivity;
 import com.alonebums.project.network.HttpActivity;
 import com.alonebums.project.qrcode.QrCodeActivity;
@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
         addOnClick(R.id.btn_main_crop);
         addOnClick(R.id.btn_main_net);
         addOnClick(R.id.btn_main_sp);
+        addOnClick(R.id.btn_main_db);
         addOnClick(R.id.btn_main_recycle);
         addOnClick(R.id.btn_main_qr_code);
     }
@@ -76,6 +77,11 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_sp:
                 //SharedPreferences
                 intent = new Intent(this, SpActivity.class);
+                break;
+            case R.id.btn_main_db:
+                //数据库
+                intent = new Intent(this, DBActivity.class);
+
                 break;
             case R.id.btn_main_recycle:
                 //上拉下拉

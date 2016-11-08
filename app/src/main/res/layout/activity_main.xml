@@ -40,6 +40,13 @@
             android:text="SharedPreferences" />
 
         <Button
+            android:id="@+id/btn_main_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="数据库" />
+
+        <Button
             android:id="@+id/btn_main_recycle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

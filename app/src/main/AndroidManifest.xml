@@ -29,6 +29,7 @@
         <activity android:name=".recycler.XRecyclerActivity"></activity>
         <activity android:name=".sp.SpActivity"></activity>
         <activity android:name=".qrcode.QrCodeActivity"></activity>
+        <activity android:name=".db.DBActivity"></activity>
     </application>
 
 </manifest>
