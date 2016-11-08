@@ -2,6 +2,8 @@ package com.alonebums.project;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.alonebums.project.image.ImageActivity;
@@ -13,8 +15,14 @@ import com.alonebums.project.utils.LUtils;
 import com.library.base.BaseActivity;
 import com.library.crop.Crop;
 import com.library.crop.CropUtils;
+import com.library.utils.file.FileUtils;
+import com.library.utils.toast.ToastUtils;
+
+import java.io.File;
 
 public class MainActivity extends BaseActivity {
+
+    private String mCropImageUrl;
 
     @Override
     public void log(String message) {
@@ -58,8 +66,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_crop:
                 //裁剪
-                Crop crop = new Crop(this);
-                crop.setRequestCode(1000);
+                Crop crop = getCrop();
                 CropUtils.crop(crop);
                 break;
             case R.id.btn_main_net:
@@ -88,6 +95,23 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @NonNull
+    private Crop getCrop() {
+        Crop crop = new Crop(this);
+        crop.setRequestCode(1000);
+        crop.setSourcePath(FileUtils.getRootFilePath() + File.separator + "a.png");
+        mCropImageUrl = FileUtils.getRootFilePath() + File.separator + FileUtils.createFileNameByDateTime() + ".png";
+        crop.setOutputFile(mCropImageUrl);
+        //裁剪框不可移动
+        crop.setFreeCrop(false);
+        //裁剪框大小  比例1：1
+        crop.setCropWidth(1);
+        crop.setCropHeight(1);
+        crop.setToolBarColor(R.color.material_blue_grey_800);
+        crop.setToolBarTitle("裁剪图片");
+        return crop;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,6 +120,7 @@ public class MainActivity extends BaseActivity {
             switch (requestCode) {
                 case 1000:
                     //图片裁剪
+                    ToastUtils.showShortMsg(this, "图片裁剪成功,地址：" + mCropImageUrl);
                     break;
             }
         }

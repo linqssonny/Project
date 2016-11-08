@@ -14,6 +14,13 @@ public class Crop {
     private String outputFile;
     private int requestCode;
 
+    //裁剪框是否可移动
+    private boolean freeCrop = true;
+    //顶部toolBar颜色
+    private int toolBarColor;
+    //顶部toolBar标题
+    private String toolBarTitle;
+
     public Crop(Activity activity) {
         this.activity = activity;
     }
@@ -64,5 +71,29 @@ public class Crop {
 
     public void setRequestCode(int requestCode) {
         this.requestCode = requestCode;
+    }
+
+    public boolean isFreeCrop() {
+        return freeCrop;
+    }
+
+    public void setFreeCrop(boolean freeCrop) {
+        this.freeCrop = freeCrop;
+    }
+
+    public int getToolBarColor() {
+        return toolBarColor;
+    }
+
+    public void setToolBarColor(int toolBarColor) {
+        this.toolBarColor = toolBarColor;
+    }
+
+    public String getToolBarTitle() {
+        return toolBarTitle;
+    }
+
+    public void setToolBarTitle(String toolBarTitle) {
+        this.toolBarTitle = toolBarTitle;
     }
 }
