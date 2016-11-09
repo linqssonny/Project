@@ -18,4 +18,9 @@
             android:text="开始定位" />
     </LinearLayout>
 
+    <com.library.location.SonnyMapView
+        android:id="@+id/map_view_location"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.library.location.SonnyMapView>
+
 </LinearLayout>
