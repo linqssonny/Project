@@ -1,4 +1,4 @@
-package com.alonebums.project.recycler;
+package com.sonny.project.recycler;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.library.image.utils.ImageUtils;
 import com.library.recycleview.CommonViewHolder;
 import com.library.recycleview.CommonAdapter;

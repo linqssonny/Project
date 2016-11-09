@@ -1,4 +1,4 @@
-package com.alonebums.project.db;
+package com.sonny.project.db;
 
 /**
  * Created by admin on 2016/11/8.

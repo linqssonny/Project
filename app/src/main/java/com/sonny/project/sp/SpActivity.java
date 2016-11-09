@@ -1,10 +1,10 @@
-package com.alonebums.project.sp;
+package com.sonny.project.sp;
 
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.utils.sp.SPUtils;
 import com.library.utils.toast.ToastUtils;

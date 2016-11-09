@@ -1,4 +1,4 @@
-package com.alonebums.project.db;
+package com.sonny.project.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.base.db.SQLiteHelper;
 import com.library.utils.toast.ToastUtils;

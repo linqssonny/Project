@@ -1,4 +1,4 @@
-package com.alonebums.project.qrcode;
+package com.sonny.project.qrcode;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 import com.library.qrcode.QrCodeUtils;

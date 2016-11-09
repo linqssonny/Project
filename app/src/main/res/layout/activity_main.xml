@@ -59,5 +59,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:text="扫描二维码" />
+
+        <Button
+            android:id="@+id/btn_main_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="地图/定位" />
     </LinearLayout>
 </ScrollView>

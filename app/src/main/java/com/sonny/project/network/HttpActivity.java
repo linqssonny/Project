@@ -1,8 +1,8 @@
-package com.alonebums.project.network;
+package com.sonny.project.network;
 
 import android.view.View;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.network.HttpUtils;
 import com.library.utils.file.FileUtils;

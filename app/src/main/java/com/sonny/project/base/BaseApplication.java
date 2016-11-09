@@ -1,13 +1,14 @@
-package com.alonebums.project.base;
+package com.sonny.project.base;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.alonebums.project.db.DBTable;
-import com.alonebums.project.utils.LUtils;
 import com.library.base.db.ISQLiteCallBackListener;
 import com.library.base.db.SQLiteHelper;
+import com.library.location.LocationHelper;
 import com.library.utils.sp.SPUtils;
+import com.sonny.project.db.DBTable;
+import com.sonny.project.utils.LUtils;
 
 /**
  * Created by linqs on 2016/8/7.
@@ -20,6 +21,11 @@ public class BaseApplication extends Application {
         initSP();
         initLog();
         initDB();
+        initLocation();
+    }
+
+    private void initLocation() {
+        LocationHelper.getInstances().init(getApplicationContext());
     }
 
     private void initDB() {

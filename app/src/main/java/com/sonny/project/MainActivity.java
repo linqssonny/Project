@@ -1,22 +1,23 @@
-package com.alonebums.project;
+package com.sonny.project;
 
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.alonebums.project.db.DBActivity;
-import com.alonebums.project.image.ImageActivity;
-import com.alonebums.project.network.HttpActivity;
-import com.alonebums.project.qrcode.QrCodeActivity;
-import com.alonebums.project.recycler.RecyclerActivity;
-import com.alonebums.project.sp.SpActivity;
-import com.alonebums.project.utils.LUtils;
 import com.library.base.BaseActivity;
 import com.library.crop.Crop;
 import com.library.crop.CropUtils;
 import com.library.utils.file.FileUtils;
 import com.library.utils.toast.ToastUtils;
+import com.sonny.project.db.DBActivity;
+import com.sonny.project.image.ImageActivity;
+import com.sonny.project.location.LocationActivity;
+import com.sonny.project.network.HttpActivity;
+import com.sonny.project.qrcode.QrCodeActivity;
+import com.sonny.project.recycler.RecyclerActivity;
+import com.sonny.project.sp.SpActivity;
+import com.sonny.project.utils.LUtils;
 
 import java.io.File;
 
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
         addOnClick(R.id.btn_main_db);
         addOnClick(R.id.btn_main_recycle);
         addOnClick(R.id.btn_main_qr_code);
+        addOnClick(R.id.btn_main_location);
     }
 
     @Override
@@ -90,6 +92,10 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_qr_code:
                 //二维码
                 intent = new Intent(this, QrCodeActivity.class);
+                break;
+            case R.id.btn_main_location:
+                //地图/定位
+                intent = new Intent(this, LocationActivity.class);
                 break;
         }
         if (null != intent) {

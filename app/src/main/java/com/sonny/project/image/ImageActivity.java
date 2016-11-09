@@ -1,4 +1,4 @@
-package com.alonebums.project.image;
+package com.sonny.project.image;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,13 +6,12 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.alonebums.project.R;
+import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.image.photo.ChoosePhotoActivity;
 import com.library.image.photo.bean.Image;
 import com.library.image.photoview.PreviewPhotoActivity;
 import com.library.image.utils.ImageUtils;
-import com.library.utils.BaseUtils;
 import com.library.utils.file.FileUtils;
 import com.library.utils.permission.PermissionUtils;
 import com.library.utils.toast.ToastUtils;

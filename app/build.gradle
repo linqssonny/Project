@@ -5,16 +5,36 @@ android {
     buildToolsVersion '24.0.2'
 
     defaultConfig {
-        applicationId "com.alonebums.project"
+        applicationId "com.sonny.project"
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
+    //签名
+    signingConfigs {
+        release {
+            storeFile file("project.jks")
+            storePassword "123456"
+            keyAlias "sonny"
+            keyPassword "123456"
+        }
+        debug {
+            storeFile file("project.jks")
+            storePassword "123456"
+            keyAlias "sonny"
+            keyPassword "123456"
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -28,4 +48,5 @@ dependencies {
     compile project(':baselibs')
     compile project(':refresh')
     compile project(path: ':crop')
+    compile project(path: ':location')
 }
