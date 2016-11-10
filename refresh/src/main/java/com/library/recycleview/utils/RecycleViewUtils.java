@@ -1,6 +1,7 @@
 package com.library.recycleview.utils;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.library.recyclerview.decoration.DividerItemDecoration;
@@ -39,6 +40,14 @@ public class RecycleViewUtils {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         return linearLayoutManager;
+    }
+
+    public static GridLayoutManager createGridLayoutManager(Context context, int size) {
+        if (null == context) {
+            return null;
+        }
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, size);
+        return gridLayoutManager;
     }
 
     /***

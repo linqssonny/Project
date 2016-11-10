@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.library.base.db.ISQLiteCallBackListener;
 import com.library.base.db.SQLiteHelper;
 import com.library.location.LocationHelper;
+import com.library.share.ShareHelper;
 import com.library.utils.sp.SPUtils;
 import com.sonny.project.db.DBTable;
 import com.sonny.project.utils.LUtils;
@@ -22,6 +23,11 @@ public class BaseApplication extends Application {
         initLog();
         initDB();
         initLocation();
+        initShare();
+    }
+
+    private void initShare() {
+        ShareHelper.getInstances().init("qq_app_key", "wechat_app_key");
     }
 
     private void initLocation() {

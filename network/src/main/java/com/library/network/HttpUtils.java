@@ -366,7 +366,8 @@ public class HttpUtils {
                     try {
                         //获取返回体（流的形式）
                         is = response.body().byteStream();
-                        String filePath = FileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
+                        FileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
+                        String filePath = new File(httpParams.getSaveFilePath(), httpParams.getSaveFileName()).getAbsolutePath();
                         sendSuccessCallBack(httpParams, httpCallBack, filePath);
                     } catch (Exception e) {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());

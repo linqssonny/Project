@@ -4,10 +4,10 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
@@ -28,8 +28,9 @@ public class FileUtils {
      * @return
      */
     public static boolean copyFile(File sourceFile, File targetFile) {
+        boolean success = false;
         if (null == sourceFile || null == targetFile) {
-            return true;
+            return success;
         }
         FileInputStream fis = null;
         FileOutputStream fos = null;
@@ -41,27 +42,15 @@ public class FileUtils {
             in = fis.getChannel();
             out = fos.getChannel();
             in.transferTo(0, in.size(), out);
+            success = true;
         } catch (Exception e) {
-            return false;
         } finally {
-            try {
-                if (null != in) {
-                    in.close();
-                }
-                if (null != out) {
-                    out.close();
-                }
-                if (null != fis) {
-                    fis.close();
-                }
-                if (null != fos) {
-                    fos.close();
-                }
-            } catch (Exception e) {
-            }
-
+            StreamUtils.close(in);
+            StreamUtils.close(out);
+            StreamUtils.close(fis);
+            StreamUtils.close(fos);
         }
-        return true;
+        return success;
     }
 
     /***
@@ -71,9 +60,10 @@ public class FileUtils {
      * @param content
      * @return
      */
-    public static boolean saveFile(String filePath, String content) {
+    public static boolean saveFile(String filePath, String fileName, String content) {
+        /*boolean success = false;
         if (TextUtils.isEmpty(filePath)) {
-            return false;
+            return success;
         }
         File file = new File(filePath);
         if (!file.exists()) {
@@ -85,17 +75,19 @@ public class FileUtils {
             byte[] bytes = content.getBytes();
             fileOutputStream.write(bytes, 0, bytes.length);
             fileOutputStream.flush();
+            success = true;
         } catch (Exception e) {
-            return false;
         } finally {
-            if (null != fileOutputStream) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                }
-            }
+            StreamUtils.close(fileOutputStream);
         }
-        return true;
+        return success;*/
+
+        boolean success = false;
+        if (TextUtils.isEmpty(content)) {
+            return success;
+        }
+        InputStream inputStream = new ByteArrayInputStream(content.getBytes());
+        return saveFile(inputStream, filePath, fileName);
     }
 
     /***
@@ -105,24 +97,29 @@ public class FileUtils {
      * @param filePath    文件路径
      * @param fileName    文件名称
      * @return
-     * @throws IOException
      */
-    public static String saveFile(InputStream inputStream, String filePath, String fileName) throws IOException {
-        File fileDir = new File(filePath);
-        if (!fileDir.exists()) {
-            fileDir.mkdirs();
+    public static boolean saveFile(InputStream inputStream, String filePath, String fileName) {
+        boolean success = false;
+        if (TextUtils.isEmpty(filePath) || TextUtils.isEmpty(fileName) || null == inputStream) {
+            return success;
         }
+        File fileDir = createFolder(filePath);
         File file = new File(fileDir, fileName);
         byte[] buf = new byte[2048];
-        int len = 0;
-        FileOutputStream fos = new FileOutputStream(file);
-        while ((len = inputStream.read(buf)) != -1) {
-            fos.write(buf, 0, len);
+        int len;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            while ((len = inputStream.read(buf)) != -1) {
+                fos.write(buf, 0, len);
+            }
+            fos.flush();
+            success = true;
+        } catch (Exception e) {
+            StreamUtils.close(fos);
+            StreamUtils.close(inputStream);
         }
-        fos.flush();
-        fos.close();
-        inputStream.close();
-        return file.getAbsolutePath();
+        return success;
     }
 
     /***
@@ -151,12 +148,7 @@ public class FileUtils {
         } catch (Exception e) {
             return null;
         } finally {
-            if (null != bufferedReader) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                }
-            }
+            StreamUtils.close(bufferedReader);
         }
         return stringBuffer.toString();
     }
@@ -202,5 +194,22 @@ public class FileUtils {
     public static String createFileNameByDateTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault());
         return simpleDateFormat.format(new Date());
+    }
+
+    /***
+     * 根据路径返回File对象
+     * @param filePath
+     * @return
+     */
+    public static File createFolder(String filePath) {
+        File file = null;
+        if (TextUtils.isEmpty(filePath)) {
+            return file;
+        }
+        file = new File(filePath);
+        if (null != file && !file.exists()) {
+            file.mkdirs();
+        }
+        return file;
     }
 }
