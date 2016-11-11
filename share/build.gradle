@@ -19,6 +19,11 @@ android {
 }
 
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //QQ
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5756.jar')
+    //微信
+    compile files('libs/libammsdk.jar')
+    compile project(':utilslibs')
 }

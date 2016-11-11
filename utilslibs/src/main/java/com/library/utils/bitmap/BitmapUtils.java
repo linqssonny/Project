@@ -192,4 +192,19 @@ public class BitmapUtils {
         }
         return b;
     }
+
+    /***
+     * bitmap转为byte[]
+     *
+     * @param bitmap
+     * @return
+     */
+    public static byte[] bitmap2Bytes(Bitmap bitmap) {
+        if (bitmap == null || (bitmap != null && bitmap.isRecycled())) {
+            return null;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
 }

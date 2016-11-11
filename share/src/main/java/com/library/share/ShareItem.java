@@ -17,6 +17,8 @@ public class ShareItem implements Parcelable {
     public static final int SHARE_TYPE_TEXT = 0x100;
     public static final int SHARE_TYPE_IMAGE = 0x101;
     public static final int SHARE_TYPE_URL = 0x102;
+    public static final int SHARE_TYPE_MUSIC = 0x103;
+    public static final int SHARE_TYPE_VIDEO = 0x104;
 
     /*分享目标*/
     private int target = SHARE_WECHAT;
@@ -28,6 +30,10 @@ public class ShareItem implements Parcelable {
     private String url;
     /*分享图片*/
     private String image;
+    /*分享音乐*/
+    private String music;
+    /*分享视频*/
+    private String video;
     /*分享类型*/
     private int type = SHARE_TYPE_URL;
 
@@ -86,6 +92,22 @@ public class ShareItem implements Parcelable {
         this.type = type;
     }
 
+    public String getMusic() {
+        return music;
+    }
+
+    public void setMusic(String music) {
+        this.music = music;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
     public ShareQQListener getShareQQListener() {
         return shareQQListener;
     }
@@ -100,6 +122,8 @@ public class ShareItem implements Parcelable {
         content = in.readString();
         url = in.readString();
         image = in.readString();
+        music = in.readString();
+        video = in.readString();
         type = in.readInt();
     }
 
@@ -110,6 +134,8 @@ public class ShareItem implements Parcelable {
         dest.writeString(content);
         dest.writeString(url);
         dest.writeString(image);
+        dest.writeString(music);
+        dest.writeString(video);
         dest.writeInt(type);
     }
 
