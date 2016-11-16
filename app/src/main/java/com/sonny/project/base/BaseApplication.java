@@ -1,6 +1,5 @@
 package com.sonny.project.base;
 
-import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.library.base.db.ISQLiteCallBackListener;
@@ -14,7 +13,7 @@ import com.sonny.project.utils.LUtils;
 /**
  * Created by linqs on 2016/8/7.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends com.library.base.BaseApplication {
 
     @Override
     public void onCreate() {

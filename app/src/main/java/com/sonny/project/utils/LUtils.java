@@ -19,4 +19,8 @@ public class LUtils {
     public static void d(Object message) {
         LogUtils.d(message);
     }
+
+    public static void e(Object message) {
+        LogUtils.e(message);
+    }
 }
