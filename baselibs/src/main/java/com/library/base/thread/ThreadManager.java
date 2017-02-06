@@ -43,18 +43,22 @@ public class ThreadManager {
     }
 
     public <T extends PriorityRunnable> void execute(T t) {
-        if (null == t) {
+        if (null == t || null == mThreadPoolExecutor) {
             return;
         }
-        mThreadPoolExecutor.execute(t);
+        synchronized (mThreadPoolExecutor) {
+            mThreadPoolExecutor.execute(t);
+        }
     }
 
     public <T extends PriorityRunnable> void remove(T t) {
-        if (null == t) {
+        if (null == t || null == mThreadPoolExecutor) {
             return;
         }
-        if (mThreadPoolExecutor.getQueue().contains(t)) {
-            mThreadPoolExecutor.remove(t);
+        synchronized (mThreadPoolExecutor) {
+            if (mThreadPoolExecutor.getQueue().contains(t)) {
+                mThreadPoolExecutor.remove(t);
+            }
         }
     }
 }

@@ -31,16 +31,16 @@ public class ThreadActivity extends BaseActivity {
 
     private void startThread() {
         for (int i = 0; i < 10; i++) {
-            PriorityRunnable priorityRunnable = new MyRunable(i);
+            PriorityRunnable priorityRunnable = new MyRunnable(i);
             ThreadManager.getInstances().execute(priorityRunnable);
         }
     }
 
-    class MyRunable extends PriorityRunnable {
+    class MyRunnable extends PriorityRunnable {
 
         private int i;
 
-        public MyRunable(int priority) {
+        public MyRunnable(int priority) {
             i = priority;
             if (priority == 9) {
                 setPriority(priority);

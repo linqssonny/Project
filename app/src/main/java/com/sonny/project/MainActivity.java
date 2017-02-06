@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_crop:
                 //裁剪
-                Crop crop = getCrop();
+                Crop crop = createCrop();
                 CropUtils.crop(crop);
                 break;
             case R.id.btn_main_net:
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @NonNull
-    private Crop getCrop() {
+    private Crop createCrop() {
         Crop crop = new Crop(this);
         crop.setRequestCode(1000);
         crop.setSourcePath(FileUtils.getRootFilePath() + File.separator + "a.png");
