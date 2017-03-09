@@ -16,11 +16,16 @@ public class ThreadManager {
 
     private PriorityBlockingQueue<Runnable> mPriorityBlockingQueue;
 
+    //private final int mCorePoolSize = 3;
+    private final int mCorePoolSize = Runtime.getRuntime().availableProcessors();
+    //private final int mMaximumPoolSize = 4;
+    private final int mMaximumPoolSize = Runtime.getRuntime().availableProcessors() * 2 + 1;
+
     private ThreadManager() {
         mPriorityBlockingQueue = new PriorityBlockingQueue<>(10, new PriorityComparator());
         mThreadPoolExecutor = new ThreadPoolExecutor(
-                Runtime.getRuntime().availableProcessors(),
-                Runtime.getRuntime().availableProcessors() * 2 + 1,
+                mCorePoolSize,
+                mMaximumPoolSize,
                 0,
                 TimeUnit.SECONDS,
                 mPriorityBlockingQueue,
