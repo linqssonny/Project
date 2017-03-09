@@ -1,8 +1,9 @@
 package com.library.share;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -31,7 +32,7 @@ public class ShareHelper {
     private final int IMAGE_SIZE = 100;
 
     private String mQQKey;
-    private String mWechatKey;
+    private String mWeChatKey;
 
     private ShareHelper() {
 
@@ -45,13 +46,21 @@ public class ShareHelper {
         return ShareHelperManager.sShareHelper;
     }
 
-    public void init(String qq_app_key, String wechat_app_key) {
+    /**
+     * @param qq_app_key      QQ分享所需要的app_key
+     * @param we_chat_app_key 微信分享所有需要的app_key
+     */
+    public void init(String qq_app_key, String we_chat_app_key) {
         mQQKey = qq_app_key;
-        mWechatKey = wechat_app_key;
+        mWeChatKey = we_chat_app_key;
     }
 
     public void share(Activity activity, ShareItem shareItem) {
         if (null == activity || null == shareItem) {
+            return;
+        }
+        //版本17以上
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
             return;
         }
         switch (shareItem.getTarget()) {
@@ -61,21 +70,37 @@ public class ShareHelper {
                 break;
             case ShareItem.SHARE_QZONE:
                 //分享到QQ空间
-                shareQzone(activity, shareItem);
+                shareQZone(activity, shareItem);
                 break;
             case ShareItem.SHARE_WECHAT:
                 //分享到微信
-                shareWechat(activity, shareItem);
+                shareWeChat(activity, shareItem);
                 break;
             case ShareItem.SHARE_WECHATMOMENTS:
                 //分享到朋友圈
-                shareWechatMoments(activity, shareItem);
+                shareWeChatMoments(activity, shareItem);
                 break;
         }
     }
 
-    private void shareQQ(Activity activity, ShareItem shareItem) {
-        Tencent tencent = Tencent.createInstance(mQQKey, activity.getApplicationContext());
+    /**
+     * 获取Tencent对象
+     *
+     * @param activity
+     * @return
+     */
+    private Tencent createTencent(Activity activity) {
+        return Tencent.createInstance(mQQKey, activity.getApplicationContext());
+    }
+
+    /***
+     * 分享到QQ
+     *
+     * @param activity
+     * @param shareItem
+     */
+    private void shareQQ(Activity activity, final ShareItem shareItem) {
+        Tencent tencent = createTencent(activity);
         Bundle params = new Bundle();
         // 分享的类型 必填
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
@@ -102,11 +127,17 @@ public class ShareHelper {
         // params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
         // 享时隐藏分享到QZone按钮
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE);
-        tencent.shareToQQ(activity, params, shareItem.getShareQQListener());
+        tencent.shareToQQ(activity, params, shareItem.getShareCallBack());
     }
 
-    private void shareQzone(Context context, ShareItem shareItem) {
-        Tencent tencent = Tencent.createInstance(mQQKey, context.getApplicationContext());
+    /***
+     * 分享到QQ空间
+     *
+     * @param activity
+     * @param shareItem
+     */
+    private void shareQZone(Activity activity, ShareItem shareItem) {
+        Tencent tencent = createTencent(activity);
         Bundle params = new Bundle();
         // 分享的类型 必填
         params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
@@ -124,40 +155,49 @@ public class ShareHelper {
         }
         params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, summary);
         // 分享图片地址(本地、网络图片地址)-----支持传多个imageUrl
-        ArrayList<String> imageUrls = new ArrayList<>();
-        String[] imageArray = shareItem.getImage().split(",");
-        if (null != imageArray && imageArray.length > 0) {
-            for (int i = 0; i < imageArray.length; i++) {
-                imageUrls.add(imageArray[i]);
+        if (!TextUtils.isEmpty(shareItem.getImage())) {
+            ArrayList<String> imageUrls = new ArrayList<>();
+            String[] imageArray = shareItem.getImage().split(",");
+            if (null != imageArray && imageArray.length > 0) {
+                for (int i = 0; i < imageArray.length; i++) {
+                    imageUrls.add(imageArray[i]);
+                }
             }
+            params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrls);
         }
-        params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrls);
-        tencent.shareToQzone((Activity) context, params, shareItem.getShareQQListener());
+        tencent.shareToQzone(activity, params, shareItem.getShareCallBack());
     }
 
     /***
      * 分享微信好友
      *
-     * @param context
+     * @param activity
      * @param shareItem
      */
-    private void shareWechat(Context context, ShareItem shareItem) {
-        shareToWechat(context, shareItem, SendMessageToWX.Req.WXSceneSession);
+    private void shareWeChat(Activity activity, ShareItem shareItem) {
+        shareToWeChat(activity, shareItem, SendMessageToWX.Req.WXSceneSession);
     }
 
     /***
      * 分享微信朋友圈
      *
-     * @param context
+     * @param activity
      * @param shareItem
      */
-    private void shareWechatMoments(Context context, ShareItem shareItem) {
-        shareToWechat(context, shareItem, SendMessageToWX.Req.WXSceneTimeline);
+    private void shareWeChatMoments(Activity activity, ShareItem shareItem) {
+        shareToWeChat(activity, shareItem, SendMessageToWX.Req.WXSceneTimeline);
     }
 
-    private void shareToWechat(Context context, ShareItem shareItem, int scene) {
-        IWXAPI iwxapi = WXAPIFactory.createWXAPI(context, mWechatKey, true);
-        iwxapi.registerApp(mWechatKey);
+    /***
+     * 分享到微信
+     *
+     * @param activity
+     * @param shareItem
+     * @param scene
+     */
+    private void shareToWeChat(Activity activity, ShareItem shareItem, int scene) {
+        IWXAPI iwxapi = WXAPIFactory.createWXAPI(activity, mWeChatKey, true);
+        iwxapi.registerApp(mWeChatKey);
         WXMediaMessage wxMediaMessage = new WXMediaMessage();
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(shareItem.getImage())) {
@@ -214,5 +254,22 @@ public class ShareHelper {
         req.message = wxMediaMessage;
         req.scene = scene;
         iwxapi.sendReq(req);
+    }
+
+    /**
+     * 腾讯回调
+     *
+     * @param activity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * @param shareCallBack
+     */
+    public void onActivityResultData(Activity activity, int requestCode, int resultCode, Intent data, ShareCallBack shareCallBack) {
+        Tencent tencent = createTencent(activity);
+        if (null == tencent) {
+            return;
+        }
+        tencent.onActivityResultData(requestCode, resultCode, data, shareCallBack);
     }
 }

@@ -26,7 +26,7 @@ public class BaseApplication extends com.library.base.BaseApplication {
     }
 
     private void initShare() {
-        ShareHelper.getInstances().init("qq_app_key", "wechat_app_key");
+        ShareHelper.getInstances().init("sdjWucpVlXqat2gI", "wechat_app_key");
     }
 
     private void initLocation() {

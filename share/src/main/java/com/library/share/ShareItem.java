@@ -37,8 +37,8 @@ public class ShareItem implements Parcelable {
     /*分享类型*/
     private int type = SHARE_TYPE_URL;
 
-    /*QQ分享回调*/
-    private ShareQQListener shareQQListener;
+    /*分享回调*/
+    private ShareCallBack shareCallBack;
 
     public ShareItem() {
 
@@ -108,12 +108,12 @@ public class ShareItem implements Parcelable {
         this.video = video;
     }
 
-    public ShareQQListener getShareQQListener() {
-        return shareQQListener;
+    public ShareCallBack getShareCallBack() {
+        return shareCallBack;
     }
 
-    public void setShareQQListener(ShareQQListener shareQQListener) {
-        this.shareQQListener = shareQQListener;
+    public void setShareCallBack(ShareCallBack shareCallBack) {
+        this.shareCallBack = shareCallBack;
     }
 
     protected ShareItem(Parcel in) {

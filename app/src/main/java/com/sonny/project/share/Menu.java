@@ -5,16 +5,16 @@ package com.sonny.project.share;
  */
 
 public class Menu {
-    private int menu;
+    private int menuId;
     private String title;
     private int imageRes;
 
-    public int getMenu() {
-        return menu;
+    public int getMenuId() {
+        return menuId;
     }
 
-    public void setMenu(int menu) {
-        this.menu = menu;
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
     }
 
     public String getTitle() {
