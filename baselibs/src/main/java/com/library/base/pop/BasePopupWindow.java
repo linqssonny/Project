@@ -10,14 +10,14 @@ import android.widget.PopupWindow;
 /**
  * Created by linqs on 2016/8/16.
  */
-public abstract class BasePop implements View.OnClickListener {
+public abstract class BasePopupWindow implements View.OnClickListener {
 
     private Context mContext;
     private PopupWindow mPopupWindow;
 
     private PopupWindowListener mPopupWindowListener;
 
-    public BasePop(Context mContext) {
+    public BasePopupWindow(Context mContext) {
         this.mContext = mContext;
         init();
     }

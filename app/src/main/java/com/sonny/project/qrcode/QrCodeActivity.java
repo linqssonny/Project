@@ -13,7 +13,7 @@ import com.sonny.project.R;
 import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 import com.library.qrcode.QrCodeUtils;
-import com.library.utils.DensityUtils;
+import com.library.utils.screen.DensityUtils;
 import com.library.utils.permission.PermissionUtils;
 
 /**

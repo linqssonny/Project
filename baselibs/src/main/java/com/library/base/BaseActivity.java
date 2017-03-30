@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.library.utils.AppUtils;
-import com.library.utils.BaseUtils;
+import com.library.utils.ListUtils;
 import com.library.utils.log.LogUtils;
 import com.library.utils.permission.PermissionUtils;
 import com.library.utils.toast.ToastUtils;
@@ -171,7 +171,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public void requestPermissions(int requestCode, int... actions) {
         List<String> permissionsList = new ArrayList<>();
-        if (BaseUtils.isEmptyForArray(actions)) {
+        if (ListUtils.isEmptyForArray(actions)) {
             throw new IllegalStateException("the actions value is valid");
         }
         for (int i = 0; i < actions.length; i++) {

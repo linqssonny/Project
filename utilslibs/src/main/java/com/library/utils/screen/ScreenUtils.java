@@ -1,4 +1,4 @@
-package com.library.utils;
+package com.library.utils.screen;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

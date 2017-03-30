@@ -55,12 +55,19 @@ public class ShareHelper {
         mWeChatKey = we_chat_app_key;
     }
 
-    public void share(Activity activity, ShareItem shareItem) {
+    private boolean check(Activity activity, ShareItem shareItem) {
         if (null == activity || null == shareItem) {
-            return;
+            return false;
         }
         //版本17以上
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
+            return false;
+        }
+        return true;
+    }
+
+    public void share(Activity activity, ShareItem shareItem) {
+        if (!check(activity, shareItem)) {
             return;
         }
         switch (shareItem.getTarget()) {
@@ -198,6 +205,12 @@ public class ShareHelper {
     private void shareToWeChat(Activity activity, ShareItem shareItem, int scene) {
         IWXAPI iwxapi = WXAPIFactory.createWXAPI(activity, mWeChatKey, true);
         iwxapi.registerApp(mWeChatKey);
+        if (!iwxapi.isWXAppInstalled()) {
+            if (null != shareItem && null != shareItem.getShareCallBack()) {
+                shareItem.getShareCallBack().onError(shareItem, -1, "您还未安装微信");
+            }
+            return;
+        }
         WXMediaMessage wxMediaMessage = new WXMediaMessage();
         Bitmap bitmap = null;
         if (!TextUtils.isEmpty(shareItem.getImage())) {
@@ -255,6 +268,20 @@ public class ShareHelper {
         req.scene = scene;
         iwxapi.sendReq(req);
     }
+
+    /*****************************
+     * 第三方登陆
+     **************************/
+
+    public void loginQQ(Activity activity, ShareItem shareItem) {
+        if (!check(activity, shareItem)) {
+            return;
+        }
+        Tencent tencent = createTencent(activity);
+        tencent.login(activity, "all", shareItem.getShareCallBack());
+    }
+
+    /***************************** 第三方登陆 **************************/
 
     /**
      * 腾讯回调

@@ -9,7 +9,7 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.library.base.BaseActivity;
 import com.library.recycleview.IRecycleOnItemListener;
 import com.library.recycleview.utils.RecycleViewUtils;
-import com.library.utils.DensityUtils;
+import com.library.utils.screen.DensityUtils;
 import com.library.utils.toast.ToastUtils;
 
 import java.util.ArrayList;

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import com.library.utils.file.StreamUtils;
 
@@ -135,7 +136,7 @@ public class BitmapUtils {
      * @param path
      */
     public static void notifyAlbum(Context context, String path) {
-        if (null == context) {
+        if (null == context || TextUtils.isEmpty(path)) {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -186,9 +187,8 @@ public class BitmapUtils {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         // 把ByteArrayInputStream数据生成图片
         Bitmap b = BitmapFactory.decodeStream(byteArrayInputStream);
-        if (bitmap != b && bitmap != null && !bitmap.isRecycled()) {
-            bitmap.recycle();
-            bitmap = null;
+        if (bitmap != b) {
+            recycleBitmap(bitmap);
         }
         return b;
     }
@@ -200,11 +200,22 @@ public class BitmapUtils {
      * @return
      */
     public static byte[] bitmap2Bytes(Bitmap bitmap) {
+        return bitmap2Bytes(bitmap, 100);
+    }
+
+    /***
+     * bitmap转为byte[]
+     *
+     * @param bitmap
+     * @param quality 压缩质量   0-100
+     * @return
+     */
+    public static byte[] bitmap2Bytes(Bitmap bitmap, int quality) {
         if (bitmap == null || (bitmap != null && bitmap.isRecycled())) {
             return null;
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, quality, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 }

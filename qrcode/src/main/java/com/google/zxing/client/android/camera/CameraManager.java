@@ -27,8 +27,6 @@ import android.view.SurfaceHolder;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.client.android.camera.open.OpenCamera;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
-import com.library.qrcode.R;
-import com.library.utils.DensityUtils;
 
 import java.io.IOException;
 

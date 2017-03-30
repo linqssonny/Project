@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.library.image.R;
 import com.library.image.photo.bean.Image;
 import com.library.image.utils.ImageUtils;
-import com.library.utils.ScreenUtils;
+import com.library.utils.screen.ScreenUtils;
 
 import java.util.ArrayList;
 

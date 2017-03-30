@@ -6,7 +6,7 @@ import java.util.List;
  * Created by admin on 2016/11/4.
  */
 
-public class BaseUtils {
+public class ListUtils {
 
     /***
      * 判断List是否为空
