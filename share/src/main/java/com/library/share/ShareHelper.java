@@ -10,15 +10,16 @@ import android.text.TextUtils;
 import com.library.utils.bitmap.BitmapUtils;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXImageObject;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXMusicObject;
-import com.tencent.mm.sdk.modelmsg.WXTextObject;
-import com.tencent.mm.sdk.modelmsg.WXVideoObject;
-import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXMusicObject;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 
 import java.util.ArrayList;
@@ -53,6 +54,17 @@ public class ShareHelper {
     public void init(String qq_app_key, String we_chat_app_key) {
         mQQKey = qq_app_key;
         mWeChatKey = we_chat_app_key;
+    }
+
+    public String getWeChatKey() {
+        return mWeChatKey;
+    }
+
+    private boolean check(Activity activity) {
+        if (null == activity) {
+            return false;
+        }
+        return true;
     }
 
     private boolean check(Activity activity, ShareItem shareItem) {
@@ -279,6 +291,24 @@ public class ShareHelper {
         }
         Tencent tencent = createTencent(activity);
         tencent.login(activity, "all", shareItem.getShareCallBack());
+    }
+
+    public void loginWeChat(Activity activity, ShareItem shareItem) {
+        if (!check(activity, shareItem)) {
+            return;
+        }
+        IWXAPI iwxapi = WXAPIFactory.createWXAPI(activity, mWeChatKey);
+        iwxapi.registerApp(mWeChatKey);
+        if (!iwxapi.isWXAppInstalled()) {
+            if (null != shareItem && null != shareItem.getShareCallBack()) {
+                shareItem.getShareCallBack().onError(shareItem, -1, "您还未安装微信");
+            }
+            return;
+        }
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        iwxapi.sendReq(req);
     }
 
     /***************************** 第三方登陆 **************************/

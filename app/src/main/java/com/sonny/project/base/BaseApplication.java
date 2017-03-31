@@ -26,6 +26,7 @@ public class BaseApplication extends com.library.base.BaseApplication {
     }
 
     private void initShare() {
+        //初始化分享工具类
         ShareHelper.getInstances().init("sdjWucpVlXqat2gI", "wechat_app_key");
     }
 

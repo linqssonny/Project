@@ -13,8 +13,8 @@ public class SPUtils {
     private SharedPreferences mSharedPreferences;
     private String mName;
 
-
     private Context mContext;
+
     private SPUtils() {
     }
 
@@ -70,7 +70,11 @@ public class SPUtils {
     }
 
     public String getString(String key) {
-        return getSharedPreferences().getString(key, null);
+        return getString(key, null);
+    }
+
+    public String getString(String key, String defaultValue) {
+        return getSharedPreferences().getString(key, defaultValue);
     }
 
     public boolean put(String key, int value) {
@@ -80,7 +84,11 @@ public class SPUtils {
     }
 
     public int getInt(String key) {
-        return getSharedPreferences().getInt(key, 0);
+        return getInt(key, -1);
+    }
+
+    public int getInt(String key, int defaultValue) {
+        return getSharedPreferences().getInt(key, defaultValue);
     }
 
     public boolean put(String key, boolean value) {
@@ -90,7 +98,11 @@ public class SPUtils {
     }
 
     public boolean getBoolean(String key) {
-        return getSharedPreferences().getBoolean(key, false);
+        return getBoolean(key, false);
+    }
+
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return getSharedPreferences().getBoolean(key, defaultValue);
     }
 
     public boolean put(String key, float value) {
@@ -100,7 +112,11 @@ public class SPUtils {
     }
 
     public float getFloat(String key) {
-        return getSharedPreferences().getFloat(key, 0.0f);
+        return getFloat(key, -1.0f);
+    }
+
+    public float getFloat(String key, float defaultValue) {
+        return getSharedPreferences().getFloat(key, defaultValue);
     }
 
     public boolean put(String key, long value) {
@@ -110,8 +126,28 @@ public class SPUtils {
     }
 
     public long getLong(String key) {
-        return getSharedPreferences().getLong(key, 0L);
+        return getLong(key, -1L);
     }
+
+    public long getLong(String key, long defaultValue) {
+        return getSharedPreferences().getLong(key, defaultValue);
+    }
+
+    public boolean remove(String key) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.remove(key);
+        return editor.commit();
+    }
+
+    public boolean removeAll() {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.clear();
+        return editor.commit();
+    }
+
+    /***********************************************************************************************
+     * 指定SharedPreferences文件名  ----->  start
+     ***********************************************************************************************/
 
     public boolean put(String name, String key, String value) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
@@ -120,9 +156,13 @@ public class SPUtils {
         return editor.commit();
     }
 
-    public String getString(String name, String key) {
+    public String getString2(String name, String key) {
+        return getString2(name, key, null);
+    }
+
+    public String getString2(String name, String key, String defaultValue) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
-        return sharedPreferences.getString(key, null);
+        return sharedPreferences.getString(key, defaultValue);
     }
 
     public boolean put(String name, String key, int value) {
@@ -133,8 +173,12 @@ public class SPUtils {
     }
 
     public int getInt(String name, String key) {
+        return getInt(name, key, 0);
+    }
+
+    public int getInt(String name, String key, int defaultValue) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
-        return sharedPreferences.getInt(key, 0);
+        return sharedPreferences.getInt(key, defaultValue);
     }
 
     public boolean put(String name, String key, boolean value) {
@@ -145,8 +189,12 @@ public class SPUtils {
     }
 
     public boolean getBoolean(String name, String key) {
+        return getBoolean(name, key, false);
+    }
+
+    public boolean getBoolean(String name, String key, boolean defaultValue) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(key, false);
+        return sharedPreferences.getBoolean(key, defaultValue);
     }
 
     public boolean put(String name, String key, float value) {
@@ -157,8 +205,12 @@ public class SPUtils {
     }
 
     public float getFloat(String name, String key) {
+        return getFloat(name, key, 0.0f);
+    }
+
+    public float getFloat(String name, String key, float defaultValue) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
-        return sharedPreferences.getFloat(key, 0.0f);
+        return sharedPreferences.getFloat(key, defaultValue);
     }
 
     public boolean put(String name, String key, long value) {
@@ -169,33 +221,29 @@ public class SPUtils {
     }
 
     public long getLong(String name, String key) {
+        return getLong(name, key, 0L);
+    }
+
+    public long getLong(String name, String key, long defaultValue) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
-        return sharedPreferences.getLong(key, 0L);
+        return sharedPreferences.getLong(key, defaultValue);
     }
 
-    public void remove(String key) {
-        SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.remove(key);
-        editor.commit();
-    }
-
-    public void remove(String name, String key) {
+    public boolean remove(String name, String key) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);
-        editor.commit();
+        return editor.commit();
     }
 
-    public void clear() {
-        SharedPreferences.Editor editor = getSharedPreferences().edit();
-        editor.clear();
-        editor.commit();
-    }
-
-    public void clear(String name) {
+    public boolean removeAll(String name) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(name, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        return editor.commit();
     }
+
+    /***********************************************************************************************
+     * 指定SharedPreferences文件名  ----->  end
+     ***********************************************************************************************/
 }

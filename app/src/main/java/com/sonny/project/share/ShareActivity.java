@@ -118,10 +118,11 @@ public class ShareActivity extends BaseActivity {
         ShareHelper.getInstances().share(this, mShareItem);
 
         //ShareHelper.getInstances().loginQQ(this, mShareItem);//QQ授权登陆
+        //ShareHelper.getInstances().loginWeChat(this, mShareItem);//微信授权登陆
     }
 
     /**
-     * 创建分享回调
+     * 创建分享回调(微信需特殊处理)
      *
      * @return
      */
