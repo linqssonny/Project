@@ -5,6 +5,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 /**
+ * RecyclerView通用ViewHolder
  * Created by linqs on 2016/8/20.
  */
 public class CommonViewHolder extends RecyclerView.ViewHolder {
