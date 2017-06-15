@@ -23,7 +23,6 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
-
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.client.android.camera.open.OpenCamera;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
@@ -37,6 +36,7 @@ import java.io.IOException;
  *
  * @author dswitkin@google.com (Daniel Switkin)
  */
+@SuppressWarnings("deprecation") // camera APIs
 public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
@@ -226,7 +226,6 @@ public final class CameraManager {
       int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
       int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
 
-      //取正方形
       width = height = Math.min(width, height);
 
       int leftOffset = (screenResolution.x - width) / 2;
@@ -268,18 +267,19 @@ public final class CameraManager {
         return null;
       }
 
-      /*rect.left = rect.left * cameraResolution.x / screenResolution.x;
-      rect.right = rect.right * cameraResolution.x / screenResolution.x;
-      rect.top = rect.top * cameraResolution.y / screenResolution.y;
-      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;*/
-
-      //横屏
-      rect.left = rect.left * cameraResolution.y / screenResolution.x;
-      rect.right = rect.right * cameraResolution.y / screenResolution.x;
-      rect.top = rect.top * cameraResolution.x / screenResolution.y;
-      rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
-
-
+      if(!configManager.isScreenPortrait()) {
+        //横屏
+        rect.left = rect.left * cameraResolution.x / screenResolution.x;
+        rect.right = rect.right * cameraResolution.x / screenResolution.x;
+        rect.top = rect.top * cameraResolution.y / screenResolution.y;
+        rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+      }else {
+        //竖屏
+        rect.left = rect.left * cameraResolution.y / screenResolution.x;
+        rect.right = rect.right * cameraResolution.y / screenResolution.x;
+        rect.top = rect.top * cameraResolution.x / screenResolution.y;
+        rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+      }
 
       framingRectInPreview = rect;
     }
@@ -334,17 +334,18 @@ public final class CameraManager {
    * @return A PlanarYUVLuminanceSource instance.
    */
   public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
-
-    byte[] rotatedData = new byte[data.length];
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++)
-        rotatedData[x * height + height - y - 1] = data[x + y * width];
+    if(configManager.isScreenPortrait()) {
+      //竖屏
+      byte[] rotatedData = new byte[data.length];
+      for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++)
+          rotatedData[x * height + height - y - 1] = data[x + y * width];
+      }
+      int tmp = width;
+      width = height;
+      height = tmp;
+      data = rotatedData;
     }
-    int tmp = width;
-    width = height;
-    height = tmp;
-    data = rotatedData;
-
     Rect rect = getFramingRectInPreview();
     if (rect == null) {
       return null;
@@ -352,6 +353,30 @@ public final class CameraManager {
     // Go ahead and assume it's YUV rather than die.
     return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top,
                                         rect.width(), rect.height(), false);
+  }
+
+  //闪光灯控制
+  public boolean flashControlHandler() {
+    Camera.Parameters parameters = camera.getCamera().getParameters();
+    if (Camera.Parameters.FLASH_MODE_OFF.equals(parameters.getFlashMode())) {
+      turnOn(parameters);
+      return true;
+    } else if (Camera.Parameters.FLASH_MODE_TORCH.equals(parameters.getFlashMode())) {
+      turnOff(parameters);
+    }
+    return false;
+  }
+
+  //打开闪光灯
+  private void turnOn(Camera.Parameters parameters) {
+    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+    camera.getCamera().setParameters(parameters);
+  }
+
+  //关闭闪光灯
+  private void turnOff(Camera.Parameters parameters) {
+    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+    camera.getCamera().setParameters(parameters);
   }
 
 }

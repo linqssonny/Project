@@ -1,14 +1,13 @@
 package com.library.qrcode;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.text.TextUtils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
@@ -36,6 +35,19 @@ public class QrCodeUtils {
      * @return
      */
     public static Bitmap buildQrCodeBitmap(String value, int width, int height) {
+        return buildQrCodeBitmap(value, width, height, null);
+    }
+
+    /***
+     * 生成二维码Bitmap
+     *
+     * @param value  文本
+     * @param width  bitmap 宽
+     * @param height bitmap 高
+     * @param logo   logo 中间logo
+     * @return
+     */
+    public static Bitmap buildQrCodeBitmap(String value, int width, int height, Bitmap logo) {
         if (TextUtils.isEmpty(value)) {
             return null;
         }
@@ -62,11 +74,47 @@ public class QrCodeUtils {
             // 生成二维码图片的格式，使用ARGB_8888
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-        } catch (WriterException e) {
+            bitmap = mergeBitmap(bitmap, logo);
+        } catch (Exception e) {
             bitmap = null;
         }
         return bitmap;
     }
+
+    private static Bitmap mergeBitmap(Bitmap src, Bitmap content) {
+        if (null == content || content.isRecycled()) {
+            return src;
+        }
+        if (src == null || src.isRecycled()) {
+            return null;
+        }
+        //获取图片的宽高
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
+        if (srcWidth == 0 || srcHeight == 0) {
+            return null;
+        }
+        int contentWidth = content.getWidth();
+        int contentHeight = content.getHeight();
+        if (contentWidth == 0 || contentHeight == 0) {
+            return src;
+        }
+        //logo大小为二维码整体大小的1/5
+        float scaleFactor = srcWidth * 1.0f / 5 / contentWidth;
+        Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
+        try {
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawBitmap(src, 0, 0, null);
+            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
+            canvas.drawBitmap(content, (srcWidth - contentWidth) / 2, (srcHeight - contentHeight) / 2, null);
+            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.restore();
+        } catch (Exception e) {
+            bitmap = null;
+        }
+        return bitmap;
+    }
+
 
     /***
      * 生成条形码Bitmap

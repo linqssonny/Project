@@ -96,7 +96,11 @@ public class QrCodeActivity extends BaseActivity {
             return;
         }
         int size = DensityUtils.dp2px(this, 120);
-        Bitmap bitmap = QrCodeUtils.buildQrCodeBitmap(value, size, size);
+        Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        //中间没有logo
+        //Bitmap bitmap = QrCodeUtils.buildQrCodeBitmap(value, size, size);
+        //中间有logo
+        Bitmap bitmap = QrCodeUtils.buildQrCodeBitmap(value, size, size, logo);
         mIvImg.setImageBitmap(bitmap);
     }
 

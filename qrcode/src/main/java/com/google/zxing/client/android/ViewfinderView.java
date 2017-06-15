@@ -62,7 +62,7 @@ public final class ViewfinderView extends View {
   private Bitmap mBgBitmap;
   private Bitmap mLineBitmap;
   private Rect mLineRect = null;
-  private final int DEFAULT_LINE_SPEED = 5;
+  private final int DEFAULT_LINE_SPEED = 10;
   private int mLineSpeed = DEFAULT_LINE_SPEED;
 
   // This constructor is used when the class is built from an XML resource.

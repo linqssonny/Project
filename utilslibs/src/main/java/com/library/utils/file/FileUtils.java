@@ -61,27 +61,6 @@ public class FileUtils {
      * @return
      */
     public static boolean saveFile(String filePath, String fileName, String content) {
-        /*boolean success = false;
-        if (TextUtils.isEmpty(filePath)) {
-            return success;
-        }
-        File file = new File(filePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(file);
-            byte[] bytes = content.getBytes();
-            fileOutputStream.write(bytes, 0, bytes.length);
-            fileOutputStream.flush();
-            success = true;
-        } catch (Exception e) {
-        } finally {
-            StreamUtils.close(fileOutputStream);
-        }
-        return success;*/
-
         boolean success = false;
         if (TextUtils.isEmpty(content)) {
             return success;
@@ -197,7 +176,7 @@ public class FileUtils {
     }
 
     /***
-     * 根据路径返回File对象
+     * 根据file路径创建上一级文件夹
      * @param filePath
      * @return
      */

@@ -33,6 +33,7 @@ import com.google.zxing.client.android.camera.open.OpenCamera;
  * A class which deals with reading, parsing, and setting the camera parameters which are used to
  * configure the camera hardware.
  */
+@SuppressWarnings("deprecation") // camera APIs
 final class CameraConfigurationManager {
 
   private static final String TAG = "CameraConfiguration";
@@ -156,16 +157,10 @@ final class CameraConfigurationManager {
 
     initializeTorch(parameters, prefs, safeMode);
 
-    CameraConfigurationUtils.setFocus(
-        parameters,
-        true,
-        true,
-        safeMode);
-
     if (!safeMode) {
-      if (false) {
+      /*if (prefs.getBoolean(PreferencesActivity.KEY_INVERT_SCAN, false)) {
         CameraConfigurationUtils.setInvertColor(parameters);
-      }
+      }*/
 
       CameraConfigurationUtils.setBarcodeSceneMode(parameters);
 
@@ -179,8 +174,6 @@ final class CameraConfigurationManager {
 
     theCamera.setParameters(parameters);
 
-    //竖屏
-    cwRotationFromDisplayToCamera = 90;
     theCamera.setDisplayOrientation(cwRotationFromDisplayToCamera);
 
     Camera.Parameters afterParameters = theCamera.getParameters();
@@ -239,9 +232,23 @@ final class CameraConfigurationManager {
 
   private void doSetTorch(Camera.Parameters parameters, boolean newSetting, boolean safeMode) {
     CameraConfigurationUtils.setTorch(parameters, newSetting);
-    if (!safeMode && !true) {
+    /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    if (!safeMode && !prefs.getBoolean(PreferencesActivity.KEY_DISABLE_EXPOSURE, true)) {
       CameraConfigurationUtils.setBestExposure(parameters, newSetting);
+    }*/
+  }
+
+  /**
+   * the screen is portrait
+   * @return if the screen is portrait return true otherwise return false
+   */
+  public boolean isScreenPortrait(){
+    if(null != screenResolution){
+      if(screenResolution.x < screenResolution.y){
+        return true;
+      }
     }
+    return false;
   }
 
 }

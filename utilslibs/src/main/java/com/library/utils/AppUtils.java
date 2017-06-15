@@ -38,11 +38,20 @@ public class AppUtils {
      * @param activity
      */
     public synchronized void removeActivityFromStack(Activity activity) {
-        for (Activity eachActivity : mActivityStack) {
+        if (null == mActivityStack || mActivityStack.size() <= 0) {
+            return;
+        }
+        if (null == activity) {
+            return;
+        }
+        for (int i = mActivityStack.size() - 1; i >= 0; i--) {
+            Activity eachActivity = mActivityStack.get(i);
+            if (null == eachActivity) {
+                continue;
+            }
             if (eachActivity.getClass().equals(activity.getClass())) {
                 mActivityStack.remove(eachActivity);
-                eachActivity.finish();
-                return;
+                break;
             }
         }
     }
@@ -79,7 +88,10 @@ public class AppUtils {
     public synchronized void finishAllActivityExcept(String activityName) {
         ArrayList<Activity> finishList = new ArrayList<>();
         for (Activity eachActivity : mActivityStack) {
-            if (eachActivity != null && !eachActivity.getClass().getName().equals(activityName)) {
+            if (null == eachActivity) {
+                continue;
+            }
+            if (!eachActivity.getClass().getName().equals(activityName)) {
                 eachActivity.finish();
                 finishList.add(eachActivity);
             }
@@ -96,7 +108,10 @@ public class AppUtils {
      */
     public synchronized boolean isExistActivity(String activityName) {
         for (Activity eachActivity : mActivityStack) {
-            if (eachActivity != null && eachActivity.getClass().getName().equals(activityName)) {
+            if (null == eachActivity) {
+                continue;
+            }
+            if (eachActivity.getClass().getName().equals(activityName)) {
                 return true;
             }
         }

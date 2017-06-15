@@ -87,7 +87,6 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_db:
                 //数据库
                 intent = new Intent(this, DBActivity.class);
-
                 break;
             case R.id.btn_main_recycle:
                 //上拉下拉
