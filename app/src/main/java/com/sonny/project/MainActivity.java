@@ -14,8 +14,10 @@ import com.sonny.project.db.DBActivity;
 import com.sonny.project.image.ImageActivity;
 import com.sonny.project.location.LocationActivity;
 import com.sonny.project.network.HttpActivity;
+import com.sonny.project.process.MultiProcessActivity;
 import com.sonny.project.qrcode.QrCodeActivity;
 import com.sonny.project.recycler.RecyclerActivity;
+import com.sonny.project.recycler.XRecyclerActivity;
 import com.sonny.project.share.ShareMainActivity;
 import com.sonny.project.sp.SpActivity;
 import com.sonny.project.thread.ThreadActivity;
@@ -55,6 +57,7 @@ public class MainActivity extends BaseActivity {
         addOnClick(R.id.btn_main_location);
         addOnClick(R.id.btn_main_share);
         addOnClick(R.id.btn_main_thread);
+        addOnClick(R.id.btn_main_process);
     }
 
     @Override
@@ -90,7 +93,8 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_recycle:
                 //上拉下拉
-                intent = new Intent(this, RecyclerActivity.class);
+                //intent = new Intent(this, RecyclerActivity.class);
+                intent = new Intent(getActivity(), XRecyclerActivity.class);
                 break;
             case R.id.btn_main_qr_code:
                 //二维码
@@ -107,6 +111,10 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_thread:
                 //线程池
                 intent = new Intent(this, ThreadActivity.class);
+                break;
+            case R.id.btn_main_process:
+                //进程间通讯
+                intent = new Intent(this, MultiProcessActivity.class);
                 break;
         }
         if (null != intent) {

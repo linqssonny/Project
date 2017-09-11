@@ -95,6 +95,8 @@ public class FileUtils {
             fos.flush();
             success = true;
         } catch (Exception e) {
+
+        } finally {
             StreamUtils.close(fos);
             StreamUtils.close(inputStream);
         }

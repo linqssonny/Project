@@ -16,7 +16,7 @@ import com.sonny.project.utils.LUtils;
 public class ThreadActivity extends BaseActivity {
 
     //线程安全
-    private StringBuilder stringBuilder;
+    private StringBuffer mStrValue;
     private TextView mTvContent;
 
     @Override
@@ -36,7 +36,7 @@ public class ThreadActivity extends BaseActivity {
     }
 
     private void startThread() {
-        stringBuilder = new StringBuilder();
+        mStrValue = new StringBuffer();
         mTvContent.setText(null);
         for (int i = 0; i < 10; i++) {
             PriorityRunnable priorityRunnable = new MyRunnable(i);
@@ -70,11 +70,11 @@ public class ThreadActivity extends BaseActivity {
     }
 
     private synchronized void setTextValue(String value){
-        stringBuilder.append(value).append("\n");
+        mStrValue.append(value).append("\n");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mTvContent.setText(stringBuilder.toString().trim());
+                mTvContent.setText(mStrValue.toString().trim());
             }
         });
     }

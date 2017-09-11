@@ -80,5 +80,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:text="线程池" />
+
+        <Button
+            android:id="@+id/btn_main_process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="进程间通讯" />
     </LinearLayout>
 </ScrollView>

@@ -125,7 +125,6 @@ public class BitmapUtils {
     public static void recycleBitmap(Bitmap bitmap) {
         if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
-            bitmap = null;
         }
     }
 
@@ -211,7 +210,7 @@ public class BitmapUtils {
      * @return
      */
     public static byte[] bitmap2Bytes(Bitmap bitmap, int quality) {
-        if (bitmap == null || (bitmap != null && bitmap.isRecycled())) {
+        if (bitmap == null || bitmap.isRecycled()) {
             return null;
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

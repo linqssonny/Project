@@ -48,6 +48,10 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="189d938d4e36d1804ac493c83121b789"></meta-data>
+
+        <!--多进程-->
+        <activity android:name=".process.MultiProcessActivity"/>
+        <service android:name=".process.MultiProcessService" android:process=":sonny"/>
     </application>
 
 </manifest>
