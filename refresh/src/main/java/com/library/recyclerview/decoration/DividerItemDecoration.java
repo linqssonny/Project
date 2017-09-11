@@ -20,6 +20,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mLeftPadding, mRightPadding, mTopPadding, mBottomPadding;
 
+    //是否绘制头部分割线
+    private boolean mDrawHeadDivider = true;
+    //是否绘制底部分割线
+    private boolean mDrawFooterDivider = true;
+
     public DividerItemDecoration(int orientation, int itemSize, int color) {
         this.mOrientation = orientation;
         this.mItemSize = itemSize;
@@ -29,6 +34,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(color);
         mPaint.setStyle(Paint.Style.FILL);
+    }
+
+    public void setDrawHeadDivider(boolean drawHeadDivider) {
+        this.mDrawHeadDivider = drawHeadDivider;
+    }
+
+    public void setDrawFooterDivider(boolean drawFooterDivider) {
+        this.mDrawFooterDivider = drawFooterDivider;
     }
 
     public void setPadding(int leftPadding, int rightPadding, int topPadding, int bottomPadding) {
@@ -60,6 +73,12 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         final int bottom = parent.getMeasuredHeight() - parent.getPaddingBottom() - mBottomPadding;
         final int childSize = parent.getChildCount();
         for (int i = 0; i < childSize; i++) {
+            if (i == 0 && !mDrawHeadDivider) {
+                continue;
+            }
+            if (i == childSize - 1 && !mDrawFooterDivider) {
+                continue;
+            }
             final View child = parent.getChildAt(i);
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left = child.getRight() + layoutParams.rightMargin;
@@ -79,6 +98,12 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         final int right = parent.getMeasuredWidth() - parent.getPaddingRight() - mRightPadding;
         final int childSize = parent.getChildCount();
         for (int i = 0; i < childSize; i++) {
+            if (i == 0 && !mDrawHeadDivider) {
+                continue;
+            }
+            if (i == childSize - 1 && !mDrawFooterDivider) {
+                continue;
+            }
             final View child = parent.getChildAt(i);
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + layoutParams.bottomMargin;

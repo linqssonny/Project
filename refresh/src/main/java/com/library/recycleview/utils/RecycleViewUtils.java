@@ -58,7 +58,22 @@ public class RecycleViewUtils {
      * @return
      */
     public static DividerItemDecoration createHorizontalItemDecoration(int itemSize, int color) {
+        return createHorizontalItemDecoration(itemSize, color, false, false);
+    }
+
+    /**
+     * 创建横线
+     *
+     * @param itemSize
+     * @param color
+     * @param drawFirst  是否绘制第一条分割线
+     * @param drawFooter 是否绘制最后一条分割线
+     * @return
+     */
+    public static DividerItemDecoration createHorizontalItemDecoration(int itemSize, int color, boolean drawFirst, boolean drawFooter) {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(LinearLayoutManager.HORIZONTAL, itemSize, color);
+        dividerItemDecoration.setDrawHeadDivider(drawFirst);
+        dividerItemDecoration.setDrawFooterDivider(drawFooter);
         return dividerItemDecoration;
     }
 
@@ -70,7 +85,22 @@ public class RecycleViewUtils {
      * @return
      */
     public static DividerItemDecoration createVerticalItemDecoration(int itemSize, int color) {
+        return createVerticalItemDecoration(itemSize, color, false, false);
+    }
+
+    /**
+     * 创建竖线
+     *
+     * @param itemSize
+     * @param color
+     * @param drawFirst  是否绘制第一条分割线
+     * @param drawFooter 是否绘制最后一条分割线
+     * @return
+     */
+    public static DividerItemDecoration createVerticalItemDecoration(int itemSize, int color, boolean drawFirst, boolean drawFooter) {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(LinearLayoutManager.VERTICAL, itemSize, color);
+        dividerItemDecoration.setDrawHeadDivider(drawFirst);
+        dividerItemDecoration.setDrawFooterDivider(drawFooter);
         return dividerItemDecoration;
     }
 }
