@@ -1,6 +1,7 @@
 package com.library.crop;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -38,7 +39,7 @@ public class CropUtils {
         //裁剪框网格是否显示
         options.setShowCropGrid(crop.isShowCropGrid());
         //顶部toolBar颜色
-        if (crop.getToolBarColor() > 0) {
+        if (crop.getToolBarColor() != 0) {
             options.setToolbarColor(crop.getToolBarColor());
         }
         if (!TextUtils.isEmpty(crop.getToolBarTitle())) {
@@ -46,5 +47,20 @@ public class CropUtils {
         }
         uCrop.withOptions(options);
         uCrop.start(crop.getActivity(), crop.getRequestCode());
+    }
+
+    public static String handleCropResult(Intent result) {
+        if (null == result) {
+            return null;
+        }
+        Uri uri = UCrop.getOutput(result);
+        if (null == uri) {
+            return null;
+        }
+        File file = new File(uri.getPath());
+        if (null == file) {
+            return null;
+        }
+        return file.getAbsolutePath();
     }
 }
