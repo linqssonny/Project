@@ -29,8 +29,14 @@ public class CropUtils {
         options.setCompressionFormat(Bitmap.CompressFormat.PNG);
         //隐藏底部工具栏
         options.setHideBottomControls(true);
-        //裁剪框是否可移动
+        //裁剪框是否可移动、变大小
         options.setFreeStyleCropEnabled(crop.isFreeCrop());
+        //裁剪窗口是否为圆形
+        options.setCircleDimmedLayer(crop.isCircle());
+        //裁剪框是否显示
+        options.setShowCropFrame(crop.isShowCropFrame());
+        //裁剪框网格是否显示
+        options.setShowCropGrid(crop.isShowCropGrid());
         //顶部toolBar颜色
         if (crop.getToolBarColor() > 0) {
             options.setToolbarColor(crop.getToolBarColor());

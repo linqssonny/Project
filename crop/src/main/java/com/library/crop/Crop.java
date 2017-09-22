@@ -8,14 +8,20 @@ import android.app.Activity;
 
 public class Crop {
     private Activity activity;
-    private String sourcePath;
-    private int cropWidth;
-    private int cropHeight;
-    private String outputFile;
-    private int requestCode;
+    private String sourcePath;//原图片路径
+    private int cropWidth;//裁剪框宽度
+    private int cropHeight;//裁剪框高度
+    private String outputFile;//输出文件路径
+    private int requestCode;//请求码
 
-    //裁剪框是否可移动
+    //裁剪框是否可移动、变大小
     private boolean freeCrop = true;
+    //裁剪窗口是否为圆形
+    private boolean circle = false;
+    //裁剪框是否显示
+    private boolean showCropFrame = true;
+    //裁剪框网格是否显示
+    private boolean showCropGrid = true;
     //顶部toolBar颜色
     private int toolBarColor;
     //顶部toolBar标题
@@ -95,5 +101,29 @@ public class Crop {
 
     public void setToolBarTitle(String toolBarTitle) {
         this.toolBarTitle = toolBarTitle;
+    }
+
+    public boolean isCircle() {
+        return circle;
+    }
+
+    public void setCircle(boolean circle) {
+        this.circle = circle;
+    }
+
+    public boolean isShowCropFrame() {
+        return showCropFrame;
+    }
+
+    public void setShowCropFrame(boolean showCropFrame) {
+        this.showCropFrame = showCropFrame;
+    }
+
+    public boolean isShowCropGrid() {
+        return showCropGrid;
+    }
+
+    public void setShowCropGrid(boolean showCropGrid) {
+        this.showCropGrid = showCropGrid;
     }
 }
