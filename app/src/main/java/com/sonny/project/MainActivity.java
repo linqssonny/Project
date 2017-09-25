@@ -22,6 +22,7 @@ import com.sonny.project.share.ShareMainActivity;
 import com.sonny.project.sp.SpActivity;
 import com.sonny.project.thread.ThreadActivity;
 import com.sonny.project.utils.LUtils;
+import com.sonny.project.widget.MoveMenuActivity;
 
 import java.io.File;
 
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity {
         addOnClick(R.id.btn_main_share);
         addOnClick(R.id.btn_main_thread);
         addOnClick(R.id.btn_main_process);
+        addOnClick(R.id.btn_main_menu);
     }
 
     @Override
@@ -115,6 +117,10 @@ public class MainActivity extends BaseActivity {
             case R.id.btn_main_process:
                 //进程间通讯
                 intent = new Intent(this, MultiProcessActivity.class);
+                break;
+            case R.id.btn_main_menu:
+                //浮动菜单
+                intent = new Intent(this, MoveMenuActivity.class);
                 break;
         }
         if (null != intent) {
