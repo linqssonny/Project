@@ -16,13 +16,12 @@ import com.sonny.project.location.LocationActivity;
 import com.sonny.project.network.HttpActivity;
 import com.sonny.project.process.MultiProcessActivity;
 import com.sonny.project.qrcode.QrCodeActivity;
-import com.sonny.project.recycler.RecyclerActivity;
 import com.sonny.project.recycler.XRecyclerActivity;
 import com.sonny.project.share.ShareMainActivity;
 import com.sonny.project.sp.SpActivity;
 import com.sonny.project.thread.ThreadActivity;
 import com.sonny.project.utils.LUtils;
-import com.sonny.project.widget.MoveMenuActivity;
+import com.sonny.project.widget.WidgetActivity;
 
 import java.io.File;
 
@@ -120,7 +119,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_main_menu:
                 //浮动菜单
-                intent = new Intent(this, MoveMenuActivity.class);
+                intent = new Intent(this, WidgetActivity.class);
                 break;
         }
         if (null != intent) {

@@ -33,7 +33,7 @@
         <activity android:name=".location.LocationActivity"></activity>
         <activity android:name=".share.ShareMainActivity"></activity>
         <activity android:name=".thread.ThreadActivity"></activity>
-        <activity android:name=".widget.MoveMenuActivity"></activity>
+        <activity android:name=".widget.WidgetActivity"></activity>
 
         <!--微信回调-->
         <activity

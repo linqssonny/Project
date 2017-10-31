@@ -140,7 +140,7 @@ public class FileUtils {
      * @param file
      */
     public static void delete(File file) {
-        if (!file.exists()) {
+        if (null == file || !file.exists()) {
             return;
         }
         if (file.isFile()) {

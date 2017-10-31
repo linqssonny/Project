@@ -22,8 +22,8 @@ public class JSONUtils {
      * @param values 含义：key1，value1，key2，value2...
      * @return
      */
-    public static String parseStr(Object... values) {
-        JSONStringer jsonStringer = parse(values);
+    public static String parseStrByArray(Object... values) {
+        JSONStringer jsonStringer = parseJsonStrByArray(values);
         if (null == jsonStringer) {
             return "";
         }
@@ -36,7 +36,7 @@ public class JSONUtils {
      * @param values 含义：key1，value1，key2，value2...
      * @return
      */
-    public static JSONStringer parse(Object... values) {
+    public static JSONStringer parseJsonStrByArray(Object... values) {
         if (null == values || values.length <= 0) {
             return null;
         }
@@ -66,7 +66,7 @@ public class JSONUtils {
      * @param param
      * @return
      */
-    public static String parseStr(Map<String, Object> param) {
+    public static String parseStrByMap(Map<String, Object> param) {
         if (null == param || param.size() <= 0) {
             return "";
         }
@@ -77,7 +77,7 @@ public class JSONUtils {
             objects[2 * position + 1] = entry.getValue();
             position++;
         }
-        return parseStr(objects);
+        return parseStrByArray(objects);
     }
 
     /**
@@ -89,17 +89,35 @@ public class JSONUtils {
      */
     public static Map<String, String> optJson(String value, String... keys) {
         Map<String, String> map = new HashMap<>();
-        if (null != keys && keys.length > 0) {
-            try {
-                JSONObject jsonObject = new JSONObject(value);
-                for (int i = 0; i < keys.length; i++) {
-                    map.put(keys[i], jsonObject.optString(keys[i]));
-                }
-            } catch (Exception e) {
-
+        JSONObject jsonObject = toJSONObject(value);
+        if (null != jsonObject && null != keys && keys.length > 0) {
+            for (int i = 0; i < keys.length; i++) {
+                map.put(keys[i], jsonObject.optString(keys[i]));
             }
         }
         return map;
+    }
+
+    /**
+     * 解析json格式的字符串
+     *
+     * @param value
+     * @param result
+     * @return
+     */
+    public static void optJson(String value, Map<String, Object> result) {
+        if (null == result) {
+            throw new NullPointerException("the map obj must not null");
+        }
+        JSONObject jsonObject = toJSONObject(value);
+        if (null != jsonObject && null != result && result.size() > 0) {
+            for (String key : result.keySet()) {
+                if (TextUtils.isEmpty(key)) {
+                    continue;
+                }
+                result.put(key, jsonObject.opt(key));
+            }
+        }
     }
 
     /**
