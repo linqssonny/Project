@@ -1,13 +1,13 @@
 package com.sonny.project.widget;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.TextView;
 
 import com.library.base.BaseActivity;
 import com.sonny.project.R;
 import com.sonnyjack.library.widget.RoundProgressView;
-
-import java.math.BigDecimal;
 
 /**
  * 自定义view
@@ -33,6 +33,7 @@ public class WidgetActivity extends BaseActivity {
 
     private void initProgressView() {
         mRoundProgressView = findViewById(R.id.rpv_widget_progress);
+        mRoundProgressView.setOnClickListener(this::click);
         mTvProgress = findViewById(R.id.tv_widget_progress);
         mRoundProgressView.setIRoundProgressListener((progress, total) -> {
             if (progress >= total) {
@@ -44,6 +45,9 @@ public class WidgetActivity extends BaseActivity {
                 mTvProgress.setText(value + "%");
             }
         });
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        mRoundProgressView.setImageBitmap(bitmap);
+        //mRoundProgressView.setImageScale(0.4f);
         //int mode = RoundProgressView.MODE_AUTO;
         int mode = RoundProgressView.MODE_UPDATE;
         mRoundProgressView.setMode(mode);
@@ -73,5 +77,9 @@ public class WidgetActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+    }
+
+    public void click(View v){
+        showMessage("点击了");
     }
 }

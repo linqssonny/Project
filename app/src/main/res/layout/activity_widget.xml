@@ -13,15 +13,13 @@
 
         <com.sonnyjack.library.widget.RoundProgressView
             android:id="@+id/rpv_widget_progress"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@color/black"
             android:padding="5dp"
             app:background_color="@android:color/holo_blue_dark"
             app:border_color="@color/red"
-            app:border_width="3"
-            app:image_resource="@mipmap/ic_launcher"
+            app:border_width="5"
             app:mode="update"
             app:text="跳转"
             app:text_size="10dp" />

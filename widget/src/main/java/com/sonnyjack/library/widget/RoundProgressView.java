@@ -30,6 +30,8 @@ public class RoundProgressView extends View {
     private final int DEFAULT_TEXT_COLOR = Color.WHITE;
     //the total time for animation execute
     private final int DEFAULT_TOTAL_MILLISECOND = 5 * 1000;
+    //default image/bitmap scale
+    private final float DEFAULT_BITMAP_SCALE = 2.0f / 5;
 
     //the time between two draw
     private final int DELAY_MILLISECONDS = 50;
@@ -66,6 +68,7 @@ public class RoundProgressView extends View {
     //the bitmap
     private Bitmap mBitmap;
     private Matrix mMatrix;
+    private float mBitmapScale = DEFAULT_BITMAP_SCALE;
 
     //if draw round progress
     private boolean mDrawRoundProgress = false;
@@ -109,6 +112,8 @@ public class RoundProgressView extends View {
             if (0 != imageResource) {
                 mBitmap = BitmapFactory.decodeResource(getResources(), imageResource);
             }
+            float scale = typedArray.getFloat(R.styleable.RoundProgressView_image_scale, DEFAULT_BITMAP_SCALE);
+            setImageScale(scale);
             typedArray.recycle();
         }
         mPaint = new Paint();
@@ -126,11 +131,55 @@ public class RoundProgressView extends View {
      * @param bitmap
      */
     public void setImageBitmap(Bitmap bitmap) {
-        if (null == bitmap || bitmap.isRecycled()) {
-            return;
-        }
         mBitmap = bitmap;
-        postInvalidateDelayed(0);
+        postInvalidate();
+    }
+
+    /**
+     * set text value
+     *
+     * @param value
+     */
+    public void setText(String value) {
+        mText = value;
+        postInvalidate();
+    }
+
+    /**
+     * set text color
+     *
+     * @param color
+     */
+    public void setTextColor(int color) {
+        mTextColor = color;
+        postInvalidate();
+    }
+
+    /**
+     * set text size and the size unit is pix
+     *
+     * @param textSize
+     */
+    public void setTextSize(float textSize) {
+        mTextSize = textSize;
+        postInvalidate();
+    }
+
+    /**
+     * set image scale and scale between 0.1 - 0.6
+     * the scale valid while has set image
+     *
+     * @param scale
+     */
+    public void setImageScale(float scale) {
+        if (scale < 0.1f) {
+            mBitmapScale = 0.1f;
+        }
+        if (scale > 0.6f) {
+            scale = 0.6f;
+        }
+        mBitmapScale = scale;
+        postInvalidate();
     }
 
     public void setMode(int mode) {
@@ -185,40 +234,21 @@ public class RoundProgressView extends View {
 
         super.onDraw(canvas);
 
-        if (mDrawRoundProgress) {
-            float paddingLeft = getPaddingLeft();
-            float paddingRight = getPaddingRight();
-            float paddingTop = getPaddingTop();
-            float paddingBottom = getPaddingBottom();
+        float paddingLeft = getPaddingLeft();
+        float paddingRight = getPaddingRight();
+        float paddingTop = getPaddingTop();
+        float paddingBottom = getPaddingBottom();
 
-            //draw the background
-            float left = paddingLeft;
-            float top = paddingTop;
-            float right = getWidth() - paddingRight;
-            float bottom = getHeight() - paddingBottom;
-            RectF oval = new RectF(left, top, right, bottom);
-            mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            mPaint.setColor(mBackgroundColor);
-            mPaint.setStrokeWidth(0);
-            canvas.drawArc(oval, 0, 360, true, mPaint);
-
-            //draw the progress
-            left = paddingLeft + mBorderWidth / 2;
-            top = paddingTop + mBorderWidth / 2;
-            right = getWidth() - paddingRight - mBorderWidth / 2;
-            bottom = getHeight() - paddingBottom - mBorderWidth / 2;
-            oval = new RectF(left, top, right, bottom);
-
-            mPaint.setStyle(Paint.Style.STROKE);
-            mPaint.setStrokeWidth(mBorderWidth);
-            mPaint.setColor(mBorderColor);
-            canvas.drawArc(oval, -90, mCurrentAngle, false, mPaint);
-
-            callBack(mCurrentAngle);
-            if (mCurrentAngle < mEndAngle) {
-                autoUpdateProgress();
-            }
-        }
+        //draw the background
+        float left = paddingLeft;
+        float top = paddingTop;
+        float right = getWidth() - paddingRight;
+        float bottom = getHeight() - paddingBottom;
+        RectF oval = new RectF(left, top, right, bottom);
+        mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mPaint.setColor(mBackgroundColor);
+        mPaint.setStrokeWidth(0);
+        canvas.drawArc(oval, 0, 360, true, mPaint);
 
         //draw text
         if (!TextUtils.isEmpty(mText) && !drawBitmap()) {
@@ -239,13 +269,33 @@ public class RoundProgressView extends View {
         if (drawBitmap()) {
             if (null == mMatrix) {
                 mMatrix = new Matrix();
-                float bitmapSize = getWidth() * 2.0f / 5;
+                float bitmapSize = getWidth() * mBitmapScale;
                 mMatrix.postScale(bitmapSize / mBitmap.getWidth(), bitmapSize / mBitmap.getHeight());//缩放
                 float dx = (getWidth() - bitmapSize) / 2.0f;
                 float dy = (getHeight() - bitmapSize) / 2.0f;
                 mMatrix.postTranslate(dx, dy);
             }
             canvas.drawBitmap(mBitmap, mMatrix, mPaint);
+        }
+
+        if (mDrawRoundProgress) {
+
+            //draw the progress
+            left = paddingLeft + mBorderWidth / 2;
+            top = paddingTop + mBorderWidth / 2;
+            right = getWidth() - paddingRight - mBorderWidth / 2;
+            bottom = getHeight() - paddingBottom - mBorderWidth / 2;
+            oval = new RectF(left, top, right, bottom);
+
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setStrokeWidth(mBorderWidth);
+            mPaint.setColor(mBorderColor);
+            canvas.drawArc(oval, -90, mCurrentAngle, false, mPaint);
+
+            callBack(mCurrentAngle);
+            if (mCurrentAngle < mEndAngle) {
+                autoUpdateProgress();
+            }
         }
     }
 

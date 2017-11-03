@@ -12,6 +12,7 @@
         <attr name="text_size" format="dimension"></attr>
 
         <attr name="image_resource" format="reference" />
+        <attr name="image_scale" format="float" />
 
         <attr name="mode">
             <enum name="auto" value="1" />
