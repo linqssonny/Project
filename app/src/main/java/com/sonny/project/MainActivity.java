@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
         addOnClick(R.id.btn_main_share);
         addOnClick(R.id.btn_main_thread);
         addOnClick(R.id.btn_main_process);
-        addOnClick(R.id.btn_main_menu);
+        addOnClick(R.id.btn_main_widget);
     }
 
     @Override
@@ -117,8 +117,8 @@ public class MainActivity extends BaseActivity {
                 //进程间通讯
                 intent = new Intent(this, MultiProcessActivity.class);
                 break;
-            case R.id.btn_main_menu:
-                //浮动菜单
+            case R.id.btn_main_widget:
+                //自定义控件
                 intent = new Intent(this, WidgetActivity.class);
                 break;
         }

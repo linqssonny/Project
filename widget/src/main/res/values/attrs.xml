@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundProgressView">
+
+        <attr name="border_width" format="integer" />
+        <attr name="border_color" format="color" />
+        <attr name="background_color" format="color" />
+        <attr name="milli_second" format="integer" />
+
+        <attr name="text" format="string"></attr>
+        <attr name="text_color" format="color"></attr>
+        <attr name="text_size" format="dimension"></attr>
+
+        <attr name="image_resource" format="reference" />
+
+        <attr name="mode">
+            <enum name="auto" value="1" />
+            <enum name="update" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
