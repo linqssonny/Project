@@ -28,14 +28,13 @@ public class WidgetActivity extends BaseActivity {
     @Override
     public void initUI() {
         initProgressView();
-
     }
 
     private void initProgressView() {
         mRoundProgressView = findViewById(R.id.rpv_widget_progress);
         mRoundProgressView.setOnClickListener(this::click);
         mTvProgress = findViewById(R.id.tv_widget_progress);
-        mRoundProgressView.setIRoundProgressListener((progress, total) -> {
+        mRoundProgressView.setIRoundProgressListener((float progress, float total) -> {
             if (progress >= total) {
                 mTvProgress.setText("完成");
             } else {
@@ -45,9 +44,10 @@ public class WidgetActivity extends BaseActivity {
                 mTvProgress.setText(value + "%");
             }
         });
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        mRoundProgressView.setImageBitmap(bitmap);
+        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        //mRoundProgressView.setImageBitmap(bitmap);
         //mRoundProgressView.setImageScale(0.4f);
+        //mRoundProgressView.setText("你好");
         //int mode = RoundProgressView.MODE_AUTO;
         int mode = RoundProgressView.MODE_UPDATE;
         mRoundProgressView.setMode(mode);
@@ -79,7 +79,7 @@ public class WidgetActivity extends BaseActivity {
         super.onClick(v);
     }
 
-    public void click(View v){
+    public void click(View v) {
         showMessage("点击了");
     }
 }

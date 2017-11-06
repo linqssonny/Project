@@ -36,6 +36,9 @@ public class RoundProgressView extends View {
     //the time between two draw
     private final int DELAY_MILLISECONDS = 50;
 
+    //the time when draw finish last
+    private long mLastDrawTime = 0l;
+
     //the paint
     private Paint mPaint;
 
@@ -132,7 +135,6 @@ public class RoundProgressView extends View {
      */
     public void setImageBitmap(Bitmap bitmap) {
         mBitmap = bitmap;
-        postInvalidate();
     }
 
     /**
@@ -142,7 +144,6 @@ public class RoundProgressView extends View {
      */
     public void setText(String value) {
         mText = value;
-        postInvalidate();
     }
 
     /**
@@ -152,7 +153,6 @@ public class RoundProgressView extends View {
      */
     public void setTextColor(int color) {
         mTextColor = color;
-        postInvalidate();
     }
 
     /**
@@ -162,7 +162,6 @@ public class RoundProgressView extends View {
      */
     public void setTextSize(float textSize) {
         mTextSize = textSize;
-        postInvalidate();
     }
 
     /**
@@ -179,7 +178,7 @@ public class RoundProgressView extends View {
             scale = 0.6f;
         }
         mBitmapScale = scale;
-        postInvalidate();
+        mMatrix = null;
     }
 
     public void setMode(int mode) {
@@ -208,6 +207,7 @@ public class RoundProgressView extends View {
         mDrawRoundProgress = true;
         if (mMode == MODE_AUTO) {
             mSpeed = (mEndAngle - mStartAngle) / mTotalMilliSeconds;
+            mLastDrawTime = 0;
         }
         postInvalidateDelayed(0);
     }
@@ -224,7 +224,7 @@ public class RoundProgressView extends View {
         if (value < 0 || value > 100) {
             throw new IllegalStateException("the value must between 0 and 100");
         }
-        mCurrentAngle = value * 360.0f / 100;
+        mCurrentAngle = value * (mEndAngle - mStartAngle) / 100;
         mDrawRoundProgress = true;
         postInvalidateDelayed(0);
     }
@@ -240,43 +240,15 @@ public class RoundProgressView extends View {
         float paddingBottom = getPaddingBottom();
 
         //draw the background
-        float left = paddingLeft;
-        float top = paddingTop;
-        float right = getWidth() - paddingRight;
-        float bottom = getHeight() - paddingBottom;
+        float left = paddingLeft + mBorderWidth - 0.1f;
+        float top = paddingTop + mBorderWidth - 0.1f;
+        float right = getWidth() - paddingRight - mBorderWidth + 0.1f;
+        float bottom = getHeight() - paddingBottom - mBorderWidth + 0.1f;
         RectF oval = new RectF(left, top, right, bottom);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaint.setColor(mBackgroundColor);
         mPaint.setStrokeWidth(0);
         canvas.drawArc(oval, 0, 360, true, mPaint);
-
-        //draw text
-        if (!TextUtils.isEmpty(mText) && !drawBitmap()) {
-            mPaint.setColor(mTextColor);
-            mPaint.setTextSize(mTextSize);
-            mPaint.setStrokeWidth(0);
-            mPaint.setTextAlign(Paint.Align.CENTER);
-            //get font info by paint
-            Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
-            // calculate font height
-            float fontHeight = fontMetrics.bottom - fontMetrics.top;
-            // calculate font baseline
-            float textBaseY = getHeight() / 2 + fontHeight / 2 - fontMetrics.bottom;
-            canvas.drawText(mText, getWidth() / 2, textBaseY, mPaint);
-        }
-
-        //draw bitmap
-        if (drawBitmap()) {
-            if (null == mMatrix) {
-                mMatrix = new Matrix();
-                float bitmapSize = getWidth() * mBitmapScale;
-                mMatrix.postScale(bitmapSize / mBitmap.getWidth(), bitmapSize / mBitmap.getHeight());//缩放
-                float dx = (getWidth() - bitmapSize) / 2.0f;
-                float dy = (getHeight() - bitmapSize) / 2.0f;
-                mMatrix.postTranslate(dx, dy);
-            }
-            canvas.drawBitmap(mBitmap, mMatrix, mPaint);
-        }
 
         if (mDrawRoundProgress) {
 
@@ -290,23 +262,65 @@ public class RoundProgressView extends View {
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeWidth(mBorderWidth);
             mPaint.setColor(mBorderColor);
+
+            //the mode is auto must calculate progress
+            if (isAutoMode()) {
+                calculateAutoModeProgress();
+            }
             canvas.drawArc(oval, -90, mCurrentAngle, false, mPaint);
 
             callBack(mCurrentAngle);
-            if (mCurrentAngle < mEndAngle) {
-                autoUpdateProgress();
+
+            if (mCurrentAngle < mEndAngle && isAutoMode()) {
+                postInvalidateDelayed(DELAY_MILLISECONDS);
             }
+        }
+
+        //draw text
+        if (!drawBitmap()) {
+            String value = mText;
+            if (TextUtils.isEmpty(value)) {
+                value = formatProgress(mCurrentAngle);
+            }
+            mPaint.setColor(mTextColor);
+            mPaint.setTextSize(mTextSize);
+            mPaint.setStrokeWidth(0);
+            mPaint.setTextAlign(Paint.Align.CENTER);
+            //get font info by paint
+            Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+            // calculate font height
+            float fontHeight = fontMetrics.bottom - fontMetrics.top;
+            // calculate font baseline
+            float textBaseY = getHeight() / 2 + fontHeight / 2 - fontMetrics.bottom;
+            canvas.drawText(value, getWidth() / 2, textBaseY, mPaint);
+        } else {
+            //draw bitmap
+            if (null == mMatrix) {
+                mMatrix = new Matrix();
+                //scale
+                mMatrix.postScale(mBitmapScale, mBitmapScale);
+                float dx = (getWidth() * (1 - mBitmapScale)) / 2.0f;
+                float dy = (getHeight() * (1 - mBitmapScale)) / 2.0f;
+                mMatrix.postTranslate(dx, dy);
+            }
+            canvas.drawBitmap(mBitmap, mMatrix, mPaint);
         }
     }
 
-    private void autoUpdateProgress() {
-        if (mMode == MODE_AUTO) {
-            mCurrentAngle += (mSpeed * DELAY_MILLISECONDS);
-            if (mCurrentAngle >= mEndAngle) {
-                mCurrentAngle = mEndAngle;
-            }
-            postInvalidateDelayed(DELAY_MILLISECONDS);
+    private void calculateAutoModeProgress() {
+        if (mLastDrawTime <= 0) {
+            mLastDrawTime = System.currentTimeMillis();
         }
+        long time = System.currentTimeMillis();
+        mCurrentAngle += (mSpeed * (time - mLastDrawTime));
+        if (mCurrentAngle >= mEndAngle) {
+            mCurrentAngle = mEndAngle;
+        }
+        mLastDrawTime = time;
+    }
+
+    private boolean isAutoMode() {
+        return mMode == MODE_AUTO;
     }
 
     /**
@@ -332,11 +346,22 @@ public class RoundProgressView extends View {
         }
         //the total angle
         float totalAngle = mEndAngle - mStartAngle;
-        //judge is or not finish
+        //calculate progress
         float progress = angle * 100 / totalAngle;
-        BigDecimal bg = new BigDecimal(progress);
-        progress = bg.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+        progress = formatDecimal(progress, 2);
         mIRoundProgressListener.progress(progress, Math.abs(100));
+    }
+
+    private String formatProgress(float angle) {
+        //the total angle
+        float totalAngle = mEndAngle - mStartAngle;
+        int result = (int) (angle / totalAngle * 100);
+        return result + "%";
+    }
+
+    private float formatDecimal(float value, int newScale) {
+        BigDecimal bg = new BigDecimal(value);
+        return bg.setScale(newScale, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     public interface IRoundProgressListener {

@@ -21,7 +21,6 @@
             app:border_color="@color/red"
             app:border_width="5"
             app:mode="update"
-            app:text="跳转"
             app:text_size="10dp" />
 
         <TextView
