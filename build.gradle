@@ -15,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        //裁剪框架crop用到
         maven { url "https://jitpack.io" }
         google()
     }
