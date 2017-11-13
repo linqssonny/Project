@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.library.base.BaseActivity;
 import com.sonny.project.R;
-import com.sonnyjack.library.widget.RoundProgressView;
+import com.sonnyjack.widget.progress.RoundProgressView;
 
 /**
  * 自定义view
@@ -47,7 +47,7 @@ public class WidgetActivity extends BaseActivity {
         //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         //mRoundProgressView.setImageBitmap(bitmap);
         //mRoundProgressView.setImageScale(0.4f);
-        //mRoundProgressView.setText("你好");
+        mRoundProgressView.setText("你好");
         //int mode = RoundProgressView.MODE_AUTO;
         int mode = RoundProgressView.MODE_UPDATE;
         mRoundProgressView.setMode(mode);

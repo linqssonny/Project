@@ -11,7 +11,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.sonnyjack.library.widget.RoundProgressView
+        <com.sonnyjack.widget.progress.RoundProgressView
             android:id="@+id/rpv_widget_progress"
             android:layout_width="50dp"
             android:layout_height="50dp"

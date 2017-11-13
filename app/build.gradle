@@ -54,5 +54,6 @@ dependencies {
     compile project(':refresh')
     compile project(':crop')
     compile project(':location')
-    compile project(':widget')
+
+    compile 'com.sonnyjack.widget:RoundProgressView:0.1.0'
 }
