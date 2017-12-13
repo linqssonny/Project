@@ -1,4 +1,4 @@
-package com.library.share;
+package com.library.share.config;
 
 import com.tencent.connect.common.Constants;
 
@@ -8,6 +8,9 @@ import com.tencent.connect.common.Constants;
  */
 
 public class ShareConfig {
+
+    public static int IMAGE_MAX_WIDTH = 1080;
+    public static int IMAGE_MAX_HEIGHT = 1920;
 
     /**
      * 请求QQ分享、登陆   requestCode
@@ -22,7 +25,7 @@ public class ShareConfig {
     /**
      * QQ空间分享结果码
      */
-    public static final int REQUEST_QZONE_SHARE = Constants.REQUEST_QZONE_SHARE;
+    public static final int REQUEST_QQ_ZONE_SHARE = Constants.REQUEST_QZONE_SHARE;
 
     /**
      * QQ登陆结果码

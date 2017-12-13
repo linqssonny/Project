@@ -1,5 +1,6 @@
 package com.library.utils.file;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +13,12 @@ import java.nio.channels.FileChannel;
 
 public class StreamUtils {
 
+    /**
+     * 关闭流
+     *
+     * @param inputStream
+     * @return
+     */
     public static boolean close(InputStream inputStream) {
         boolean success = false;
         if (null == inputStream) {
@@ -66,5 +73,24 @@ public class StreamUtils {
             e.printStackTrace();
         }
         return success;
+    }
+
+    /**
+     * 读取流(转为bytes)
+     *
+     * @param inStream
+     * @return
+     * @throws Exception
+     */
+    public static byte[] readStream(InputStream inStream) throws Exception {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while ((len = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, len);
+        }
+        outStream.close();
+        inStream.close();
+        return outStream.toByteArray();
     }
 }

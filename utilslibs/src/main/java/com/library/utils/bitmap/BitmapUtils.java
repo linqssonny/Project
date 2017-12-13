@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 import com.library.utils.file.StreamUtils;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -126,6 +125,7 @@ public class BitmapUtils {
         if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
         }
+        bitmap = null;
     }
 
     /***
@@ -161,35 +161,6 @@ public class BitmapUtils {
             e.printStackTrace();
         }
         return bmp;
-    }
-
-    /***
-     * 压缩图片
-     *
-     * @param bitmap
-     * @param size   图片大小kb
-     * @return
-     */
-    public static Bitmap compressImage(Bitmap bitmap, int size) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int options = 100;
-        bitmap.compress(Bitmap.CompressFormat.JPEG, options, byteArrayOutputStream);
-        while (byteArrayOutputStream.toByteArray().length > 1024 * size && options > 0) {
-            // 重置byteArrayOutputStream即清空byteArrayOutputStream
-            byteArrayOutputStream.reset();
-            // 每次都减少5
-            options -= 5;
-            // 这里压缩options%，把压缩后的数据存放到byteArrayOutputStream中
-            bitmap.compress(Bitmap.CompressFormat.JPEG, options, byteArrayOutputStream);
-        }
-        // 把压缩后的数据byteArrayOutputStream存放到ByteArrayInputStream中
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        // 把ByteArrayInputStream数据生成图片
-        Bitmap b = BitmapFactory.decodeStream(byteArrayInputStream);
-        if (bitmap != b) {
-            recycleBitmap(bitmap);
-        }
-        return b;
     }
 
     /***

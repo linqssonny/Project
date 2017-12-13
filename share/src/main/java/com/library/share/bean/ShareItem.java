@@ -1,7 +1,10 @@
-package com.library.share;
+package com.library.share.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.library.share.interfaces.ShareCallBack;
 
 /**
  * Created by admin on 2016/11/10.
@@ -9,10 +12,16 @@ import android.os.Parcelable;
 
 public class ShareItem implements Parcelable {
 
+    //分享到QQ
     public static final int SHARE_QQ = 0x100;
-    public static final int SHARE_QZONE = 0x101;
-    public static final int SHARE_WECHAT = 0x102;
-    public static final int SHARE_WECHATMOMENTS = 0x103;
+    //分享到QQ空间
+    public static final int SHARE_QQ_ZONE = 0x101;
+    //分享到微信
+    public static final int SHARE_WE_CHAT = 0x102;
+    //分享到微信朋友圈
+    public static final int SHARE_WE_CHAT_MOMENTS = 0x103;
+    //添加到微信收藏
+    public static final int SHARE_WE_CHAT_COLLECTION = 0x104;
 
     public static final int SHARE_TYPE_TEXT = 0x100;
     public static final int SHARE_TYPE_IMAGE = 0x101;
@@ -21,9 +30,11 @@ public class ShareItem implements Parcelable {
     public static final int SHARE_TYPE_VIDEO = 0x104;
 
     /*分享目标*/
-    private int target = SHARE_WECHAT;
+    private int target = SHARE_WE_CHAT;
     /*分享标题*/
     private String title;
+    /*缩略图(可有可无，没有的话取image字段)*/
+    private String thumb;
     /*分享内容*/
     private String content;
     /*分享链接*/
@@ -58,6 +69,14 @@ public class ShareItem implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
     }
 
     public String getContent() {
@@ -116,9 +135,19 @@ public class ShareItem implements Parcelable {
         this.shareCallBack = shareCallBack;
     }
 
+    /**
+     * 是否有缩略图
+     *
+     * @return
+     */
+    public boolean hasThumb() {
+        return !TextUtils.isEmpty(thumb);
+    }
+
     protected ShareItem(Parcel in) {
         target = in.readInt();
         title = in.readString();
+        thumb = in.readString();
         content = in.readString();
         url = in.readString();
         image = in.readString();
@@ -131,6 +160,7 @@ public class ShareItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(target);
         dest.writeString(title);
+        dest.writeString(thumb);
         dest.writeString(content);
         dest.writeString(url);
         dest.writeString(image);

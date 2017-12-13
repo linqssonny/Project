@@ -10,10 +10,10 @@ import android.view.WindowManager;
 import com.library.base.BaseActivity;
 import com.library.recycleview.IRecycleOnItemListener;
 import com.library.recycleview.utils.RecycleViewUtils;
-import com.library.share.ShareCallBack;
-import com.library.share.ShareConfig;
+import com.library.share.interfaces.ShareCallBack;
+import com.library.share.config.ShareConfig;
 import com.library.share.ShareHelper;
-import com.library.share.ShareItem;
+import com.library.share.bean.ShareItem;
 import com.sonny.project.R;
 
 import java.util.ArrayList;
@@ -64,7 +64,6 @@ public class ShareActivity extends BaseActivity {
                 super.onItemClick(view, position, menu, o2);
                 showMessage("点击分享：" + menu.getTitle());
                 share(menu);
-                finish();
             }
         });
         mRecyclerView.setAdapter(mShareMenuAdapter);
@@ -79,19 +78,19 @@ public class ShareActivity extends BaseActivity {
         list.add(menu);
 
         menu = new Menu();
-        menu.setMenuId(ShareItem.SHARE_QZONE);
+        menu.setMenuId(ShareItem.SHARE_QQ_ZONE);
         menu.setImageRes(R.drawable.common_icon_room_enable);
         menu.setTitle("空间");
         list.add(menu);
 
         menu = new Menu();
-        menu.setMenuId(ShareItem.SHARE_WECHAT);
+        menu.setMenuId(ShareItem.SHARE_WE_CHAT);
         menu.setImageRes(R.drawable.common_icon_weixin_enable);
         menu.setTitle("好友");
         list.add(menu);
 
         menu = new Menu();
-        menu.setMenuId(ShareItem.SHARE_WECHATMOMENTS);
+        menu.setMenuId(ShareItem.SHARE_WE_CHAT_MOMENTS);
         menu.setImageRes(R.drawable.common_icon_sns_enable);
         menu.setTitle("朋友圈");
         list.add(menu);
@@ -107,13 +106,15 @@ public class ShareActivity extends BaseActivity {
         mShareItem.setTarget(menu.getMenuId());//分享目的地：QQ、QQ空间、微信好友、微信朋友圈
         mShareItem.setTitle("分享标题");
         mShareItem.setContent("分享内容、概要");
+        //mShareItem.setThumb("缩略图，不传取image字段值");
+        mShareItem.setThumb("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2135367176,3038208295&fm=27&gp=0.jpg");
         mShareItem.setType(ShareItem.SHARE_TYPE_URL);//分享类型：链接、图片、文字等
-        mShareItem.setUrl("分享链接的地址---可选");
-        //shareItem.setUrl("http://my.csdn.net/SonnyJack");
-        mShareItem.setImage("分享图片地址---可选");//如多个图片地址：地址1,地址2,地址3
-        //shareItem.setImage("http://avatar.csdn.net/B/7/F/1_sonnyjack.jpg");//如多个图片地址：地址1,地址2,地址3
-        mShareItem.setMusic("分享音乐地址---可选");
-        mShareItem.setVideo("分享视频地址---可选");
+        //mShareItem.setUrl("分享链接的地址---可选");
+        mShareItem.setUrl("http://my.csdn.net/SonnyJack");
+        //mShareItem.setImage("分享图片地址---可选");//如多个图片地址：地址1,地址2,地址3
+        mShareItem.setImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1279864326,149287344&fm=27&gp=0.jpg");//如多个图片地址：地址1,地址2,地址3
+        //mShareItem.setMusic("分享音乐地址---可选");
+        //mShareItem.setVideo("分享视频地址---可选");
         mShareItem.setShareCallBack(createShareCallBack());//分享成功后QQ回调---可选
         ShareHelper.getInstances().share(this, mShareItem);
 
@@ -129,7 +130,7 @@ public class ShareActivity extends BaseActivity {
     private ShareCallBack createShareCallBack() {
         mShareCallBack = new ShareCallBack(mShareItem) {
             @Override
-            protected void onComplete(ShareItem shareItem, Object object) {
+            public void onComplete(ShareItem shareItem, Object object) {
                 //分享完成、登陆成功
                 resetShareInfo();
                 showMessage("分享成功|登陆成功");
@@ -137,7 +138,7 @@ public class ShareActivity extends BaseActivity {
             }
 
             @Override
-            protected void onError(ShareItem shareItem, int what, String message) {
+            public void onError(ShareItem shareItem, int what, String message) {
                 //分享错误、登陆失败
                 resetShareInfo();
                 showMessage(message);
@@ -145,7 +146,7 @@ public class ShareActivity extends BaseActivity {
             }
 
             @Override
-            protected void onCancel(ShareItem shareItem) {
+            public void onCancel(ShareItem shareItem) {
                 //分享取消、登陆取消
                 resetShareInfo();
                 finish();
@@ -180,7 +181,7 @@ public class ShareActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //QQ回调
         if (requestCode == ShareConfig.REQUEST_API) {
-            if (resultCode == ShareConfig.REQUEST_QQ_SHARE || resultCode == ShareConfig.REQUEST_QZONE_SHARE) {
+            if (resultCode == ShareConfig.REQUEST_QQ_SHARE || resultCode == ShareConfig.REQUEST_QQ_ZONE_SHARE) {
                 //QQ分享
             } else if (resultCode == ShareConfig.REQUEST_LOGIN) {
                 //QQ登陆

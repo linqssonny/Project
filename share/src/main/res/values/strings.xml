@@ -1,2 +1,4 @@
 <resources>
+    <string name="share_error_info_not_install_we_chat">您还未安装微信</string>
+    <string name="download_image_fail">下载图片失败</string>
 </resources>

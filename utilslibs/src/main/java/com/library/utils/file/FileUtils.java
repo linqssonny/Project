@@ -193,4 +193,24 @@ public class FileUtils {
         }
         return file;
     }
+
+    /**
+     * 根据url链接截取文件名(包括后缀名)
+     *
+     * @param url
+     * @return
+     */
+    public static String buildFileNameByPath(String url) {
+        String fileName = null;
+        if (!TextUtils.isEmpty(url)) {
+            String tempUrl = url;
+            int index = url.indexOf("?");
+            if (index > 0) {
+                tempUrl = url.substring(0, index);
+            }
+            index = tempUrl.lastIndexOf("/");
+            fileName = tempUrl.substring(index + 1, tempUrl.length());
+        }
+        return fileName;
+    }
 }

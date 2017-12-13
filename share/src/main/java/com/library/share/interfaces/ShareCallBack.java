@@ -1,5 +1,6 @@
-package com.library.share;
+package com.library.share.interfaces;
 
+import com.library.share.bean.ShareItem;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.UiError;
 
@@ -19,11 +20,11 @@ public abstract class ShareCallBack implements IUiListener {
         return this.mShareItem;
     }
 
-    protected abstract void onComplete(ShareItem shareItem, Object object);
+    public abstract void onComplete(ShareItem shareItem, Object object);
 
-    protected abstract void onError(ShareItem shareItem, int what, String message);
+    public abstract void onError(ShareItem shareItem, int what, String message);
 
-    protected abstract void onCancel(ShareItem shareItem);
+    public abstract void onCancel(ShareItem shareItem);
 
     @Override
     public final void onComplete(Object o) {
