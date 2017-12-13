@@ -6,6 +6,8 @@ import android.text.TextUtils;
 
 import com.library.share.interfaces.ShareCallBack;
 
+import java.util.ArrayList;
+
 /**
  * Created by admin on 2016/11/10.
  */
@@ -28,6 +30,7 @@ public class ShareItem implements Parcelable {
     public static final int SHARE_TYPE_URL = 0x102;
     public static final int SHARE_TYPE_MUSIC = 0x103;
     public static final int SHARE_TYPE_VIDEO = 0x104;
+    public static final int SHARE_TYPE_APP = 0x105;
 
     /*分享目标*/
     private int target = SHARE_WE_CHAT;
@@ -39,8 +42,8 @@ public class ShareItem implements Parcelable {
     private String content;
     /*分享链接*/
     private String url;
-    /*分享图片*/
-    private String image;
+    /*分享图片(允许多张)*/
+    private ArrayList<String> images = new ArrayList<>();
     /*分享音乐*/
     private String music;
     /*分享视频*/
@@ -95,12 +98,12 @@ public class ShareItem implements Parcelable {
         this.url = url;
     }
 
-    public String getImage() {
-        return image;
+    public ArrayList<String> getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(ArrayList<String> images) {
+        this.images = images;
     }
 
     public int getType() {
@@ -144,34 +147,48 @@ public class ShareItem implements Parcelable {
         return !TextUtils.isEmpty(thumb);
     }
 
+    public String getImage() {
+        if (null == images || images.isEmpty()) {
+            return null;
+        }
+        return images.get(0);
+    }
+
+    public void addImage(String imageUrl) {
+        if (null == images) {
+            images = new ArrayList<>();
+        }
+        images.add(imageUrl);
+    }
+
+    public void removeImage(String imageUrl) {
+        if (TextUtils.isEmpty(imageUrl)) {
+            return;
+        }
+        if (null == images || images.isEmpty()) {
+            return;
+        }
+        if (!images.contains(imageUrl)) {
+            return;
+        }
+        images.remove(imageUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     protected ShareItem(Parcel in) {
         target = in.readInt();
         title = in.readString();
         thumb = in.readString();
         content = in.readString();
         url = in.readString();
-        image = in.readString();
+        images = in.createStringArrayList();
         music = in.readString();
         video = in.readString();
         type = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(target);
-        dest.writeString(title);
-        dest.writeString(thumb);
-        dest.writeString(content);
-        dest.writeString(url);
-        dest.writeString(image);
-        dest.writeString(music);
-        dest.writeString(video);
-        dest.writeInt(type);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<ShareItem> CREATOR = new Creator<ShareItem>() {
@@ -185,4 +202,17 @@ public class ShareItem implements Parcelable {
             return new ShareItem[size];
         }
     };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(target);
+        dest.writeString(title);
+        dest.writeString(thumb);
+        dest.writeString(content);
+        dest.writeString(url);
+        dest.writeStringList(images);
+        dest.writeString(music);
+        dest.writeString(video);
+        dest.writeInt(type);
+    }
 }

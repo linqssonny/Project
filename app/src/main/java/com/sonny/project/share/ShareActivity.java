@@ -111,10 +111,10 @@ public class ShareActivity extends BaseActivity {
         mShareItem.setType(ShareItem.SHARE_TYPE_URL);//分享类型：链接、图片、文字等
         //mShareItem.setUrl("分享链接的地址---可选");
         mShareItem.setUrl("http://my.csdn.net/SonnyJack");
-        //mShareItem.setImage("分享图片地址---可选");//如多个图片地址：地址1,地址2,地址3
-        mShareItem.setImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1279864326,149287344&fm=27&gp=0.jpg");//如多个图片地址：地址1,地址2,地址3
-        //mShareItem.setMusic("分享音乐地址---可选");
-        //mShareItem.setVideo("分享视频地址---可选");
+        //mShareItem.addImage("分享图片地址---可选");//多个地址调用多次
+        mShareItem.addImage("https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1279864326,149287344&fm=27&gp=0.jpg");//如多个图片地址：地址1,地址2,地址3
+        //mShareItem.setMusic("分享音乐地址");
+        //mShareItem.setVideo("分享视频地址");
         mShareItem.setShareCallBack(createShareCallBack());//分享成功后QQ回调---可选
         ShareHelper.getInstances().share(this, mShareItem);
 
