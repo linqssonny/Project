@@ -34,6 +34,8 @@
         <activity android:name=".share.ShareMainActivity"></activity>
         <activity android:name=".thread.ThreadActivity"></activity>
         <activity android:name=".widget.WidgetActivity"></activity>
+        <activity android:name=".widget.RoundProgressViewActivity"></activity>
+        <activity android:name=".widget.DrawVewActivity"></activity>
 
         <!--微信回调-->
         <activity
