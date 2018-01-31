@@ -6,13 +6,13 @@ package com.library.network.interfaces;
  */
 public interface IHttpCallBack {
 
-    void onBefore(IHttpParams httpParams);
+    void onBefore(BaseHttpParams httpParams);
 
-    void onProgress(IHttpParams httpParams, long bytesRead, long contentLength, boolean finish);
+    void onProgress(BaseHttpParams httpParams, long bytesRead, long contentLength, boolean finish);
 
-    void onAfter(IHttpParams httpParams);
+    void onAfter(BaseHttpParams httpParams);
 
-    void onFail(IHttpParams httpParams, String message);
+    void onFail(BaseHttpParams httpParams, String message);
 
-    void onSuccess(IHttpParams httpParams, String body);
+    void onSuccess(BaseHttpParams httpParams, String body);
 }

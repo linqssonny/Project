@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by admin on 2016/6/14.
  */
-public abstract class IHttpParams {
+public abstract class BaseHttpParams {
 
     //请求地址
     private String httpUrl;

@@ -2,10 +2,12 @@ package com.sonny.project.network;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 
+import com.library.base.dialog.DialogListener;
 import com.library.base.dialog.LoadingDialog;
+import com.library.network.interfaces.BaseHttpParams;
 import com.library.network.interfaces.IHttpCallBack;
-import com.library.network.interfaces.IHttpParams;
 
 /**
  * Created by linqs on 2016/8/10.
@@ -15,7 +17,7 @@ public abstract class HttpCallBack implements IHttpCallBack {
     private LoadingDialog mLoadingDialog;
 
     @Override
-    public final void onBefore(IHttpParams httpParams) {
+    public final void onBefore(BaseHttpParams httpParams) {
         HttpParams params = (HttpParams) httpParams;
         if (null != params && params.isLoading()) {
             //显示等待匡
@@ -25,13 +27,13 @@ public abstract class HttpCallBack implements IHttpCallBack {
     }
 
     @Override
-    public final void onProgress(IHttpParams httpParams, long bytesRead, long contentLength, boolean finish) {
+    public final void onProgress(BaseHttpParams httpParams, long bytesRead, long contentLength, boolean finish) {
         HttpParams params = (HttpParams) httpParams;
         onProgress(params, bytesRead, contentLength, finish);
     }
 
     @Override
-    public final void onAfter(IHttpParams httpParams) {
+    public final void onAfter(BaseHttpParams httpParams) {
         HttpParams params = (HttpParams) httpParams;
         if (null != params && params.isLoading()) {
             dismissLoading(params);
@@ -40,13 +42,13 @@ public abstract class HttpCallBack implements IHttpCallBack {
     }
 
     @Override
-    public final void onFail(IHttpParams httpParams, String message) {
+    public final void onFail(BaseHttpParams httpParams, String message) {
         HttpParams params = (HttpParams) httpParams;
         onFail(params, message);
     }
 
     @Override
-    public final void onSuccess(IHttpParams httpParams, String body) {
+    public final void onSuccess(BaseHttpParams httpParams, String body) {
         HttpParams params = (HttpParams) httpParams;
         onSuccess(params, body);
     }
@@ -56,6 +58,12 @@ public abstract class HttpCallBack implements IHttpCallBack {
             Context context = httpParams.getContext();
             if (context instanceof Activity) {
                 mLoadingDialog = new LoadingDialog((Activity) context);
+                mLoadingDialog.setDialogListener(new DialogListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        MyHttpUtils.cancel(httpParams.getTag());
+                    }
+                });
                 mLoadingDialog.show();
             }
         }
@@ -83,5 +91,7 @@ public abstract class HttpCallBack implements IHttpCallBack {
 
     }
 
-    public abstract void onSuccess(HttpParams httpParams, String body);
+    public void onSuccess(HttpParams httpParams, String body) {
+
+    }
 }

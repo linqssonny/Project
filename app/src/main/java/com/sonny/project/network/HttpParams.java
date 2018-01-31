@@ -2,12 +2,12 @@ package com.sonny.project.network;
 
 import android.content.Context;
 
-import com.library.network.interfaces.IHttpParams;
+import com.library.network.interfaces.BaseHttpParams;
 
 /**
  * Created by linqs on 2016/8/10.
  */
-public class HttpParams extends IHttpParams {
+public class HttpParams extends BaseHttpParams {
 
     //上下文
     private Context context;

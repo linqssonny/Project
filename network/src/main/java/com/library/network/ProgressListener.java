@@ -1,27 +1,27 @@
 package com.library.network;
 
 import com.library.network.interfaces.IHttpCallBack;
-import com.library.network.interfaces.IHttpParams;
+import com.library.network.interfaces.BaseHttpParams;
 
 /**
  * Created by admin on 2016/6/23.
  */
 class ProgressListener {
 
-    private IHttpParams mIHttpParams;
+    private BaseHttpParams mBaseHttpParams;
     private IHttpCallBack mIHttpCallBack;
 
-    public ProgressListener(IHttpParams httpParams, IHttpCallBack httpCallBack) {
-        this.mIHttpParams = httpParams;
+    public ProgressListener(BaseHttpParams httpParams, IHttpCallBack httpCallBack) {
+        this.mBaseHttpParams = httpParams;
         this.mIHttpCallBack = httpCallBack;
     }
 
     public void onProgress(final long bytesRead, final long contentLength, final boolean finish) {
         if (null != mIHttpCallBack) {
-            mIHttpParams.getHandler().post(new Runnable() {
+            mBaseHttpParams.getHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    mIHttpCallBack.onProgress(mIHttpParams, bytesRead, contentLength, finish);
+                    mIHttpCallBack.onProgress(mBaseHttpParams, bytesRead, contentLength, finish);
                 }
             });
         }

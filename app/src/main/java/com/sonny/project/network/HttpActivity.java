@@ -2,11 +2,9 @@ package com.sonny.project.network;
 
 import android.view.View;
 
-import com.sonny.project.R;
 import com.library.base.BaseActivity;
-import com.library.network.HttpUtils;
-import com.library.utils.file.FileUtils;
 import com.library.utils.toast.ToastUtils;
+import com.sonny.project.R;
 
 /**
  * Created by linqs on 2016/8/10.
@@ -43,20 +41,10 @@ public class HttpActivity extends BaseActivity {
     }
 
     private void download() {
-        HttpParams httpParams = new HttpParams();
-        //不显示等待匡
-        httpParams.setLoading(false);
-        httpParams.setHttpUrl("http://img2.3lian.com/2014/f6/173/d/51.jpg");
-        httpParams.setSaveFilePath(FileUtils.getRootFilePath());
-        httpParams.setSaveFileName(FileUtils.createFileNameByDateTime() + ".jpg");
-        HttpUtils.getInstances().download(httpParams, new HttpCallBack() {
-            @Override
-            public void onProgress(HttpParams httpParams, long bytesRead, long contentLength, boolean finish) {
-                super.onProgress(httpParams, bytesRead, contentLength, finish);
-            }
-
+        MyHttpUtils.download(getActivity(), new HttpCallBack() {
             @Override
             public void onSuccess(HttpParams httpParams, String body) {
+                super.onSuccess(httpParams, body);
                 ToastUtils.showLongMsg(getActivity(), "下载成功");
             }
         });

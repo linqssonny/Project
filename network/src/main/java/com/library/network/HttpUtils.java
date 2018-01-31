@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.library.network.interfaces.BaseHttpParams;
 import com.library.network.interfaces.IHttpCallBack;
-import com.library.network.interfaces.IHttpParams;
 import com.library.network.utils.HttpFileUtils;
 import com.library.utils.file.FileUtils;
 
@@ -39,8 +39,8 @@ public class HttpUtils {
     }
 
     private OkHttpClient mOkHttpClient = null;
-    private final long DEFAULT_TIME = 30;
-    private final long DEFAULT_DOWNLOAD_TIME = 600;
+    private long DEFAULT_TIME = 30;//默认http请求时间30秒
+    private long DEFAULT_DOWNLOAD_TIME = 600;//默认下载超时60秒
 
     private Handler mHandler;
 
@@ -53,6 +53,17 @@ public class HttpUtils {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
+    /**
+     * 设置时间
+     *
+     * @param connectionTime 连接时间(读取时间)
+     * @param downloadTime   下载最大时长
+     */
+    public void setHttpConnectionTimeAndDownloadTime(long connectionTime, long downloadTime) {
+        DEFAULT_TIME = connectionTime;
+        DEFAULT_DOWNLOAD_TIME = downloadTime;
+    }
+
     /***
      * post  同步请求
      *
@@ -60,7 +71,7 @@ public class HttpUtils {
      * @param httpCallBack
      * @return
      */
-    public String post(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public String post(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         sendOnBeforeCallBack(httpParams, httpCallBack);
         Request request = createPostRequest(httpParams);
@@ -88,7 +99,7 @@ public class HttpUtils {
      * @param httpParams
      * @param httpCallBack
      */
-    public void postAsync(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public void postAsync(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         sendOnBeforeCallBack(httpParams, httpCallBack);
         Request request = createPostRequest(httpParams);
@@ -113,7 +124,7 @@ public class HttpUtils {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());
                     }
                 } else {
-                    sendFailCallBack(httpParams, httpCallBack, "");
+                    sendFailCallBack(httpParams, httpCallBack, response.message());
                 }
                 sendOnAfterCallBack(httpParams, httpCallBack);
             }
@@ -126,7 +137,7 @@ public class HttpUtils {
      * @param httpParams
      * @return
      */
-    private Request createPostRequest(IHttpParams httpParams) {
+    private Request createPostRequest(BaseHttpParams httpParams) {
         FormBody.Builder builder = new FormBody.Builder();
         if (null != httpParams.getParam() && httpParams.getParam().size() > 0) {
             for (Map.Entry<String, Object> map : httpParams.getParam().entrySet()) {
@@ -150,7 +161,7 @@ public class HttpUtils {
      * @param httpCallBack
      * @return
      */
-    public String get(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public String get(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         sendOnBeforeCallBack(httpParams, httpCallBack);
         Request request = createGetRequest(httpParams);
@@ -178,7 +189,7 @@ public class HttpUtils {
      * @param httpParams
      * @param httpCallBack
      */
-    public void getAsync(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public void getAsync(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         sendOnBeforeCallBack(httpParams, httpCallBack);
         Request request = createGetRequest(httpParams);
@@ -203,7 +214,7 @@ public class HttpUtils {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());
                     }
                 } else {
-                    sendFailCallBack(httpParams, httpCallBack, "");
+                    sendFailCallBack(httpParams, httpCallBack, response.message());
                 }
                 sendOnAfterCallBack(httpParams, httpCallBack);
             }
@@ -216,7 +227,7 @@ public class HttpUtils {
      * @param httpParams
      * @return
      */
-    private Request createGetRequest(IHttpParams httpParams) {
+    private Request createGetRequest(BaseHttpParams httpParams) {
         StringBuffer stringBuffer = new StringBuffer(httpParams.getHttpUrl());
         if (null != httpParams.getParam() && httpParams.getParam().size() > 0) {
             for (Map.Entry<String, Object> map : httpParams.getParam().entrySet()) {
@@ -242,7 +253,7 @@ public class HttpUtils {
      *
      * @param httpParams
      */
-    public void checkParams(IHttpParams httpParams) {
+    public void checkParams(BaseHttpParams httpParams) {
         if (null == httpParams) {
             throw new NullPointerException("httpParams is not null");
         }
@@ -258,7 +269,7 @@ public class HttpUtils {
      * @param httpParams
      * @param httpCallBack
      */
-    private void sendOnBeforeCallBack(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    private void sendOnBeforeCallBack(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         if (null != httpCallBack) {
             mHandler.post(new Runnable() {
                 @Override
@@ -275,7 +286,7 @@ public class HttpUtils {
      * @param httpParams
      * @param httpCallBack
      */
-    private void sendOnAfterCallBack(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    private void sendOnAfterCallBack(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         if (null != httpCallBack) {
             mHandler.post(new Runnable() {
                 @Override
@@ -293,7 +304,7 @@ public class HttpUtils {
      * @param httpCallBack
      * @param message
      */
-    private void sendFailCallBack(final IHttpParams httpParams, final IHttpCallBack httpCallBack, final String message) {
+    private void sendFailCallBack(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack, final String message) {
         if (null != httpCallBack) {
             if (httpParams.isAsyncBack()) {
                 httpCallBack.onFail(httpParams, message);
@@ -315,7 +326,7 @@ public class HttpUtils {
      * @param httpCallBack
      * @param body
      */
-    private void sendSuccessCallBack(final IHttpParams httpParams, final IHttpCallBack httpCallBack, final String body) {
+    private void sendSuccessCallBack(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack, final String body) {
         if (null != httpCallBack) {
             if (httpParams.isAsyncBack()) {
                 httpCallBack.onSuccess(httpParams, body);
@@ -334,7 +345,7 @@ public class HttpUtils {
     /************************************************************************************
      * 下载(start)
      ************************************************************************************/
-    public void download(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public void download(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         checkSaveFile(httpParams);
         Request.Builder builder = new Request.Builder();
@@ -375,14 +386,14 @@ public class HttpUtils {
                         HttpFileUtils.closeInputStream(is);
                     }
                 } else {
-                    sendFailCallBack(httpParams, httpCallBack, "");
+                    sendFailCallBack(httpParams, httpCallBack, response.message());
                 }
                 sendOnAfterCallBack(httpParams, httpCallBack);
             }
         });
     }
 
-    public void checkSaveFile(IHttpParams httpParams) {
+    public void checkSaveFile(BaseHttpParams httpParams) {
         if (TextUtils.isEmpty(httpParams.getSaveFilePath())) {
             httpParams.setSaveFilePath(FileUtils.getRootFilePath());
         }
@@ -400,7 +411,7 @@ public class HttpUtils {
      * 上传(start)
      ***********************************************************************************/
 
-    public void upload(final IHttpParams httpParams, final IHttpCallBack httpCallBack) {
+    public void upload(final BaseHttpParams httpParams, final IHttpCallBack httpCallBack) {
         checkParams(httpParams);
         Request request = createUploadRequest(httpParams, httpCallBack);
         OkHttpClient okHttpClient = mOkHttpClient.newBuilder()
@@ -429,14 +440,14 @@ public class HttpUtils {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());
                     }
                 } else {
-                    sendFailCallBack(httpParams, httpCallBack, "");
+                    sendFailCallBack(httpParams, httpCallBack, response.message());
                 }
                 sendOnAfterCallBack(httpParams, httpCallBack);
             }
         });
     }
 
-    private Request createUploadRequest(IHttpParams httpParams, IHttpCallBack httpCallBack) {
+    private Request createUploadRequest(BaseHttpParams httpParams, IHttpCallBack httpCallBack) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (null != httpParams.getParam() && httpParams.getParam().size() > 0) {
             File file = null;

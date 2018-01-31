@@ -1,7 +1,7 @@
 package com.library.network;
 
 import com.library.network.interfaces.IHttpCallBack;
-import com.library.network.interfaces.IHttpParams;
+import com.library.network.interfaces.BaseHttpParams;
 import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Response;
@@ -11,11 +11,11 @@ import okhttp3.Response;
  */
 class ResponseInterceptor implements Interceptor {
 
-    private IHttpParams mIHttpParams;
+    private BaseHttpParams mBaseHttpParams;
     private IHttpCallBack mIHttpCallBack;
 
-    public ResponseInterceptor(IHttpParams httpParams, IHttpCallBack httpCallBack) {
-        this.mIHttpParams = httpParams;
+    public ResponseInterceptor(BaseHttpParams httpParams, IHttpCallBack httpCallBack) {
+        this.mBaseHttpParams = httpParams;
         this.mIHttpCallBack = httpCallBack;
     }
 
@@ -25,7 +25,7 @@ class ResponseInterceptor implements Interceptor {
         Response originalResponse = chain.proceed(chain.request());
         //包装响应体并返回
         return originalResponse.newBuilder()
-                .body(new ProgressResponseBody(originalResponse.body(), new ProgressListener(mIHttpParams, mIHttpCallBack)))
+                .body(new ProgressResponseBody(originalResponse.body(), new ProgressListener(mBaseHttpParams, mIHttpCallBack)))
                 .build();
     }
 }

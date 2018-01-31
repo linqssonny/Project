@@ -1,7 +1,6 @@
 package com.library.base.dialog;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -39,8 +38,8 @@ public class LoadingDialog extends BaseDialog {
 
     @Override
     public void initUI(View view) {
-        mImageView = (ImageView) view.findViewById(R.id.iv_dialog_loading_img);
-        mTvMessage = (TextView) view.findViewById(R.id.tv_dialog_loading_message);
+        mImageView = view.findViewById(R.id.iv_dialog_loading_img);
+        mTvMessage = view.findViewById(R.id.tv_dialog_loading_message);
         mOperatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.dialog_loading_rotate);
         LinearInterpolator lin = new LinearInterpolator();
         mOperatingAnim.setInterpolator(lin);
