@@ -20,5 +20,10 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //http://lbs.amap.com/api/android-location-sdk/guide/create-project/dev-attention
+    //2D地图
+    compile 'com.amap.api:map2d:latest.integration'
+    //定位
+    compile 'com.amap.api:location:latest.integration'
     compile project(':utilslibs')
 }

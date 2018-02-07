@@ -71,11 +71,6 @@ public class ThreadActivity extends BaseActivity {
 
     private synchronized void setTextValue(String value){
         mStrValue.append(value).append("\n");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTvContent.setText(mStrValue.toString().trim());
-            }
-        });
+        runOnUiThread(() -> mTvContent.setText(mStrValue.toString().trim()));
     }
 }

@@ -53,7 +53,7 @@ public class RecyclerActivity extends BaseActivity {
         int color = getResources().getColor(R.color.gray);
         mRecyclerView.addItemDecoration(RecycleViewUtils.createHorizontalItemDecoration(dividerSize, color));
 
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);

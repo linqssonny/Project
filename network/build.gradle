@@ -20,6 +20,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //https://github.com/square/okhttp
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile project(':utilslibs')
 }
