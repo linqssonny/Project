@@ -8,8 +8,6 @@ import android.view.View;
 import com.library.base.BaseActivity;
 import com.library.crop.Crop;
 import com.library.crop.CropUtils;
-import com.library.utils.file.FileUtils;
-import com.library.utils.toast.ToastUtils;
 import com.sonny.project.db.DBActivity;
 import com.sonny.project.image.ImageActivity;
 import com.sonny.project.location.LocationActivity;
@@ -22,6 +20,9 @@ import com.sonny.project.sp.SpActivity;
 import com.sonny.project.thread.ThreadActivity;
 import com.sonny.project.utils.LUtils;
 import com.sonny.project.widget.WidgetActivity;
+import com.sonnyjack.utils.date.DateUtils;
+import com.sonnyjack.utils.system.SystemUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 import java.io.File;
 
@@ -135,8 +136,8 @@ public class MainActivity extends BaseActivity {
     private Crop createCrop() {
         Crop crop = new Crop(this);
         crop.setRequestCode(1000);
-        crop.setSourcePath(FileUtils.getRootFilePath() + File.separator + "a.png");
-        mCropImageUrl = FileUtils.getRootFilePath() + File.separator + FileUtils.createFileNameByDateTime() + ".png";
+        crop.setSourcePath(SystemUtils.getRootFolderAbsolutePath() + File.separator + "a.png");
+        mCropImageUrl = SystemUtils.getRootFolderAbsolutePath() + File.separator + DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
         crop.setOutputFile(mCropImageUrl);
         //裁剪框不可移动
         crop.setFreeCrop(false);

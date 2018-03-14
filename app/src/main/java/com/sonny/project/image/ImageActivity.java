@@ -6,15 +6,17 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.library.base.permission.PermissionUtils;
 import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.image.photo.ChoosePhotoActivity;
 import com.library.image.photo.bean.Image;
 import com.library.image.photoview.PreviewPhotoActivity;
 import com.library.image.utils.ImageUtils;
-import com.library.utils.file.FileUtils;
-import com.library.utils.permission.PermissionUtils;
-import com.library.utils.toast.ToastUtils;
+import com.sonnyjack.utils.date.DateUtils;
+import com.sonnyjack.utils.file.FileUtils;
+import com.sonnyjack.utils.system.SystemUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -129,9 +131,9 @@ public class ImageActivity extends BaseActivity {
             //选中的图片
             intent.putParcelableArrayListExtra(ChoosePhotoActivity.IMAGE_SELECT, mSelect);
 
-            File file = new File(FileUtils.getRootFilePath() + File.separator + "Project");
+            File file = new File(SystemUtils.getRootFolderAbsolutePath() + File.separator + "Project");
             file.mkdirs();
-            file = new File(file.getAbsolutePath(), FileUtils.createFileNameByDateTime() + ".png");
+            file = new File(file.getAbsolutePath(), DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png");
             //拍照  自定义存储地址
             intent.putExtra(ChoosePhotoActivity.CAMERA_PATH, file.getAbsolutePath());
             startActivityForResult(intent, 101);

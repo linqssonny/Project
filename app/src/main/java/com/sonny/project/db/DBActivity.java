@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.base.db.SQLiteHelper;
-import com.library.utils.toast.ToastUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 /**
  * Created by admin on 2016/11/8.

@@ -8,8 +8,8 @@ import android.text.TextUtils;
 
 import com.library.share.config.ShareConfig;
 import com.library.share.interfaces.IShareDownloadCallBack;
-import com.library.utils.bitmap.BitmapUtils;
-import com.library.utils.file.StreamUtils;
+import com.sonnyjack.utils.bitmap.BitmapUtils;
+import com.sonnyjack.utils.stream.StreamUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public class ShareDownload {
             httpURLConnection.setRequestMethod("GET");
             InputStream inputStream = httpURLConnection.getInputStream();
             if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                byte[] bytes = StreamUtils.readStream(inputStream);
+                byte[] bytes = StreamUtils.stream2Bytes(inputStream);
                 StreamUtils.close(inputStream);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 executeDownloadSuccess(activity, iShareDownloadCallBack, imageUrl, bitmap);

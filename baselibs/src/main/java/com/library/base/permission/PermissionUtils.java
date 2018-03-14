@@ -1,4 +1,4 @@
-package com.library.utils.permission;
+package com.library.base.permission;
 
 import android.Manifest;
 import android.app.Activity;

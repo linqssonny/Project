@@ -10,7 +10,7 @@ import com.sonny.project.R;
 import com.library.image.utils.ImageUtils;
 import com.library.recycleview.CommonViewHolder;
 import com.library.recycleview.CommonAdapter;
-import com.library.utils.log.LogUtils;
+import com.sonnyjack.utils.log.LogUtils;
 
 import java.util.List;
 

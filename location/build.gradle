@@ -25,5 +25,5 @@ dependencies {
     compile 'com.amap.api:map2d:latest.integration'
     //定位
     compile 'com.amap.api:location:latest.integration'
-    compile project(':utilslibs')
+    compile 'com.android.support:appcompat-v7:26.0.2'
 }

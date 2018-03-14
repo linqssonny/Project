@@ -19,10 +19,13 @@ import com.library.image.R;
 import com.library.image.photo.bean.Image;
 import com.library.image.photo.bean.ImageFolder;
 import com.library.image.photoview.PreviewPhotoActivity;
-import com.library.utils.file.FileUtils;
+import com.sonnyjack.utils.date.DateUtils;
+import com.sonnyjack.utils.file.FileUtils;
+import com.sonnyjack.utils.system.SystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by admin on 2016/6/29.
@@ -229,8 +232,8 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
     private void takeCamera() {
         File file;
         if (TextUtils.isEmpty(mCameraPath)) {
-            mCameraPath = FileUtils.getRootFilePath();
-            String fileName = FileUtils.createFileNameByDateTime() + ".png";
+            mCameraPath = SystemUtils.getRootFolderAbsolutePath();
+            String fileName = DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
             file = new File(mCameraPath, fileName);
             mCameraPath = file.getAbsolutePath();
         } else {

@@ -3,8 +3,8 @@ package com.sonny.project.network;
 import android.view.View;
 
 import com.library.base.BaseActivity;
-import com.library.utils.toast.ToastUtils;
 import com.sonny.project.R;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 /**
  * Created by linqs on 2016/8/10.

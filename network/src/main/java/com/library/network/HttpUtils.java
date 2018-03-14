@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import com.library.network.interfaces.BaseHttpParams;
 import com.library.network.interfaces.IHttpCallBack;
 import com.library.network.utils.HttpFileUtils;
-import com.library.utils.file.FileUtils;
+import com.sonnyjack.utils.date.DateUtils;
+import com.sonnyjack.utils.file.FileUtils;
+import com.sonnyjack.utils.system.SystemUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -395,10 +397,10 @@ public class HttpUtils {
 
     public void checkSaveFile(BaseHttpParams httpParams) {
         if (TextUtils.isEmpty(httpParams.getSaveFilePath())) {
-            httpParams.setSaveFilePath(FileUtils.getRootFilePath());
+            httpParams.setSaveFilePath(SystemUtils.getRootFolderAbsolutePath());
         }
         if (TextUtils.isEmpty(httpParams.getSaveFileName())) {
-            httpParams.setSaveFileName(FileUtils.createFileNameByDateTime());
+            httpParams.setSaveFileName(DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT));
         }
     }
 

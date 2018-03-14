@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.library.base.permission.PermissionUtils;
 import com.sonny.project.R;
 import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 import com.library.qrcode.QrCodeUtils;
-import com.library.utils.screen.DensityUtils;
-import com.library.utils.permission.PermissionUtils;
+import com.sonnyjack.utils.density.DensityUtils;
 
 /**
  * 扫描二维码

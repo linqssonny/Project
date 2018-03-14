@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.library.share.bean.ShareItem;
 import com.library.share.utils.ShareUtils;
-import com.library.utils.bitmap.BitmapUtils;
+import com.sonnyjack.utils.bitmap.BitmapUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
@@ -44,7 +44,7 @@ class WXShareLogin {
         WXMediaMessage wxMediaMessage = new WXMediaMessage();
         Bitmap bitmap = ShareUtils.createAppointBitmap(thumb, 32);
         if (null != bitmap) {
-            wxMediaMessage.thumbData = BitmapUtils.bitmap2Bytes(bitmap);
+            wxMediaMessage.thumbData = BitmapUtils.bitmap2Bytes(bitmap, 100);
             BitmapUtils.recycleBitmap(bitmap);
         }
         switch (shareItem.getType()) {

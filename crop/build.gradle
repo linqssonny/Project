@@ -22,5 +22,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //https://github.com/Yalantis/uCrop
     compile 'com.github.yalantis:ucrop:2.2.1'
-    compile project(':utilslibs')
+    compile 'com.android.support:appcompat-v7:26.0.2'
 }

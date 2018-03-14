@@ -12,11 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.library.utils.AppUtils;
-import com.library.utils.ListUtils;
-import com.library.utils.log.LogUtils;
-import com.library.utils.permission.PermissionUtils;
-import com.library.utils.toast.ToastUtils;
+import com.library.base.permission.PermissionUtils;
+import com.sonnyjack.utils.app.AppUtils;
+import com.sonnyjack.utils.collection.CollectionUtils;
+import com.sonnyjack.utils.log.LogUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,19 +69,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         addOnClick(view);
     }
 
-    public void showMessage(int value) {
-        showMessage(getString(value));
-    }
-
     public void showMessage(final String value) {
-        toastMessage(Toast.LENGTH_SHORT, value);
-    }
-
-    public void toastMessage(final int duration, final String value) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtils.show(getActivity(), value, duration);
+                ToastUtils.showShortMsg(getActivity(), value);
             }
         });
     }
@@ -94,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         log(getClass().getSimpleName() + " is onCreate");
-        AppUtils.getInstance().addActivityToStack(this);
+        AppUtils.getInstance().addActivity(this);
         mMainHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -150,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onDestroy() {
-        AppUtils.getInstance().removeActivityFromStack(this);
+        AppUtils.getInstance().removeActivity(this);
         super.onDestroy();
         log(getClass().getSimpleName() + " is onDestroy");
     }
@@ -169,9 +161,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * start 6.0权限问题
      ***********************************************************************/
 
-    public void requestPermissions(int requestCode, int... actions) {
+    public void requestPermissions(int requestCode, Integer... actions) {
         List<String> permissionsList = new ArrayList<>();
-        if (ListUtils.isEmptyForArray(actions)) {
+        if (CollectionUtils.isEmpty(actions)) {
             throw new IllegalStateException("the actions value is valid");
         }
         for (int i = 0; i < actions.length; i++) {

@@ -10,8 +10,8 @@ import com.sonny.project.R;
 import com.library.base.BaseActivity;
 import com.library.recycleview.IRecycleOnItemListener;
 import com.library.recycleview.utils.RecycleViewUtils;
-import com.library.utils.screen.DensityUtils;
-import com.library.utils.toast.ToastUtils;
+import com.sonnyjack.utils.density.DensityUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;

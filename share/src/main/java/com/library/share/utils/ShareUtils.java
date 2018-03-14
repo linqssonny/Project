@@ -3,8 +3,8 @@ package com.library.share.utils;
 import android.app.Activity;
 import android.graphics.Bitmap;
 
-import com.library.utils.bitmap.BitmapUtils;
-import com.library.utils.screen.ScreenUtils;
+import com.sonnyjack.utils.bitmap.BitmapUtils;
+import com.sonnyjack.utils.screen.ScreenUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

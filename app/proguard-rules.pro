@@ -17,6 +17,8 @@
 #}
 #https://www.jianshu.com/p/44e3b127393e  博文
 #https://www.jianshu.com/p/f3455ecaa56e  博文
+#https://www.jianshu.com/p/be7ec1819d2f  博文
+#http://blog.csdn.net/guolin_blog/article/details/50451259
 
 #---------------------------------1.实体类---------------------------------
 
@@ -32,7 +34,7 @@
 -keep interface com.yalantis.ucrop.** { *; }
 
 # image库(包含glide、photoview)
--keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * implements com.bumptech.glide.module.glidemodule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
   **[] $VALUES;

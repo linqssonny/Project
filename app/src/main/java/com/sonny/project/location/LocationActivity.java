@@ -6,13 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.library.base.BaseActivity;
+import com.library.base.permission.PermissionUtils;
 import com.library.location.ILocationCallBack;
 import com.library.location.LocationBean;
 import com.library.location.LocationHelper;
 import com.library.location.SonnyMapView;
-import com.library.utils.permission.PermissionUtils;
-import com.library.utils.toast.ToastUtils;
 import com.sonny.project.R;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 /**
  * Created by admin on 2016/11/9.

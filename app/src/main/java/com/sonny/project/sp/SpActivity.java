@@ -6,8 +6,8 @@ import android.widget.EditText;
 
 import com.sonny.project.R;
 import com.library.base.BaseActivity;
-import com.library.utils.sp.SPUtils;
-import com.library.utils.toast.ToastUtils;
+import com.sonnyjack.utils.sp.SPUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 /**
  * SharedPreferences用法

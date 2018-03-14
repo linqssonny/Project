@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.library.utils.log.LogUtils;
+import com.sonnyjack.utils.log.LogUtils;
+
 
 /**
  * Created by admin on 2016/5/10.

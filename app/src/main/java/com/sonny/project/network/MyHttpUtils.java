@@ -3,8 +3,9 @@ package com.sonny.project.network;
 import android.content.Context;
 
 import com.library.network.HttpUtils;
-import com.library.utils.file.FileUtils;
-import com.library.utils.log.LogUtils;
+import com.sonnyjack.utils.file.FileUtils;
+import com.sonnyjack.utils.log.LogUtils;
+import com.sonnyjack.utils.system.SystemUtils;
 
 /**
  * Created by linqs on 2016/8/10.
@@ -46,8 +47,8 @@ public class MyHttpUtils {
         //不显示等待匡
         httpParams.setLoading(true);
         httpParams.setHttpUrl("http://dldir1.qq.com/weixin/android/weixin661android1220_1.apk");
-        httpParams.setSaveFilePath(FileUtils.getRootFilePath());
-        httpParams.setSaveFileName(FileUtils.buildFileNameByPath(httpParams.getHttpUrl()));
+        httpParams.setSaveFilePath(SystemUtils.getRootFolderAbsolutePath());
+        httpParams.setSaveFileName(FileUtils.buildFileNameByUrl(httpParams.getHttpUrl()));
         HttpUtils.getInstances().download(httpParams, httpCallBack);
     }
 

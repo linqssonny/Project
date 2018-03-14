@@ -26,5 +26,6 @@ dependencies {
     //微信  第一个包含统计功能
     //compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:0.0.8'
-    compile project(':utilslibs')
+    compile 'com.android.support:appcompat-v7:26.0.2'
+    compile 'com.sonnyjack.utils:Utils:0.1.0'
 }

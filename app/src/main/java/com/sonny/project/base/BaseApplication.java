@@ -6,9 +6,9 @@ import com.library.base.db.ISQLiteCallBackListener;
 import com.library.base.db.SQLiteHelper;
 import com.library.location.LocationHelper;
 import com.library.share.ShareHelper;
-import com.library.utils.sp.SPUtils;
 import com.sonny.project.db.DBTable;
 import com.sonny.project.utils.LUtils;
+import com.sonnyjack.utils.sp.SPUtils;
 
 /**
  * Created by linqs on 2016/8/7.
