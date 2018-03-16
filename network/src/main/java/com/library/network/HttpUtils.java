@@ -400,7 +400,7 @@ public class HttpUtils {
             httpParams.setSaveFilePath(SystemUtils.getRootFolderAbsolutePath());
         }
         if (TextUtils.isEmpty(httpParams.getSaveFileName())) {
-            httpParams.setSaveFileName(DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT));
+            httpParams.setSaveFileName(DateUtils.buildCurrentDateString(DateUtils.DEFAULT_MILLISECOND_FORMAT));
         }
     }
 

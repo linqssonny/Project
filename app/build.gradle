@@ -47,22 +47,22 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':image')
-    compile project(':network')
-    compile project(':share')
-    compile project(':qrcode')
-    compile project(':baselibs')
-    compile project(':refresh')
-    compile project(':crop')
-    compile project(':location')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':image')
+    api project(':network')
+    api project(':share')
+    api project(':qrcode')
+    api project(':baselibs')
+    api project(':refresh')
+    api project(':crop')
+    api project(':location')
 
     //圆形进度条
-    compile ('com.sonnyjack.widget:RoundProgressView:0.1.0') {
+    implementation ('com.sonnyjack.widget:RoundProgressView:0.1.0') {
         exclude(group: 'com.android.support', module: 'appcompat-v7')
     }
     //可拖动View
-    compile('com.sonnyjack.widget:DrawView:0.1.0') {
+    implementation('com.sonnyjack.widget:DrawView:0.1.0') {
         exclude(group: 'com.android.support', module: 'appcompat-v7')
     }
 }

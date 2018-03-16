@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity {
         Crop crop = new Crop(this);
         crop.setRequestCode(1000);
         crop.setSourcePath(SystemUtils.getRootFolderAbsolutePath() + File.separator + "a.png");
-        mCropImageUrl = SystemUtils.getRootFolderAbsolutePath() + File.separator + DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
+        mCropImageUrl = SystemUtils.getRootFolderAbsolutePath() + File.separator + DateUtils.buildCurrentDateString(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
         crop.setOutputFile(mCropImageUrl);
         //裁剪框不可移动
         crop.setFreeCrop(false);

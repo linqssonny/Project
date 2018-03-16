@@ -233,7 +233,7 @@ public class ChoosePhotoActivity extends AppCompatActivity implements View.OnCli
         File file;
         if (TextUtils.isEmpty(mCameraPath)) {
             mCameraPath = SystemUtils.getRootFolderAbsolutePath();
-            String fileName = DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
+            String fileName = DateUtils.buildCurrentDateString(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png";
             file = new File(mCameraPath, fileName);
             mCameraPath = file.getAbsolutePath();
         } else {

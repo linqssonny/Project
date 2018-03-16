@@ -8,7 +8,6 @@ import com.library.location.LocationHelper;
 import com.library.share.ShareHelper;
 import com.sonny.project.db.DBTable;
 import com.sonny.project.utils.LUtils;
-import com.sonnyjack.utils.sp.SPUtils;
 
 /**
  * Created by linqs on 2016/8/7.
@@ -55,7 +54,7 @@ public class BaseApplication extends com.library.base.BaseApplication {
     }
 
     private void initSP() {
-        SPUtils.getInstance().init(getApplicationContext());
+        //SPUtils.getInstance().init(getApplicationContext());
         //可以自定义文件名字
         //SPUtils.getInstance().init(getApplicationContext(),"sp_file_name");
     }

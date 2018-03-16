@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile 'com.sonnyjack.utils:Utils:0.1.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
+    api 'com.sonnyjack.utils:Utils:0.1.1'
 }

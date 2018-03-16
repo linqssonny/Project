@@ -10,10 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.library.base.permission.PermissionUtils;
-import com.sonnyjack.utils.app.AppUtils;
+import com.sonnyjack.utils.app.ActivityUtils;
 import com.sonnyjack.utils.collection.CollectionUtils;
 import com.sonnyjack.utils.log.LogUtils;
 import com.sonnyjack.utils.toast.ToastUtils;
@@ -86,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         log(getClass().getSimpleName() + " is onCreate");
-        AppUtils.getInstance().addActivity(this);
+        ActivityUtils.getInstance().addActivity(this);
         mMainHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -142,7 +141,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onDestroy() {
-        AppUtils.getInstance().removeActivity(this);
+        ActivityUtils.getInstance().removeActivity(this);
         super.onDestroy();
         log(getClass().getSimpleName() + " is onDestroy");
     }

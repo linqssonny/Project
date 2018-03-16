@@ -6,15 +6,14 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.library.base.permission.PermissionUtils;
-import com.sonny.project.R;
 import com.library.base.BaseActivity;
+import com.library.base.permission.PermissionUtils;
 import com.library.image.photo.ChoosePhotoActivity;
 import com.library.image.photo.bean.Image;
 import com.library.image.photoview.PreviewPhotoActivity;
 import com.library.image.utils.ImageUtils;
+import com.sonny.project.R;
 import com.sonnyjack.utils.date.DateUtils;
-import com.sonnyjack.utils.file.FileUtils;
 import com.sonnyjack.utils.system.SystemUtils;
 import com.sonnyjack.utils.toast.ToastUtils;
 
@@ -133,7 +132,7 @@ public class ImageActivity extends BaseActivity {
 
             File file = new File(SystemUtils.getRootFolderAbsolutePath() + File.separator + "Project");
             file.mkdirs();
-            file = new File(file.getAbsolutePath(), DateUtils.format(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png");
+            file = new File(file.getAbsolutePath(), DateUtils.buildCurrentDateString(DateUtils.DEFAULT_MILLISECOND_FORMAT) + ".png");
             //拍照  自定义存储地址
             intent.putExtra(ChoosePhotoActivity.CAMERA_PATH, file.getAbsolutePath());
             startActivityForResult(intent, 101);

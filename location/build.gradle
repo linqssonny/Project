@@ -19,11 +19,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     //http://lbs.amap.com/api/android-location-sdk/guide/create-project/dev-attention
     //2D地图
-    compile 'com.amap.api:map2d:latest.integration'
+    api 'com.amap.api:map2d:latest.integration'
     //定位
-    compile 'com.amap.api:location:latest.integration'
-    compile 'com.android.support:appcompat-v7:26.0.2'
+    api 'com.amap.api:location:latest.integration'
+    api "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
 }
