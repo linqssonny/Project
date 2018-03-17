@@ -64,7 +64,7 @@ class FolderPopAdapter extends BaseAdapter {
         ImageFolder imageFolder = mFolderList.get(position);
         String firstImgPath = imageFolder.getFirstImgPath();
         if (!TextUtils.isEmpty(firstImgPath)) {
-            ImageUtils.displayImage(mContext, firstImgPath, viewHolder.mIvImage);
+            ImageUtils.getInstances().displayImage(mContext, firstImgPath, viewHolder.mIvImage);
         }
         viewHolder.mTvFolderName.setText(imageFolder.getFolderName());
         viewHolder.mTvFolderNum.setText(mContext.getString(R.string.image_choose_photo_num, String.valueOf(imageFolder.getNum())));

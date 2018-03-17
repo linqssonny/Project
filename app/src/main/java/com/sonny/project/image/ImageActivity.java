@@ -1,6 +1,7 @@
 package com.sonny.project.image;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -11,6 +12,8 @@ import com.library.base.permission.PermissionUtils;
 import com.library.image.photo.ChoosePhotoActivity;
 import com.library.image.photo.bean.Image;
 import com.library.image.photoview.PreviewPhotoActivity;
+import com.library.image.utils.ImageDisplayOption;
+import com.library.image.utils.ImageDownloadCallBack;
 import com.library.image.utils.ImageUtils;
 import com.sonny.project.R;
 import com.sonnyjack.utils.date.DateUtils;
@@ -51,6 +54,11 @@ public class ImageActivity extends BaseActivity {
         addOnClick(R.id.btn_image_select);
 
         addOnClick(mIvImg);
+
+        //init image display config
+        ImageDisplayOption imageDisplayOption = new ImageDisplayOption();
+        imageDisplayOption.setError(R.mipmap.ic_launcher);
+        ImageUtils.getInstances().init(imageDisplayOption);
     }
 
     @Override
@@ -58,17 +66,25 @@ public class ImageActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_image_show:
                 //显示图片
-                ImageUtils.displayImage(this, mImgUrl, mIvImg);
+                ImageUtils.getInstances().displayImage(this, mImgUrl, mIvImg);
                 //ImageUtils.displayImage(this, R.drawable.icon_image_show, mIvImg);
                 break;
             case R.id.btn_image_circle:
                 //圆形图片
-                ImageUtils.displayCircleImage(this, R.drawable.icon_image_show, mIvImg);
+                //ImageUtils.displayCircleImage(this, R.drawable.icon_image_show, mIvImg);
                 //本地图片圆角
                 //ImageUtils.displayCircleImage(this, mImgUrl, mIvImg);
 
                 //圆角 自定义半径
-                //ImageUtils.displayRadiusImage(this, R.drawable.icon_image_show, mIvImg, 20.0f);
+                ImageUtils.getInstances().displayRadiusImage(this, R.drawable.icon_image_show, mIvImg, 50);
+
+                //下载图片
+                /*ImageUtils.getInstances().download(this, mImgUrl, 2000, 2000, new ImageDownloadCallBack() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        mIvImg.setImageBitmap(bitmap);
+                    }
+                });*/
                 break;
             case R.id.iv_image_img:
                 //点击图片预览
@@ -119,7 +135,7 @@ public class ImageActivity extends BaseActivity {
     @Override
     public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.requestPermissionsSuccess(requestCode, permissions, grantResults);
-        if(3000 == requestCode){
+        if (3000 == requestCode) {
             //选择图片
             Intent intent = new Intent(this, ChoosePhotoActivity.class);
             //每行显示图片张数
@@ -142,7 +158,7 @@ public class ImageActivity extends BaseActivity {
     @Override
     public void requestPermissionsFail(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.requestPermissionsFail(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case 3000:
                 //
                 showMessage("请在应用管理中打开拍照权限");

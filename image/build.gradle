@@ -21,7 +21,9 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     //https://github.com/bumptech/glide
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation('com.github.bumptech.glide:glide:4.6.1') {
+        exclude group: "com.android.support"
+    }
     //https://github.com/chrisbanes/PhotoView
     api('com.github.chrisbanes.photoview:library:1.2.4') {
         exclude(group: 'com.android.support', module: 'support-v4')

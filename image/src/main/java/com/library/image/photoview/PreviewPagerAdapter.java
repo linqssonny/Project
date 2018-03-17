@@ -45,7 +45,7 @@ class PreviewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         Image image = mImageList.get(position);
         PhotoView photoView = new PhotoView(mContext);
-        ImageUtils.displayImage(mContext, image.getThumbnailPath(), photoView);
+        ImageUtils.getInstances().displayImage(mContext, image.getThumbnailPath(), photoView);
         container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return photoView;
     }

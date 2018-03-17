@@ -24,9 +24,8 @@
 
 #---------------------------------2.第三方包-------------------------------
 # utils库
--dontwarn com.library.utils.**
--keep class com.library.utils.** {*;}
--keep interface com.library.utils.** {*;}
+-dontwarn com.sonnyjack.utils.**
+-keep class com.sonnyjack.utils.** {*;}
 
 # crop库
 -dontwarn com.yalantis.ucrop.**
@@ -40,12 +39,17 @@
   **[] $VALUES;
   public *;
 }
+#如果你的 target API 低于 Android API 27，请添加：
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
 # for DexGuard only
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # photoview
 -dontwarn uk.co.senab.photoview.**
 -keep class uk.co.senab.photoview.** { *; }
+
+-dontwarn com.library.image.**
+-keep class com.library.image.** { *; }
 
 # location
 #定位

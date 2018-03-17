@@ -145,7 +145,7 @@ class ImageAdapter extends BaseAdapter {
             });
         } else {
             //图片
-            ImageUtils.displayImage(mContext, image.getThumbnailPath(), viewHolder.mIvImage);
+            ImageUtils.getInstances().getInstances().displayImage(mContext, image.getThumbnailPath(), viewHolder.mIvImage);
             viewHolder.mChkBox.setOnCheckedChangeListener(null);
             if (mSelectList.contains(image)) {
                 viewHolder.mChkBox.setChecked(true);

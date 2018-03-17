@@ -49,7 +49,7 @@ public class RecyclerAdapter extends CommonAdapter<String> {
             textView.setText(item);
         } else {
             ImageView imageView = viewHolder.getView(R.id.iv_recycle_content);
-            ImageUtils.displayImage(mContext, getItem(position), imageView);
+            ImageUtils.getInstances().displayImage(mContext, getItem(position), imageView);
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
