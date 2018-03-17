@@ -42,7 +42,7 @@ public class HttpUtils {
 
     private OkHttpClient mOkHttpClient = null;
     private long DEFAULT_TIME = 30;//默认http请求时间30秒
-    private long DEFAULT_DOWNLOAD_TIME = 600;//默认下载超时60秒
+    private long DEFAULT_DOWNLOAD_TIME = 600;//默认下载超时600秒
 
     private Handler mHandler;
 
@@ -239,7 +239,8 @@ public class HttpUtils {
                 } else {
                     stringBuffer.append("?");
                 }
-                stringBuffer.append(map.getKey()).append("=").append(map.getValue().toString());
+                String value = null == map.getValue() ? "" : map.getValue().toString();
+                stringBuffer.append(map.getKey()).append("=").append(value);
             }
         }
         Request.Builder b = new Request.Builder();
@@ -467,7 +468,8 @@ public class HttpUtils {
                     builder.addFormDataPart(map.getKey(), fileName, RequestBody.create(MediaType.parse(HttpFileUtils.guessMimeType(fileName)), file));
                 } else {
                     //添加普通参数
-                    builder.addFormDataPart(map.getKey(), map.getValue().toString());
+                    String value = null == map.getValue() ? "" : map.getValue().toString();
+                    builder.addFormDataPart(map.getKey(), value);
                 }
             }
         }
