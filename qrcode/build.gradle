@@ -22,5 +22,5 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
     //https://github.com/zxing/zxing
-    implementation 'com.google.zxing:core:3.3.1'
+    implementation 'com.google.zxing:core:3.3.2'
 }
