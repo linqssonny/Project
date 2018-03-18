@@ -6,10 +6,6 @@ import android.text.TextUtils;
 
 import com.library.network.interfaces.BaseHttpParams;
 import com.library.network.interfaces.IHttpCallBack;
-import com.library.network.utils.HttpFileUtils;
-import com.sonnyjack.utils.date.DateUtils;
-import com.sonnyjack.utils.file.FileUtils;
-import com.sonnyjack.utils.system.SystemUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -380,9 +376,13 @@ public class HttpUtils {
                     try {
                         //获取返回体（流的形式）
                         is = response.body().byteStream();
-                        FileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
-                        String filePath = new File(httpParams.getSaveFilePath(), httpParams.getSaveFileName()).getAbsolutePath();
-                        sendSuccessCallBack(httpParams, httpCallBack, filePath);
+                        boolean success = HttpFileUtils.saveFile(is, httpParams.getSaveFilePath(), httpParams.getSaveFileName());
+                        if (success) {
+                            String filePath = new File(httpParams.getSaveFilePath(), httpParams.getSaveFileName()).getAbsolutePath();
+                            sendSuccessCallBack(httpParams, httpCallBack, filePath);
+                        } else {
+                            sendFailCallBack(httpParams, httpCallBack, "save file fail");
+                        }
                     } catch (Exception e) {
                         sendFailCallBack(httpParams, httpCallBack, e.getMessage());
                     } finally {
@@ -398,10 +398,10 @@ public class HttpUtils {
 
     public void checkSaveFile(BaseHttpParams httpParams) {
         if (TextUtils.isEmpty(httpParams.getSaveFilePath())) {
-            httpParams.setSaveFilePath(SystemUtils.getRootFolderAbsolutePath());
+            httpParams.setSaveFilePath(HttpFileUtils.getRootFolderAbsolutePath());
         }
         if (TextUtils.isEmpty(httpParams.getSaveFileName())) {
-            httpParams.setSaveFileName(DateUtils.buildCurrentDateString(DateUtils.DEFAULT_MILLISECOND_FORMAT));
+            httpParams.setSaveFileName(String.valueOf(System.currentTimeMillis()));
         }
     }
 

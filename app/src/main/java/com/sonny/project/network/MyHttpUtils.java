@@ -6,6 +6,7 @@ import com.library.network.HttpUtils;
 import com.sonnyjack.utils.file.FileUtils;
 import com.sonnyjack.utils.log.LogUtils;
 import com.sonnyjack.utils.system.SystemUtils;
+import com.sonnyjack.utils.toast.ToastUtils;
 
 /**
  * Created by linqs on 2016/8/10.
@@ -30,6 +31,14 @@ public class MyHttpUtils {
             @Override
             public void onSuccess(HttpParams httpParams, String body) {
                 LogUtils.d(body);
+                ToastUtils.showMsgInCenter(context, body);
+            }
+
+            @Override
+            public void onFail(HttpParams httpParams, String message) {
+                super.onFail(httpParams, message);
+                LogUtils.d(message);
+                ToastUtils.showMsgInCenter(context, message);
             }
         });
 

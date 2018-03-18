@@ -11,7 +11,7 @@ import com.library.share.bean.ShareItem;
 import com.library.share.download.ShareDownload;
 import com.library.share.interfaces.IShareDownloadCallBack;
 import com.library.share.interfaces.ShareCallBack;
-import com.library.share.utils.ShareUtils;
+import com.sonnyjack.utils.bitmap.BitmapUtils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.tauth.Tencent;
 
@@ -125,7 +125,7 @@ public class ShareHelper {
 
                 @Override
                 public void downloadSuccess(String originImageUrl, Bitmap bitmap) {
-                    Bitmap thumb = ShareUtils.createAppointBitmap(bitmap, 32);
+                    Bitmap thumb = BitmapUtils.createThumbBitmap(bitmap, 32);
                     shareToWeChat(activity, shareItem, thumb, scene);
                 }
             });
@@ -154,7 +154,7 @@ public class ShareHelper {
             public void downloadSuccess(String originImageUrl, Bitmap bitmap) {
                 Bitmap newThumb = thumb;
                 if (null == newThumb || newThumb.isRecycled()) {
-                    newThumb = ShareUtils.createAppointBitmap(bitmap, 32);
+                    newThumb = BitmapUtils.createThumbBitmap(bitmap, 32);
                 }
                 WXShareLogin.shareToWeChat(activity, shareItem, bitmap, newThumb, scene);
             }
