@@ -1,20 +1,23 @@
 package com.sonny.project.qrcode;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.library.base.permission.PermissionUtils;
-import com.sonny.project.R;
 import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
 import com.library.qrcode.QrCodeUtils;
+import com.sonny.project.R;
+import com.sonnyjack.permission.IRequestPermissionCallBack;
+import com.sonnyjack.permission.PermissionUtils;
 import com.sonnyjack.utils.density.DensityUtils;
+
+import java.util.ArrayList;
 
 /**
  * 扫描二维码
@@ -35,8 +38,8 @@ public class QrCodeActivity extends BaseActivity {
 
     @Override
     public void initUI() {
-        mTvValue = (TextView) findViewById(R.id.tv_qr_code_value);
-        mIvImg = (ImageView) findViewById(R.id.iv_qr_code_img);
+        mTvValue = findViewById(R.id.tv_qr_code_value);
+        mIvImg = findViewById(R.id.iv_qr_code_img);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class QrCodeActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.btn_qr_code_scan:
                 //扫描二维码/条形码
-                requestPermissions(3000, PermissionUtils.PERMISSION_GROUP_CAMERA);
+                scanQrCode();
                 break;
             case R.id.btn_qr_code_decode:
                 //生成二维码
@@ -73,6 +76,23 @@ public class QrCodeActivity extends BaseActivity {
                 startActivity(intent);
             }
         }
+    }
+
+    private void scanQrCode() {
+        ArrayList<String> permissionList = new ArrayList<>();
+        permissionList.add(Manifest.permission.CAMERA);
+        PermissionUtils.getInstances().requestPermission(getActivity(), permissionList, new IRequestPermissionCallBack() {
+            @Override
+            public void onGranted() {
+                //扫描二维码/条形码
+                startActivityForResult(new Intent(getActivity(), CaptureActivity.class), REQUESTCODE);
+            }
+
+            @Override
+            public void onDenied() {
+                showMessage("请在应用管理中打开拍照权限");
+            }
+        });
     }
 
     private void readerQrCodeBitmap(Bitmap bitmap) {
@@ -123,28 +143,6 @@ public class QrCodeActivity extends BaseActivity {
                     mTvValue.setText(data.getStringExtra(CaptureActivity.QR_CODE_RESULT));
                     break;
             }
-        }
-    }
-
-    @Override
-    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.requestPermissionsSuccess(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 3000:
-                //扫描二维码/条形码
-                startActivityForResult(new Intent(this, CaptureActivity.class), REQUESTCODE);
-                break;
-        }
-    }
-
-    @Override
-    public void requestPermissionsFail(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.requestPermissionsFail(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 3000:
-                //
-                showMessage("请在应用管理中打开拍照权限");
-                break;
         }
     }
 }

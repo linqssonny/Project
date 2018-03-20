@@ -1,18 +1,21 @@
 package com.sonny.project.location;
 
+import android.Manifest;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.library.base.BaseActivity;
-import com.library.base.permission.PermissionUtils;
 import com.library.location.ILocationCallBack;
 import com.library.location.LocationBean;
 import com.library.location.LocationHelper;
 import com.library.location.SonnyMapView;
 import com.sonny.project.R;
+import com.sonnyjack.permission.IRequestPermissionCallBack;
+import com.sonnyjack.permission.PermissionUtils;
 import com.sonnyjack.utils.toast.ToastUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by admin on 2016/11/9.
@@ -35,7 +38,7 @@ public class LocationActivity extends BaseActivity implements ILocationCallBack 
 
     @Override
     public void initUI() {
-        mSonnyMapView = (SonnyMapView) findViewById(R.id.map_view_location);
+        mSonnyMapView = findViewById(R.id.map_view_location);
     }
 
     @Override
@@ -50,17 +53,20 @@ public class LocationActivity extends BaseActivity implements ILocationCallBack 
 
     private void startLocation() {
         //开始定位
-        requestPermissions(1000, PermissionUtils.PERMISSION_GROUP_LOCATION, PermissionUtils.PERMISSION_GROUP_STORAGE, PermissionUtils.PERMISSION_GROUP_PHONE);
-    }
+        ArrayList<String> permissionList = new ArrayList<>();
+        permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        PermissionUtils.getInstances().requestPermission(getActivity(), permissionList, new IRequestPermissionCallBack() {
+            @Override
+            public void onGranted() {
+                LocationHelper.getInstances().startLocation(LocationActivity.this::locationComplete);
+            }
 
-    @Override
-    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.requestPermissionsSuccess(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1000:
-                LocationHelper.getInstances().startLocation(this);
-                break;
-        }
+            @Override
+            public void onDenied() {
+                showMessage("请在应用管理中打开位置权限");
+            }
+        });
     }
 
     @Override

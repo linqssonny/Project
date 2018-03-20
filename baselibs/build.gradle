@@ -22,4 +22,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api "com.android.support:appcompat-v7:${ANDROID_SUPPORT_VERSION}"
     api "com.sonnyjack.utils:Utils:${SONNYJACK_UTILS_VERSION}"
+
+    api ('com.sonnyjack.permission:PermissionUtils:0.1.0'){
+        exclude(group: 'com.android.support', module: 'appcompat-v7')
+    }
 }

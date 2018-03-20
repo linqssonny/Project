@@ -1,24 +1,17 @@
 package com.library.base;
 
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.library.base.permission.PermissionUtils;
 import com.sonnyjack.utils.app.ActivityUtils;
-import com.sonnyjack.utils.collection.CollectionUtils;
 import com.sonnyjack.utils.log.LogUtils;
 import com.sonnyjack.utils.toast.ToastUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by admin on 2016/5/10.
@@ -155,56 +148,4 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void log(String message) {
         LogUtils.i(message);
     }
-
-    /***********************************************************************
-     * start 6.0权限问题
-     ***********************************************************************/
-
-    public void requestPermissions(int requestCode, Integer... actions) {
-        List<String> permissionsList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(actions)) {
-            throw new IllegalStateException("the actions value is valid");
-        }
-        for (int i = 0; i < actions.length; i++) {
-            int action = actions[i];
-            List<String> p = PermissionUtils.createRequestPermission(action);
-            permissionsList.addAll(p);
-        }
-        boolean result = PermissionUtils.requestPermissions(this, permissionsList, requestCode);
-        if (result) {
-            int size = permissionsList.size();
-            requestPermissionsSuccess(requestCode, permissionsList.toArray(new String[size]), PermissionUtils.createGrantedArray(size));
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        boolean hasPermission = true;
-        for (int i = 0; i < grantResults.length; i++) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                hasPermission = false;
-                break;
-            }
-        }
-        if (hasPermission) {
-            //权限授权成功
-            requestPermissionsSuccess(requestCode, permissions, grantResults);
-        } else {
-            //权限授权失败
-            requestPermissionsFail(requestCode, permissions, grantResults);
-        }
-    }
-
-    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-    }
-
-    public void requestPermissionsFail(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-    }
-
-    /***********************************************************************
-     *   end 6.0权限问题
-     ***********************************************************************/
 }

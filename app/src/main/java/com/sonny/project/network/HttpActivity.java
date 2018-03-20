@@ -1,12 +1,15 @@
 package com.sonny.project.network;
 
-import android.support.annotation.NonNull;
+import android.Manifest;
 import android.view.View;
 
 import com.library.base.BaseActivity;
-import com.library.base.permission.PermissionUtils;
 import com.sonny.project.R;
+import com.sonnyjack.permission.IRequestPermissionCallBack;
+import com.sonnyjack.permission.PermissionUtils;
 import com.sonnyjack.utils.toast.ToastUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by linqs on 2016/8/10.
@@ -43,15 +46,19 @@ public class HttpActivity extends BaseActivity {
     }
 
     private void startDownload() {
-        requestPermissions(1000, PermissionUtils.PERMISSION_GROUP_STORAGE);
-    }
+        ArrayList<String> permissionList = new ArrayList<>();
+        permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        PermissionUtils.getInstances().requestPermission(this, permissionList, new IRequestPermissionCallBack() {
+            @Override
+            public void onGranted() {
+                download();
+            }
 
-    @Override
-    public void requestPermissionsSuccess(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.requestPermissionsSuccess(requestCode, permissions, grantResults);
-        if (1000 == requestCode) {
-            download();
-        }
+            @Override
+            public void onDenied() {
+
+            }
+        });
     }
 
     private void download() {
