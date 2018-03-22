@@ -139,7 +139,11 @@ public class HttpUtils {
         FormBody.Builder builder = new FormBody.Builder();
         if (null != httpParams.getParam() && httpParams.getParam().size() > 0) {
             for (Map.Entry<String, Object> map : httpParams.getParam().entrySet()) {
-                builder.add(map.getKey(), map.getValue().toString());
+                if(null == map || null == map.getKey()){
+                    continue;
+                }
+                String value = null == map.getValue() ? "" : map.getValue().toString();
+                builder.add(map.getKey(), value);
             }
         }
         FormBody formBody = builder.build();

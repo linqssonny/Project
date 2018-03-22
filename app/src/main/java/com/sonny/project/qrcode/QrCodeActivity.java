@@ -9,10 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.library.base.BaseActivity;
-import com.library.qrcode.QrCodeUtils;
 import com.sonny.project.R;
+import com.sonnyjack.library.qrcode.QrCodeUtils;
 import com.sonnyjack.permission.IRequestPermissionCallBack;
 import com.sonnyjack.permission.PermissionUtils;
 import com.sonnyjack.utils.density.DensityUtils;
@@ -85,7 +84,7 @@ public class QrCodeActivity extends BaseActivity {
             @Override
             public void onGranted() {
                 //扫描二维码/条形码
-                startActivityForResult(new Intent(getActivity(), CaptureActivity.class), REQUESTCODE);
+                QrCodeUtils.startScan(getActivity(), REQUESTCODE);
             }
 
             @Override
@@ -140,7 +139,7 @@ public class QrCodeActivity extends BaseActivity {
         if (RESULT_OK == resultCode) {
             switch (requestCode) {
                 case REQUESTCODE:
-                    mTvValue.setText(data.getStringExtra(CaptureActivity.QR_CODE_RESULT));
+                    mTvValue.setText(QrCodeUtils.getScanResult(data));
                     break;
             }
         }
