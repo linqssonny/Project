@@ -2,7 +2,7 @@ package com.sonny.project.network;
 
 import android.content.Context;
 
-import com.library.network.HttpUtils;
+import com.sonnyjack.library.network.HttpUtils;
 import com.sonnyjack.utils.file.FileUtils;
 import com.sonnyjack.utils.log.LogUtils;
 import com.sonnyjack.utils.system.SystemUtils;
@@ -19,6 +19,10 @@ public class MyHttpUtils {
         httpParams.setLoading(true);
         //默认在主线程回调   如需要子线程回调  设置true
         httpParams.setAsyncBack(false);
+        //错误回调时  Toast  错误信息
+        httpParams.setShowErrorMessage(true);
+        //HttpCallBack回调不对返回结果进行一次解析
+        httpParams.setAnalysisResult(false);
         //网络请求地址
         httpParams.setHttpUrl("http://wthrcdn.etouch.cn/weather_mini");
         //添加参数
@@ -27,7 +31,7 @@ public class MyHttpUtils {
         if (null == httpParams.getTag()) {
             httpParams.setTag(System.currentTimeMillis());
         }
-        HttpUtils.getInstances().getAsync(httpParams, new HttpCallBack() {
+        /*HttpUtils.getInstance().getAsync(httpParams, new HttpCallBack() {
             @Override
             public void onSuccess(HttpParams httpParams, String body) {
                 LogUtils.d(body);
@@ -35,8 +39,23 @@ public class MyHttpUtils {
             }
 
             @Override
-            public void onFail(HttpParams httpParams, String message) {
-                super.onFail(httpParams, message);
+            public void onFail(HttpParams httpParams, int error, String message) {
+                super.onFail(httpParams, error, message);
+                LogUtils.d(message);
+                ToastUtils.showMsgInCenter(context, message);
+            }
+        });*/
+
+        HttpUtils.getInstance().getAsync(httpParams, new HttpObjectCallBack<String>() {
+            @Override
+            public void onSuccess(HttpParams httpParams, String body) {
+                LogUtils.d(body);
+                ToastUtils.showMsgInCenter(context, body);
+            }
+
+            @Override
+            public void onFail(HttpParams httpParams, int error, String message) {
+                super.onFail(httpParams, error, message);
                 LogUtils.d(message);
                 ToastUtils.showMsgInCenter(context, message);
             }
@@ -50,7 +69,7 @@ public class MyHttpUtils {
         });*/
     }
 
-    public static void download(Context context, HttpCallBack httpCallBack){
+    public static void download(Context context, HttpCallBack httpCallBack) {
         HttpParams httpParams = new HttpParams();
         httpParams.setContext(context);
         //不显示等待匡
@@ -58,7 +77,7 @@ public class MyHttpUtils {
         httpParams.setHttpUrl("http://dldir1.qq.com/weixin/android/weixin661android1220_1.apk");
         httpParams.setSaveFilePath(SystemUtils.getRootFolderAbsolutePath());
         httpParams.setSaveFileName(FileUtils.buildFileNameByUrl(httpParams.getHttpUrl()));
-        HttpUtils.getInstances().download(httpParams, httpCallBack);
+        HttpUtils.getInstance().download(httpParams, httpCallBack);
     }
 
     /**
@@ -68,10 +87,10 @@ public class MyHttpUtils {
      * @param downloadTime   下载最大时长
      */
     public static void setHttpConnectionTimeAndDownloadTime(long connectionTime, long downloadTime) {
-        HttpUtils.getInstances().setHttpConnectionTimeAndDownloadTime(connectionTime, downloadTime);
+        HttpUtils.getInstance().setHttpConnectionTimeAndDownloadTime(connectionTime, downloadTime);
     }
 
     public static void cancel(Object tag) {
-        HttpUtils.getInstances().cancel(tag);
+        HttpUtils.getInstance().cancel(tag);
     }
 }

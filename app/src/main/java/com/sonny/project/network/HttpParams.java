@@ -1,33 +1,30 @@
 package com.sonny.project.network;
 
-import android.content.Context;
-
-import com.library.network.interfaces.BaseHttpParams;
+import com.sonnyjack.library.network.interfaces.BaseHttpParams;
 
 /**
  * Created by linqs on 2016/8/10.
  */
 public class HttpParams extends BaseHttpParams {
+    //是否要解析返回结果
+    private boolean isAnalysisResult;
 
-    //上下文
-    private Context context;
-
-    //是否显示等待匡
-    private boolean loading;
-
-    public Context getContext() {
-        return context;
+    public boolean isAnalysisResult() {
+        return isAnalysisResult;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setAnalysisResult(boolean analysisResult) {
+        isAnalysisResult = analysisResult;
     }
 
-    public boolean isLoading() {
-        return loading;
+    //显示错误信息
+    private boolean showErrorMessage;
+
+    public boolean isShowErrorMessage() {
+        return showErrorMessage;
     }
 
-    public void setLoading(boolean loading) {
-        this.loading = loading;
+    public void setShowErrorMessage(boolean showErrorMessage) {
+        this.showErrorMessage = showErrorMessage;
     }
 }

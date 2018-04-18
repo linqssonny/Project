@@ -1,1 +1,1 @@
-include ':app', ':baselibs', ':network', ':image', ':share', ':refresh', ':crop', ':location'
+include ':app', ':baselibs', ':image', ':share', ':refresh', ':crop', ':location'

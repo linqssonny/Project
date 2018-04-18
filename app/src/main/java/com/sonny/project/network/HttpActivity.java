@@ -65,13 +65,12 @@ public class HttpActivity extends BaseActivity {
         MyHttpUtils.download(getActivity(), new HttpCallBack() {
             @Override
             public void onSuccess(HttpParams httpParams, String body) {
-                super.onSuccess(httpParams, body);
                 ToastUtils.showLongMsg(getActivity(), "下载成功：" + body);
             }
 
             @Override
-            public void onFail(HttpParams httpParams, String message) {
-                super.onFail(httpParams, message);
+            public void onFail(HttpParams httpParams, int error,  String message) {
+                super.onFail(httpParams, error, message);
                 ToastUtils.showLongMsg(getActivity(), "下载失败：" + message);
             }
         });
