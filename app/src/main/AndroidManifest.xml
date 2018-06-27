@@ -35,7 +35,7 @@
         <activity android:name=".thread.ThreadActivity"></activity>
         <activity android:name=".widget.WidgetActivity"></activity>
         <activity android:name=".widget.RoundProgressViewActivity"></activity>
-        <activity android:name=".widget.DrawVewActivity"></activity>
+        <activity android:name=".widget.DragVewActivity"></activity>
 
         <!--微信回调-->
         <activity

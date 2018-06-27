@@ -58,19 +58,22 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.1.68.android'
 
     //网络请求
-    implementation 'com.sonnyjack.library:network:0.1.0'
+    implementation ('com.sonnyjack.library:network:0.1.0'){
+        //image项目中的glide也有引用okhttp库，为了保留一个版本，这里作移除操作
+        exclude(group: 'com.squareup.okhttp3', module: 'okhttp')
+    }
 
     //二维码
-    implementation ('com.sonnyjack.library:qrcode:0.1.2'){
+    implementation('com.sonnyjack.library:qrcode:0.1.2') {
         exclude(group: 'com.android.support', module: 'appcompat-v7')
     }
 
     //圆形进度条
-    implementation ('com.sonnyjack.widget:RoundProgressView:0.1.0') {
+    implementation('com.sonnyjack.widget:RoundProgressView:0.1.0') {
         exclude(group: 'com.android.support', module: 'appcompat-v7')
     }
     //可拖动View
-    implementation('com.sonnyjack.widget:DrawView:0.1.0') {
+    implementation('com.sonnyjack.widget:DrawView:0.1.2') {
         exclude(group: 'com.android.support', module: 'appcompat-v7')
     }
 }

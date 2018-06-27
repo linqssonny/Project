@@ -39,7 +39,7 @@ public class WidgetActivity extends BaseActivity {
                 break;
             case R.id.btn_draw_view:
                 //可拖动菜单
-                intent = new Intent(getActivity(), DrawVewActivity.class);
+                intent = new Intent(getActivity(), DragVewActivity.class);
                 break;
         }
         if (null != intent) {
